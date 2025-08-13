@@ -13,6 +13,12 @@ function CountdownTimer({ targetDate }: { targetDate: Date }) {
     seconds: 0,
   });
 
+  // 시험 정보 (실제 시험 날짜와 재시험 대기 기간)
+  const examInfo = {
+    examDate: new Date('2026-03-15'), // 2026년 3월 15일 시험
+    retakeWaitDays: 90, // 재시험 대기 기간 90일
+  };
+
   useEffect(() => {
     const timer = setInterval(() => {
       const now = new Date().getTime();
@@ -41,7 +47,7 @@ function CountdownTimer({ targetDate }: { targetDate: Date }) {
       <div className="rounded-2xl p-6">
         <div className="text-center">
           <h4 className="mb-3 font-semibold text-neutral-800">공개 예정</h4>
-          <div className="flex gap-3">
+          <div className="mb-4 flex gap-3">
             <div className="flex items-center gap-1">
               <div className="font-bold text-2xl text-neutral-800">
                 {timeLeft.days}
@@ -66,6 +72,19 @@ function CountdownTimer({ targetDate }: { targetDate: Date }) {
               </div>
               <div className="text-neutral-600 text-xs">초</div>
             </div>
+          </div>
+          <div className="text-neutral-600 text-sm leading-relaxed">
+            <p className="mb-1">
+              2026년 {examInfo.examDate.getMonth() + 1}월{' '}
+              {examInfo.examDate.getDate()}일에
+            </p>
+            <p>
+              통과하지 못 하면{' '}
+              <span className="font-semibold text-orange-600">
+                {examInfo.retakeWaitDays}일
+              </span>
+              을 기다려야 해요
+            </p>
           </div>
         </div>
       </div>

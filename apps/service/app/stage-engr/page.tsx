@@ -2,237 +2,77 @@
 
 import { Button } from '@heiglabs/design-system/button';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-
-// 타이머 컴포넌트
-function CountdownTimer({ targetDate }: { targetDate: Date }) {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-
-  // 시험 정보 (실제 시험 날짜와 재시험 대기 기간)
-  const examInfo = {
-    examDate: new Date('2026-03-15'), // 2026년 3월 15일 시험
-    retakeWaitDays: 90, // 재시험 대기 기간 90일
-  };
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const now = Date.now();
-      const target = new Date(targetDate).getTime();
-      const difference = target - now;
-
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor(
-            (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-          ),
-          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((difference % (1000 * 60)) / 1000),
-        });
-      } else {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [targetDate]);
-
-  return (
-    <div className="absolute inset-0 z-10 flex items-center justify-center">
-      <div className="rounded-2xl p-4 sm:p-6">
-        <div className="text-center">
-          <h4 className="mb-3 font-semibold text-neutral-800 text-sm sm:text-base">
-            공개 예정
-          </h4>
-          <div className="mb-4 flex flex-wrap justify-center gap-2 sm:gap-3">
-            <div className="flex items-center gap-1">
-              <div className="font-bold text-lg text-neutral-800 sm:text-2xl">
-                {timeLeft.days}
-              </div>
-              <div className="text-neutral-600 text-xs">일</div>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="font-bold text-lg text-neutral-800 sm:text-2xl">
-                {timeLeft.hours}
-              </div>
-              <div className="text-neutral-600 text-xs">시간</div>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="font-bold text-lg text-neutral-800 sm:text-2xl">
-                {timeLeft.minutes}
-              </div>
-              <div className="text-neutral-600 text-xs">분</div>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="font-bold text-lg text-neutral-800 sm:text-2xl">
-                {timeLeft.seconds}
-              </div>
-              <div className="text-neutral-600 text-xs">초</div>
-            </div>
-          </div>
-          <div className="px-2 text-neutral-600 text-xs leading-relaxed sm:text-sm">
-            <p className="mb-1">
-              2026년 {examInfo.examDate.getMonth() + 1}월{' '}
-              {examInfo.examDate.getDate()}일에
-            </p>
-            <p>
-              통과하지 못 하면{' '}
-              <span className="font-semibold text-orange-600">
-                {examInfo.retakeWaitDays}일
-              </span>
-              을 기다려야 해요
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// 카드 컴포넌트
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-function BookCard({ book }: { book: any }) {
-  const isPublic = book.isPublic;
-  const isExpired = book.publicDate
-    ? new Date() > new Date(book.publicDate)
-    : false;
-  const shouldShow = isPublic || isExpired;
-
-  return (
-    <div className="relative rounded-xl border border-neutral-200 bg-white p-4 backdrop-blur-sm sm:p-6 lg:p-8">
-      {!shouldShow && (
-        <>
-          {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
-          <div
-            className="absolute inset-0 z-5 overflow-hidden rounded-xl"
-            style={{
-              background: 'rgba(255, 255, 255, 0.2)',
-              backdropFilter: 'blur(5px)',
-              WebkitBackdropFilter: 'blur(5px)',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-            }}
-          ></div>
-          <CountdownTimer targetDate={new Date(book.publicDate)} />
-        </>
-      )}
-
-      <div
-        className={`flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 ${shouldShow ? '' : 'blur-sm'}`}
-      >
-        <div className="flex-1">
-          <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center">
-            <h3 className="font-semibold text-lg text-neutral-800 sm:text-xl">
-              {book.title}
-            </h3>
-            <span
-              className={`inline-flex w-fit items-center rounded-full px-2 py-1 font-medium text-xs ${
-                isPublic
-                  ? 'border border-green-200 bg-green-100 text-green-800'
-                  : 'border border-orange-200 bg-orange-100 text-orange-800'
-              }`}
-            >
-              {isPublic ? '공개' : '비공개'}
-            </span>
-          </div>
-          <p className="mb-4 text-neutral-600 text-sm leading-relaxed sm:text-base">
-            {book.description}
-          </p>
-          <div className="flex flex-wrap gap-2 sm:gap-3">
-            <span className="inline-flex items-center rounded-full border border-neutral-200/50 bg-gradient-to-r from-neutral-100 to-neutral-200 px-2.5 py-1 font-medium text-neutral-700 text-xs sm:px-3 sm:py-1.5 sm:text-sm">
-              {book.subject}
-            </span>
-            <span className="inline-flex items-center rounded-full border border-neutral-200/50 bg-gradient-to-r from-neutral-100 to-neutral-200 px-2.5 py-1 font-medium text-neutral-700 text-xs sm:px-3 sm:py-1.5 sm:text-sm">
-              {book.grade}
-            </span>
-            <span className="inline-flex items-center rounded-full border border-neutral-200/50 bg-gradient-to-r from-neutral-100 to-neutral-200 px-2.5 py-1 font-medium text-neutral-700 text-xs sm:px-3 sm:py-1.5 sm:text-sm">
-              {book.type}
-            </span>
-          </div>
-        </div>
-        <button
-          type="button"
-          disabled={!shouldShow}
-          className={`w-full rounded-xl px-6 py-3 font-medium shadow-lg shadow-neutral-300/50 transition-all sm:px-8 lg:ml-6 lg:w-auto ${
-            shouldShow
-              ? 'cursor-pointer bg-gradient-to-r from-neutral-800 to-neutral-700 text-white hover:from-neutral-700 hover:to-neutral-600'
-              : 'cursor-not-allowed bg-neutral-300 text-neutral-500'
-          }`}
-        >
-          {shouldShow ? '다운로드' : '비공개'}
-        </button>
-      </div>
-    </div>
-  );
-}
+import Link from 'next/link';
+import { useMemo } from 'react';
+import { BookCard } from './components/BookCard';
 
 export default function StageEngr() {
-  const books = [
-    {
-      title: '무대음향 3급 기출문제집',
-      subject: '무대음향',
-      grade: '3급',
-      type: '기출문제',
-      description: '무대음향 3급 자격시험 기출문제 모음집',
-      downloads: 1250,
-      size: '2.3MB',
-      isPublic: true,
-      publicDate: null,
-    },
-    {
-      title: '무대조명 3급 실기문제집',
-      subject: '무대조명',
-      grade: '3급',
-      type: '실기문제',
-      description: '무대조명 3급 실기 시험 대비 문제집',
-      downloads: 890,
-      size: '1.8MB',
-      isPublic: false,
-      publicDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // 2일 후
-    },
-    {
-      title: '무대음향 2급 이론문제집',
-      subject: '무대음향',
-      grade: '2급',
-      type: '이론문제',
-      description: '무대음향 2급 이론 시험 대비 문제집',
-      downloads: 756,
-      size: '3.1MB',
-      isPublic: true,
-      publicDate: null,
-    },
-    {
-      title: '무대조명 2급 기출문제집',
-      subject: '무대조명',
-      grade: '2급',
-      type: '기출문제',
-      description: '무대조명 2급 자격시험 기출문제 모음집',
-      downloads: 634,
-      size: '2.7MB',
-      isPublic: false,
-      publicDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7일 후
-    },
-    {
-      title: '무대음향 1급 종합문제집',
-      subject: '무대음향',
-      grade: '1급',
-      type: '종합문제',
-      description: '무대음향 1급 이론+실기 종합 문제집',
-      downloads: 445,
-      size: '4.2MB',
-      isPublic: false,
-      publicDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000), // 1일 후
-    },
-  ];
+  // books 배열을 useMemo로 메모이제이션하여 불필요한 재생성 방지
+  const books = useMemo(
+    () => [
+      {
+        title: '무대음향 3급 기출문제집',
+        subject: '무대음향',
+        grade: '3급',
+        type: '기출문제',
+        description: '무대음향 3급 자격시험 기출문제 모음집',
+        downloads: 1250,
+        size: '2.3MB',
+        isPublic: true,
+        publicDate: null,
+      },
+      {
+        title: '무대조명 3급 실기문제집',
+        subject: '무대조명',
+        grade: '3급',
+        type: '실기문제',
+        description: '무대조명 3급 실기 시험 대비 문제집',
+        downloads: 890,
+        size: '1.8MB',
+        isPublic: false,
+        publicDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // 2일 후
+      },
+      {
+        title: '무대음향 2급 이론문제집',
+        subject: '무대음향',
+        grade: '2급',
+        type: '이론문제',
+        description: '무대음향 2급 이론 시험 대비 문제집',
+        downloads: 756,
+        size: '3.1MB',
+        isPublic: true,
+        publicDate: null,
+      },
+      {
+        title: '무대조명 2급 기출문제집',
+        subject: '무대조명',
+        grade: '2급',
+        type: '기출문제',
+        description: '무대조명 2급 자격시험 기출문제 모음집',
+        downloads: 634,
+        size: '2.7MB',
+        isPublic: false,
+        publicDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7일 후
+      },
+      {
+        title: '무대음향 1급 종합문제집',
+        subject: '무대음향',
+        grade: '1급',
+        type: '종합문제',
+        description: '무대음향 1급 이론+실기 종합 문제집',
+        downloads: 445,
+        size: '4.2MB',
+        isPublic: false,
+        publicDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000), // 1일 후
+      },
+    ],
+    []
+  ); // 빈 의존성 배열로 한 번만 생성
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
       <div className="mx-auto max-w-5xl px-4 py-4 sm:px-6 sm:py-6">
-        <header className="mb-4 flex gap-2 sm:mb-6 sm:gap-3">
+        <header className="mb-4 flex items-center gap-2 sm:mb-6 sm:gap-3">
           <Image
             src="/nullk-logo.svg"
             alt="널케이 | 무대예술전문인 자격 시험 문제집 | 음향 엔지니어"
@@ -243,6 +83,21 @@ export default function StageEngr() {
           <span className="inline-flex w-fit items-center rounded-full bg-gradient-to-r from-blue-500 to-purple-600 px-2.5 py-0.5 font-medium text-white text-xs">
             음향
           </span>
+          <p className="text-neutral-300 text-sm">|</p>
+          <div className="flex items-center gap-4">
+            <Link
+              className="text-neutral-400! text-sm transition-colors hover:text-neutral-800!"
+              href="/stage-engr/qna"
+            >
+              질문/답변
+            </Link>
+            <Link
+              className="text-neutral-400! text-sm transition-colors hover:text-neutral-800!"
+              href="/stage-engr/ask-me"
+            >
+              문의
+            </Link>
+          </div>
         </header>
         <section
           className="mb-4 rounded-xl border border-neutral-200 p-4 sm:p-6 lg:p-8"

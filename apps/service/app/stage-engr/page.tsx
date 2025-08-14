@@ -1,4 +1,5 @@
 'use client';
+'use subdomain';
 
 import { Button } from '@heiglabs/design-system/button';
 import Image from 'next/image';

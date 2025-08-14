@@ -13,7 +13,6 @@ export const middleware = (request: NextRequest) => {
     const subdomainBasePath =
       subDomainMapper[subdomain as keyof typeof subDomainMapper];
 
-    // 서브도메인의 하위 경로를 포함하여 리라이트
     newUrl.pathname = `${subdomainBasePath}${request.nextUrl.pathname}`;
 
     return NextResponse.rewrite(newUrl);

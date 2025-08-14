@@ -1,6 +1,7 @@
 {
   "name": "frontend-workspace",
   "version": "0.0.8",
+  "type": "module",
   "private": true,
   "engines": {
     "node": ">=18"

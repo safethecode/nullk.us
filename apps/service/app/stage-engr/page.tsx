@@ -102,12 +102,12 @@ function BookCard({ book }: { book: any }) {
   const shouldShow = isPublic || isExpired;
 
   return (
-    <div className="relative rounded-3xl border border-neutral-200 bg-white p-8 backdrop-blur-sm">
+    <div className="relative rounded-xl border border-neutral-200 bg-white p-8 backdrop-blur-sm">
       {!shouldShow && (
         <>
           {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
           <div
-            className="absolute inset-0 z-5 overflow-hidden rounded-3xl"
+            className="absolute inset-0 z-5 overflow-hidden rounded-xl"
             style={{
               background: 'rgba(255, 255, 255, 0.2)',
               backdropFilter: 'blur(5px)',
@@ -155,7 +155,7 @@ function BookCard({ book }: { book: any }) {
         <button
           type="button"
           disabled={!shouldShow}
-          className={`w-full rounded-2xl px-8 py-3 font-medium shadow-lg shadow-neutral-300/50 transition-all lg:w-auto ${
+          className={`w-full rounded-xl px-8 py-3 font-medium shadow-lg shadow-neutral-300/50 transition-all lg:w-auto ${
             shouldShow
               ? 'cursor-pointer bg-gradient-to-r from-neutral-800 to-neutral-700 text-white hover:from-neutral-700 hover:to-neutral-600'
               : 'cursor-not-allowed bg-neutral-300 text-neutral-500'
@@ -238,11 +238,11 @@ export default function StageEngr() {
             height={24}
           />
           <span className="inline-flex items-center rounded-full bg-gradient-to-r from-blue-500 to-purple-600 px-2.5 py-0.5 font-medium text-white text-xs">
-            음향 / BETA
+            음향
           </span>
         </header>
         <section
-          className="mb-4 rounded-2xl border border-neutral-200 p-8"
+          className="mb-4 rounded-xl border border-neutral-200 p-8"
           style={{
             background:
               'linear-gradient(-40deg, rgb(9, 29, 84) 0%, rgb(31, 62, 112) 23.2951%, rgb(54, 100, 224) 68.1272%, rgb(121, 158, 255) 100%)',
@@ -284,6 +284,268 @@ export default function StageEngr() {
             </div>
           </div>
         </div>
+
+        {/* Exam Schedule Section */}
+        <section className="mt-12 mb-12 space-y-8">
+          <div className="text-center">
+            <h2 className="mb-2 font-bold text-2xl text-neutral-800">
+              2025년 무대예술전문인 자격시험 일정
+            </h2>
+            <p className="text-neutral-600">
+              시험 일정 및 장소는 사정에 따라 변경될 수 있습니다.
+            </p>
+          </div>
+
+          {/* Written Exam Table */}
+          <h3 className="mb-6 font-semibold text-lg text-neutral-800">
+            2025년 필기시험
+          </h3>
+          <div className="overflow-hidden rounded-xl border border-neutral-300">
+            <table className="w-full table-fixed">
+              <colgroup>
+                <col className="w-16" />
+                <col className="w-64" />
+                <col className="w-24" />
+                <col className="w-40" />
+                <col className="w-64" />
+                <col className="w-24" />
+              </colgroup>
+              <thead>
+                <tr className="bg-gradient-to-r from-neutral-100 to-neutral-200 first:rounded-t-xl">
+                  <th className="border-neutral-300 border-r border-b p-4 text-center font-semibold text-neutral-800">
+                    회차
+                  </th>
+                  <th className="border-neutral-300 border-r border-b p-4 text-center font-semibold text-neutral-800">
+                    원서 접수기간
+                  </th>
+                  <th className="border-neutral-300 border-r border-b p-4 text-center font-semibold text-neutral-800">
+                    분야
+                  </th>
+                  <th className="border-neutral-300 border-r border-b p-4 text-center font-semibold text-neutral-800">
+                    시험일
+                  </th>
+                  <th className="border-neutral-300 border-r border-b p-4 text-center font-semibold text-neutral-800">
+                    시험장소
+                  </th>
+                  <th className="border-neutral-300 border-b p-4 text-center font-semibold text-neutral-800">
+                    합격발표
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white">
+                  <td
+                    className="break-keep border-neutral-300 border-r p-4 font-medium text-neutral-800"
+                    rowSpan={3}
+                  >
+                    27회
+                  </td>
+                  <td
+                    className="border-neutral-300 border-r p-4 text-center text-neutral-700"
+                    rowSpan={3}
+                  >
+                    2025년 04.28.(월) 09:00
+                    <br />
+                    ~
+                    <br />
+                    2025년 05.02.(금) 18:00
+                  </td>
+                  <td className="border-neutral-300 border-r border-b p-4">
+                    <div className="text-center font-medium text-neutral-800">
+                      무대기계
+                    </div>
+                  </td>
+                  <td className="border-neutral-300 border-r border-b p-4 text-center font-medium text-neutral-700">
+                    6.1.(일) 10:00
+                  </td>
+                  <td
+                    className="border-neutral-300 border-r p-4 text-center text-neutral-700"
+                    rowSpan={3}
+                  >
+                    서울공업고등학교
+                    <br />
+                    서울성남중고등학교
+                    <br />
+                    <span className="text-neutral-500 text-sm">
+                      (수험표 확인)
+                    </span>
+                  </td>
+                  <td
+                    className=" p-4 text-center font-medium text-neutral-700"
+                    rowSpan={3}
+                  >
+                    6.20.(금)
+                  </td>
+                </tr>
+                <tr className="bg-white">
+                  <td className="border-neutral-300 border-r border-b p-4">
+                    <div className="text-center font-medium text-neutral-800">
+                      무대조명
+                    </div>
+                  </td>
+                  <td className="border-neutral-300 border-r border-b p-4 text-center font-medium text-neutral-700">
+                    6.1.(일) 10:00
+                  </td>
+                </tr>
+                <tr className="bg-white">
+                  <td className="border-neutral-300 border-r p-4">
+                    <div className="text-center font-medium text-neutral-800">
+                      무대음향
+                    </div>
+                  </td>
+                  <td className="border-neutral-300 border-r p-4 text-center font-medium text-neutral-700">
+                    6.1.(일) 10:00
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* Practical Exam Table */}
+          <h3 className="mb-6 font-semibold text-lg text-neutral-800">
+            2025년 실기시험
+          </h3>
+          <div className="overflow-hidden rounded-xl border border-neutral-300">
+            <table className="w-full table-fixed">
+              <colgroup>
+                <col className="w-16" />
+                <col className="w-64" />
+                <col className="w-24" />
+                <col className="w-40" />
+                <col className="w-64" />
+                <col className="w-24" />
+              </colgroup>
+              <thead>
+                <tr className="bg-gradient-to-r from-neutral-100 to-neutral-200 first:rounded-t-xl">
+                  <th className="border-neutral-300 border-r border-b p-4 text-center font-semibold text-neutral-800">
+                    회차
+                  </th>
+                  <th className="border-neutral-300 border-r border-b p-4 text-center font-semibold text-neutral-800">
+                    원서 접수기간
+                  </th>
+                  <th className="border-neutral-300 border-r border-b p-4 text-center font-semibold text-neutral-800">
+                    분야
+                  </th>
+                  <th className="border-neutral-300 border-r border-b p-4 text-center font-semibold text-neutral-800">
+                    시험일
+                  </th>
+                  <th className="border-neutral-300 border-r border-b p-4 text-center font-semibold text-neutral-800">
+                    시험장소
+                  </th>
+                  <th className="border-neutral-300 border-b p-4 text-center font-semibold text-neutral-800">
+                    합격발표
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white">
+                  <td
+                    className="break-keep border-neutral-300 border-r p-4 font-medium text-neutral-800"
+                    rowSpan={3}
+                  >
+                    27회
+                  </td>
+                  <td
+                    className="border-neutral-300 border-r p-4 text-center text-neutral-700"
+                    rowSpan={3}
+                  >
+                    2025년 06.23.(월) 09:00
+                    <br />
+                    ~
+                    <br />
+                    2025년 06.27.(금) 18:00
+                  </td>
+                  <td className="border-neutral-300 border-r border-b p-4">
+                    <div className="text-center font-medium text-neutral-800">
+                      무대조명
+                    </div>
+                  </td>
+                  <td className="border-neutral-300 border-r border-b p-4 text-neutral-700">
+                    <div className="space-y-2">
+                      <div className="text-center font-medium text-neutral-700">
+                        3급: 7.29 (화)
+                      </div>
+                      <div className="text-center font-medium text-neutral-700">
+                        2급: 7.30 (수)
+                      </div>
+                      <div className="text-center font-medium text-neutral-700">
+                        1급: 7.31 (목)
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    className="border-neutral-300 border-r p-4 text-center text-neutral-700"
+                    rowSpan={3}
+                  >
+                    국립극장 달오름극장
+                  </td>
+                  <td
+                    className="p-4 text-center font-medium text-neutral-700"
+                    rowSpan={3}
+                  >
+                    8.27.(수)
+                  </td>
+                </tr>
+                <tr className="bg-white">
+                  <td className="border-neutral-300 border-r border-b p-4">
+                    <div className="text-center font-medium text-neutral-800">
+                      무대기계
+                    </div>
+                  </td>
+                  <td className="border-neutral-300 border-r border-b p-4 text-neutral-700">
+                    <div className="space-y-2">
+                      <div className="text-center font-medium text-neutral-700">
+                        3급: 8.5 (화)
+                      </div>
+                      <div className="text-center font-medium text-neutral-700">
+                        2급: 8.6 (수)
+                      </div>
+                      <div className="text-center font-medium text-neutral-700">
+                        1급: 8.7 (목)
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="bg-white">
+                  <td className="border-neutral-300 border-r p-4">
+                    <div className="text-center font-medium text-neutral-800">
+                      무대음향
+                    </div>
+                  </td>
+                  <td className="border-neutral-300 border-r p-4 text-neutral-700">
+                    <div className="space-y-2">
+                      <div className="text-center font-medium text-neutral-700">
+                        3급: 8.12 (화)
+                      </div>
+                      <div className="text-center font-medium text-neutral-700">
+                        2급: 8.13 (수)
+                      </div>
+                      <div className="text-center font-medium text-neutral-700">
+                        1급: 8.14 (목)
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section
+          className="mb-4 rounded-xl border border-neutral-200 p-8"
+          style={{
+            background:
+              'linear-gradient(-40deg, rgb(9, 29, 84) 0%, rgb(31, 62, 112) 23.2951%, rgb(54, 100, 224) 68.1272%, rgb(121, 158, 255) 100%)',
+          }}
+        >
+          <p className="mb-2 font-bold text-2xl text-white">
+            2026년 시험까지 OOO0년 00월 00일 남았어요.
+          </p>
+          <p className="text-blue-100">
+            2026년 무대예술전문인 자격 시험에서 자격을 얻지 못 하면,
+            <br />
+            오늘 날짜 기준으로 <b>000일</b>을 기다려야 해요.
+          </p>
+        </section>
       </div>
 
       {/* Footer */}

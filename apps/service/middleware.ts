@@ -10,8 +10,11 @@ export const middleware = (request: NextRequest) => {
 
   if (subdomain in subDomainMapper) {
     const newUrl = request.nextUrl.clone();
-    newUrl.pathname =
+    const subdomainBasePath =
       subDomainMapper[subdomain as keyof typeof subDomainMapper];
+
+    // 서브도메인의 하위 경로를 포함하여 리라이트
+    newUrl.pathname = `${subdomainBasePath}${request.nextUrl.pathname}`;
 
     return NextResponse.rewrite(newUrl);
   }

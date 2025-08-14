@@ -232,7 +232,7 @@ export default function StageEngr() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
       <div className="mx-auto max-w-5xl px-4 py-4 sm:px-6 sm:py-6">
-        <header className="mb-4 flex flex-col gap-2 sm:mb-6 sm:flex-row sm:items-center sm:gap-3">
+        <header className="mb-4 flex gap-2 sm:mb-6 sm:gap-3">
           <Image
             src="/nullk-logo.svg"
             alt="널케이 | 무대예술전문인 자격 시험 문제집 | 음향 엔지니어"

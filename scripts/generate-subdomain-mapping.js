@@ -4,6 +4,7 @@ import {
   readFileSync,
   readdirSync,
   statSync,
+  unlinkSync,
   watch,
   writeFileSync,
 } from 'node:fs';
@@ -126,6 +127,11 @@ function updateMiddleware(mappings) {
 
     try {
       middlewareContent = readFileSync(MIDDLEWARE_PATH, 'utf-8');
+
+      // 백업 생성
+      const backupPath = MIDDLEWARE_PATH + '.backup';
+      writeFileSync(backupPath, middlewareContent);
+      console.log('📁 Created backup at:', backupPath);
     } catch (err) {
       // 파일이 없으면 새로 생성
       console.log('📝 Middleware file not found. Creating new one...');
@@ -144,23 +150,44 @@ function updateMiddleware(mappings) {
       const newSubDomainMapper = `const subDomainMapper = {\n${mappingsString},\n} as const;`;
 
       // 기존 subDomainMapper 교체 (멀티라인과 따옴표를 고려한 정규식)
-      const subDomainMapperRegex = /const subDomainMapper = \{[\s\S]*?\} as const;/;
-      
-      if (!subDomainMapperRegex.test(middlewareContent)) {
+      const subDomainMapperRegex =
+        /const subDomainMapper\s*=\s*\{[\s\S]*?\}\s*as\s+const\s*;/;
+
+      if (subDomainMapperRegex.test(middlewareContent)) {
+        middlewareContent = middlewareContent.replace(
+          subDomainMapperRegex,
+          newSubDomainMapper
+        );
+      } else {
         console.warn('⚠️  Could not find subDomainMapper in middleware.ts');
         console.log('Current middleware content:');
         console.log(middlewareContent);
         console.log('📝 Creating new middleware file...');
         middlewareContent = createMiddlewareTemplate(mappings);
-      } else {
-        middlewareContent = middlewareContent.replace(
-          subDomainMapperRegex,
-          newSubDomainMapper
-        );
       }
     }
 
+    // 백업에서 복원할 수 있도록 임시 파일에 먼저 작성
+    const tempPath = MIDDLEWARE_PATH + '.temp';
+    writeFileSync(tempPath, middlewareContent);
+
+    // 내용 검증
+    if (
+      !middlewareContent.includes('export const middleware') &&
+      !middlewareContent.includes('export default')
+    ) {
+      throw new Error('Generated middleware content is invalid');
+    }
+
+    // 검증 통과 시 실제 파일로 이동
     writeFileSync(MIDDLEWARE_PATH, middlewareContent);
+
+    // 임시 파일 삭제
+    try {
+      unlinkSync(tempPath);
+    } catch {
+      // 임시 파일 삭제 실패는 무시
+    }
 
     if (isNewFile) {
       console.log('✅ Created new middleware.ts with subdomain mappings');
@@ -169,6 +196,17 @@ function updateMiddleware(mappings) {
     }
   } catch (err) {
     console.error('❌ Failed to update middleware:', err.message);
+
+    // 백업에서 복원 시도
+    const backupPath = MIDDLEWARE_PATH + '.backup';
+    try {
+      const backupContent = readFileSync(backupPath, 'utf-8');
+      writeFileSync(MIDDLEWARE_PATH, backupContent);
+      console.log('🔄 Restored from backup');
+    } catch (restoreErr) {
+      console.error('❌ Failed to restore from backup:', restoreErr.message);
+    }
+
     process.exit(1);
   }
 }

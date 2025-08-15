@@ -181,7 +181,7 @@ export default function QnaDetailPage() {
       id: qnaAnswers.length + 1,
       content: replyContent,
       author: replyAuthor,
-      date: new Date().toISOString().split('T')[0],
+      date: new Date().toISOString().split('T')[0] || '',
       likes: 0,
       dislikes: 0,
       isAccepted: false,

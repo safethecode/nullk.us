@@ -56,7 +56,7 @@ export default function WriteInquiry() {
       });
 
       // 성공 시 목록으로 이동
-      router.push('/stage-engr/ask-me');
+      router.push('ask-me');
     } catch (err) {
       setError('문의 등록에 실패했습니다. 다시 시도해주세요.');
     } finally {
@@ -72,7 +72,7 @@ export default function WriteInquiry() {
     <>
       {/* Header */}
       <div className="mb-6">
-        <Link href="/stage-engr/ask-me">
+        <Link href="ask-me">
           <Button
             variant="outline"
             className="border-neutral-300 text-neutral-600 hover:bg-neutral-50"

@@ -3,6 +3,7 @@
 import {
   readFileSync,
   readdirSync,
+  renameSync,
   statSync,
   unlinkSync,
   watch,
@@ -124,18 +125,39 @@ function updateMiddleware(mappings) {
   try {
     let middlewareContent;
     let isNewFile = false;
+    let shouldCreateBackup = false;
 
     try {
       middlewareContent = readFileSync(MIDDLEWARE_PATH, 'utf-8');
 
-      // 백업 생성
-      const backupPath = MIDDLEWARE_PATH + '.backup';
-      writeFileSync(backupPath, middlewareContent);
-      console.log('📁 Created backup at:', backupPath);
+      // 파일이 존재하지만 비어있거나 유효하지 않은 경우 체크
+      if (!middlewareContent || middlewareContent.trim().length === 0) {
+        console.log('📝 Middleware file is empty. Creating new content...');
+        isNewFile = true;
+      } else if (
+        !middlewareContent.includes('export const middleware') &&
+        !middlewareContent.includes('export default')
+      ) {
+        console.log('📝 Middleware file exists but invalid. Recreating...');
+        isNewFile = true;
+      } else {
+        shouldCreateBackup = true;
+      }
     } catch (err) {
       // 파일이 없으면 새로 생성
       console.log('📝 Middleware file not found. Creating new one...');
       isNewFile = true;
+    }
+
+    // 유효한 백업만 생성
+    if (
+      shouldCreateBackup &&
+      middlewareContent &&
+      middlewareContent.trim().length > 0
+    ) {
+      const backupPath = MIDDLEWARE_PATH + '.backup';
+      writeFileSync(backupPath, middlewareContent);
+      console.log('📁 Created backup at:', backupPath);
     }
 
     if (isNewFile) {
@@ -160,33 +182,56 @@ function updateMiddleware(mappings) {
         );
       } else {
         console.warn('⚠️  Could not find subDomainMapper in middleware.ts');
-        console.log('Current middleware content:');
-        console.log(middlewareContent);
-        console.log('📝 Creating new middleware file...');
+        console.log('📝 Recreating middleware file with template...');
         middlewareContent = createMiddlewareTemplate(mappings);
       }
     }
 
-    // 백업에서 복원할 수 있도록 임시 파일에 먼저 작성
-    const tempPath = MIDDLEWARE_PATH + '.temp';
-    writeFileSync(tempPath, middlewareContent);
+    // 안전한 파일 작성을 위한 원자적 업데이트
+    const tempPath = MIDDLEWARE_PATH + '.tmp';
 
-    // 내용 검증
-    if (
-      !middlewareContent.includes('export const middleware') &&
-      !middlewareContent.includes('export default')
-    ) {
-      throw new Error('Generated middleware content is invalid');
+    // 임시 파일에 먼저 작성
+    writeFileSync(tempPath, middlewareContent, 'utf-8');
+
+    // 내용 검증 - 더 유연한 검증 로직
+    const isValid =
+      middlewareContent.includes('export const middleware') ||
+      middlewareContent.includes('export default') ||
+      middlewareContent.includes('export { middleware }');
+
+    if (!isValid || middlewareContent.trim().length === 0) {
+      unlinkSync(tempPath); // 임시 파일 삭제
+      throw new Error('Generated middleware content is invalid or empty');
     }
 
-    // 검증 통과 시 실제 파일로 이동
-    writeFileSync(MIDDLEWARE_PATH, middlewareContent);
-
-    // 임시 파일 삭제
+    // 검증 통과 시 원자적으로 파일 교체
     try {
-      unlinkSync(tempPath);
-    } catch {
-      // 임시 파일 삭제 실패는 무시
+      // Windows와 Unix 모두에서 안전한 원자적 교체
+      if (process.platform === 'win32') {
+        // Windows: 기존 파일 삭제 후 이동
+        try {
+          unlinkSync(MIDDLEWARE_PATH);
+        } catch {
+          // 파일이 없어도 괜찮음
+        }
+      }
+
+      // 파일 이름 변경으로 원자적 교체
+      renameSync(tempPath, MIDDLEWARE_PATH);
+    } catch (renameErr) {
+      // 이름 변경 실패 시 일반적인 쓰기로 폴백
+      console.warn(
+        '⚠️  Atomic rename failed, using regular write:',
+        renameErr.message
+      );
+      writeFileSync(MIDDLEWARE_PATH, middlewareContent, 'utf-8');
+
+      // 임시 파일 정리
+      try {
+        unlinkSync(tempPath);
+      } catch {
+        // 임시 파일 삭제 실패는 무시
+      }
     }
 
     if (isNewFile) {
@@ -194,20 +239,45 @@ function updateMiddleware(mappings) {
     } else {
       console.log('✅ Updated middleware.ts with new subdomain mappings');
     }
+
+    // 최종 검증
+    try {
+      const finalContent = readFileSync(MIDDLEWARE_PATH, 'utf-8');
+      if (!finalContent || finalContent.trim().length === 0) {
+        throw new Error('Final middleware file is empty');
+      }
+    } catch (verifyErr) {
+      console.error('❌ Final verification failed:', verifyErr.message);
+      throw verifyErr;
+    }
   } catch (err) {
     console.error('❌ Failed to update middleware:', err.message);
 
-    // 백업에서 복원 시도
+    // 백업에서 복원 시도 (유효한 백업이 있는 경우만)
     const backupPath = MIDDLEWARE_PATH + '.backup';
     try {
       const backupContent = readFileSync(backupPath, 'utf-8');
-      writeFileSync(MIDDLEWARE_PATH, backupContent);
-      console.log('🔄 Restored from backup');
+      if (backupContent && backupContent.trim().length > 0) {
+        writeFileSync(MIDDLEWARE_PATH, backupContent, 'utf-8');
+        console.log('🔄 Restored from backup');
+      } else {
+        console.log('⚠️  Backup is empty, creating new middleware instead');
+        const newContent = createMiddlewareTemplate(mappings);
+        writeFileSync(MIDDLEWARE_PATH, newContent, 'utf-8');
+        console.log('✅ Created new middleware.ts after backup restore failed');
+      }
     } catch (restoreErr) {
       console.error('❌ Failed to restore from backup:', restoreErr.message);
+      // 백업 복원도 실패하면 새 파일 생성
+      try {
+        const newContent = createMiddlewareTemplate(mappings);
+        writeFileSync(MIDDLEWARE_PATH, newContent, 'utf-8');
+        console.log('✅ Created new middleware.ts as fallback');
+      } catch (fallbackErr) {
+        console.error('❌ All recovery attempts failed:', fallbackErr.message);
+        process.exit(1);
+      }
     }
-
-    process.exit(1);
   }
 }
 
@@ -236,6 +306,7 @@ function startWatchMode() {
   generateMappings();
 
   let debounceTimer;
+  let isProcessing = false;
 
   const watcher = watch(APP_DIR, { recursive: true }, (eventType, filename) => {
     if (!filename) return;
@@ -246,14 +317,27 @@ function startWatchMode() {
       filename.includes('page.ts') ||
       filename.includes('.custom-domain')
     ) {
-      console.log(`🔄 File changed: ${filename}`);
+      console.log(`🔄 File changed: ${filename} (${eventType})`);
 
-      // 디바운싱: 0.5초 내 연속 변경 시 마지막 것만 실행
+      // 이미 처리 중이면 스킵
+      if (isProcessing) {
+        console.log('⏳ Already processing, skipping...');
+        return;
+      }
+
+      // 디바운싱: 1초 내 연속 변경 시 마지막 것만 실행
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
-        console.log('\n'.repeat(2));
-        generateMappings();
-      }, 500);
+        isProcessing = true;
+        try {
+          console.log('\n'.repeat(2));
+          generateMappings();
+        } catch (err) {
+          console.error('❌ Error during file change processing:', err.message);
+        } finally {
+          isProcessing = false;
+        }
+      }, 1000);
     }
   });
 
@@ -262,6 +346,7 @@ function startWatchMode() {
   // Graceful shutdown
   process.on('SIGINT', () => {
     console.log('\n👋 Stopping watch mode...');
+    clearTimeout(debounceTimer);
     watcher.close();
     process.exit(0);
   });

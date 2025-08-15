@@ -1,16 +1,15 @@
-'use client';
 import Image from 'next/image';
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 
 export default function StageEngrLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
       <div className="mx-auto max-w-5xl px-4 py-4 sm:px-6 sm:py-6">
-        {/* Header */}
         <header className="mb-4 flex items-center gap-2 sm:mb-6 sm:gap-3">
           <Link href="/">
             <Image
@@ -42,8 +41,6 @@ export default function StageEngrLayout({
         </header>
         {children}
       </div>
-
-      {/* Footer */}
       <footer className="mt-6 border-neutral-200 border-t bg-white/50 backdrop-blur-sm sm:mt-8">
         <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
           <div className="flex flex-col items-center justify-center space-y-3 text-center sm:space-y-4">

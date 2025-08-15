@@ -348,13 +348,13 @@ export default function AskMe() {
         className="mb-6 rounded-xl border border-neutral-200 p-4 sm:p-6 lg:p-8"
         style={{
           background:
-            'linear-gradient(-40deg, rgb(9, 29, 84) 0%, rgb(31, 62, 112) 23.2951%, rgb(54, 100, 224) 68.1272%, rgb(121, 158, 255) 100%)',
+            'linear-gradient(-40deg, rgb(59, 7, 100) 0%, rgb(76, 29, 149) 23.2951%, rgb(124, 58, 237) 68.1272%, rgb(168, 85, 247) 100%)',
         }}
       >
         <h1 className="mb-2 font-bold text-lg text-white sm:text-xl lg:text-2xl">
           문의하기
         </h1>
-        <p className="text-blue-100 text-sm leading-relaxed sm:text-base">
+        <p className="text-purple-100 text-sm leading-relaxed sm:text-base">
           무대예술전문인 자격시험 관련 문의사항을 남겨주세요.
           <br className="hidden sm:block" />
           <span className="sm:hidden"> </span>

@@ -59,13 +59,31 @@ export async function getInquiries({
   const from = (page - 1) * itemsPerPage;
   const to = from + itemsPerPage - 1;
 
-  const { data, error, count } = await query
-    .range(from, to)
-    .select('*', { count: 'exact' });
+  // 데이터 조회
+  const { data, error } = await query.select('*').range(from, to);
 
   if (error) {
     throw error;
   }
+
+  // 전체 개수 조회 (동일한 필터 조건 적용)
+  let countQuery = supabase
+    .from('inquiries')
+    .select('*', { count: 'exact', head: true });
+
+  // 검색 조건 적용
+  if (searchTerm) {
+    countQuery = countQuery.or(
+      `title.ilike.%${searchTerm}%,content.ilike.%${searchTerm}%,author.ilike.%${searchTerm}%`
+    );
+  }
+
+  // 카테고리 필터 적용
+  if (category !== '전체') {
+    countQuery = countQuery.eq('category', category);
+  }
+
+  const { count } = await countQuery;
 
   return {
     data: data as Inquiry[],

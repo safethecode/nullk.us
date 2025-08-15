@@ -2,10 +2,50 @@
 'use subdomain';
 
 import { Button } from '@heiglabs/design-system/button';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { BookCard } from './components/BookCard';
 
+// 2026년 5월 31일 시험일 설정 (컴포넌트 외부로 이동)
+const EXAM_DATE = new Date('2026-05-31T00:00:00');
+
 export default function StageEngr() {
+  const [timeLeft, setTimeLeft] = useState({
+    years: 0,
+    months: 0,
+    days: 0,
+    totalDays: 0,
+  });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date();
+      const difference = EXAM_DATE.getTime() - now.getTime();
+
+      if (difference > 0) {
+        const totalDays = Math.ceil(difference / (1000 * 60 * 60 * 24));
+
+        // 년, 월, 일 계산
+        const years = Math.floor(difference / (1000 * 60 * 60 * 24 * 365.25));
+        const months = Math.floor(
+          (difference % (1000 * 60 * 60 * 24 * 365.25)) /
+            (1000 * 60 * 60 * 24 * 30.44)
+        );
+        const days = Math.floor(
+          (difference % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24)
+        );
+
+        setTimeLeft({ years, months, days, totalDays });
+      } else {
+        setTimeLeft({ years: 0, months: 0, days: 0, totalDays: 0 });
+      }
+    };
+
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000 * 60 * 60); // 1시간마다 업데이트
+
+    return () => clearInterval(timer);
+  }, []); // EXAM_DATE가 컴포넌트 외부에 있으므로 의존성 배열에서 제거
+
   // books 배열을 useMemo로 메모이제이션하여 불필요한 재생성 방지
   const books = useMemo(
     () => [
@@ -370,13 +410,23 @@ export default function StageEngr() {
         }}
       >
         <p className="mb-2 font-bold text-lg text-white sm:text-xl lg:text-2xl">
-          2026년 시험까지 OOO0년 00월 00일 남았어요.
+          2026년 시험까지{' '}
+          {timeLeft.totalDays === 0
+            ? '계산 중...'
+            : `${timeLeft.years > 0 ? `${timeLeft.years}년 ` : ''}${timeLeft.months > 0 ? `${timeLeft.months}개월 ` : ''}${timeLeft.days}일`}{' '}
+          남았어요.
         </p>
         <p className="text-blue-100 text-sm leading-relaxed sm:text-base">
           2026년 무대예술전문인 자격 시험에서 자격을 얻지 못 하면,
           <br className="hidden sm:block" />
           <span className="sm:hidden"> </span>
-          오늘 날짜 기준으로 <b>000일</b>을 기다려야 해요.
+          오늘 날짜 기준으로{' '}
+          <b>
+            {timeLeft.totalDays === 0
+              ? '계산 중...'
+              : `${(timeLeft.totalDays * 2).toLocaleString()}일`}
+          </b>
+          을 기다려야 해요.
         </p>
       </section>
     </>

@@ -143,11 +143,21 @@ function updateMiddleware(mappings) {
 
       const newSubDomainMapper = `const subDomainMapper = {\n${mappingsString},\n} as const;`;
 
-      // 기존 subDomainMapper 교체
-      middlewareContent = middlewareContent.replace(
-        /const subDomainMapper = \{[\s\S]*?\} as const;/,
-        newSubDomainMapper
-      );
+      // 기존 subDomainMapper 교체 (멀티라인과 따옴표를 고려한 정규식)
+      const subDomainMapperRegex = /const subDomainMapper = \{[\s\S]*?\} as const;/;
+      
+      if (!subDomainMapperRegex.test(middlewareContent)) {
+        console.warn('⚠️  Could not find subDomainMapper in middleware.ts');
+        console.log('Current middleware content:');
+        console.log(middlewareContent);
+        console.log('📝 Creating new middleware file...');
+        middlewareContent = createMiddlewareTemplate(mappings);
+      } else {
+        middlewareContent = middlewareContent.replace(
+          subDomainMapperRegex,
+          newSubDomainMapper
+        );
+      }
     }
 
     writeFileSync(MIDDLEWARE_PATH, middlewareContent);

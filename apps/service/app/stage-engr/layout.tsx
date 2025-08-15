@@ -8,9 +8,10 @@ export default function StageEngrLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
-      <div className="mx-auto max-w-5xl px-4 py-4 sm:px-6 sm:py-6">
-        <header className="mb-4 flex items-center gap-2 sm:mb-6 sm:gap-3">
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-neutral-50 to-neutral-100">
+      {/* Header */}
+      <header className="mx-auto w-full max-w-5xl px-4 py-4 sm:px-6 sm:py-6">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Link href="/">
             <Image
               src="/nullk-logo.svg"
@@ -38,10 +39,16 @@ export default function StageEngrLayout({
               문의
             </Link>
           </div>
-        </header>
+        </div>
+      </header>
+
+      {/* Main content area - grows to fill available space */}
+      <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-4 sm:px-6 sm:pb-6">
         {children}
-      </div>
-      <footer className="mt-6 border-neutral-200 border-t bg-white/50 backdrop-blur-sm sm:mt-8">
+      </main>
+
+      {/* Footer - always at bottom */}
+      <footer className="border-neutral-200 border-t bg-white/50 backdrop-blur-sm">
         <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
           <div className="flex flex-col items-center justify-center space-y-3 text-center sm:space-y-4">
             <div className="flex items-center space-x-2">

@@ -4,7 +4,7 @@ import { Button } from '@heiglabs/design-system/button';
 import { Input } from '@heiglabs/design-system/input';
 import Link from 'next/link';
 import type React from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getInquiries } from '../../../lib/api/inquiries';
 import type {
   CategoryType,
@@ -14,6 +14,7 @@ import type {
 
 export default function AskMe() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<
     CategoryType | '전체'
   >('전체');
@@ -25,6 +26,9 @@ export default function AskMe() {
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
+
   const categories: (CategoryType | '전체')[] = [
     '전체',
     '일반문의',
@@ -34,39 +38,86 @@ export default function AskMe() {
     '기타',
   ];
   const ITEMS_PER_PAGE = 10;
+  const SEARCH_DEBOUNCE_MS = 500;
 
-  // 초기 로딩 및 검색/필터 변경 시 데이터 재로딩
+  // 검색어 debounce 처리
   useEffect(() => {
-    const loadInquiries = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
 
-        const result = await getInquiries({
-          searchTerm,
-          category: selectedCategory,
-          sortBy,
-          page: currentPage,
-          itemsPerPage: ITEMS_PER_PAGE,
-        });
+    searchTimeoutRef.current = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, SEARCH_DEBOUNCE_MS);
 
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, [searchTerm]);
+
+  // 검색/필터 변경 시 첫 페이지로 이동
+  // biome-ignore lint/correctness/useExhaustiveDependencies: currentPage는 무한 루프를 방지하기 위해 의도적으로 제외
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearchTerm, selectedCategory, sortBy]);
+
+  // API 요청 함수
+  const loadInquiries = useCallback(async () => {
+    try {
+      // 이전 요청 취소
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+
+      // 새로운 AbortController 생성
+      const abortController = new AbortController();
+      abortControllerRef.current = abortController;
+
+      setLoading(true);
+      setError(null);
+
+      const result = await getInquiries({
+        searchTerm: debouncedSearchTerm,
+        category: selectedCategory,
+        sortBy,
+        page: currentPage,
+        itemsPerPage: ITEMS_PER_PAGE,
+      });
+
+      // 요청이 취소되지 않았을 때만 상태 업데이트
+      if (!abortController.signal.aborted) {
         setInquiries(result.data);
         setTotalCount(result.total);
         setTotalPages(result.totalPages);
-      } catch {
+      }
+    } catch (error) {
+      // AbortError가 아닐 때만 에러 처리
+      if (error instanceof Error && error.name !== 'AbortError') {
         setError('문의 목록을 불러오는데 실패했습니다.');
-      } finally {
+      }
+    } finally {
+      if (
+        abortControllerRef.current &&
+        !abortControllerRef.current.signal.aborted
+      ) {
         setLoading(false);
       }
-    };
+    }
+  }, [debouncedSearchTerm, selectedCategory, sortBy, currentPage]);
 
-    loadInquiries();
-  }, [searchTerm, selectedCategory, sortBy, currentPage]);
-
-  // 검색/필터 변경 시 첫 페이지로 이동
+  // 초기 로딩 및 검색/필터 변경 시 데이터 재로딩
   useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm, selectedCategory, sortBy]);
+    loadInquiries();
+
+    // 컴포넌트 언마운트 시 요청 취소
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, [loadInquiries]);
 
   // 현재 표시할 데이터 결정
   const currentInquiries = useMemo(() => {
@@ -76,11 +127,11 @@ export default function AskMe() {
     return inquiries;
   }, [inquiries, loading, error]);
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
-  };
+  }, []);
 
-  const renderPagination = () => {
+  const renderPagination = useMemo(() => {
     const pages: React.ReactElement[] = [];
     const maxVisiblePages = 5;
     const startPage = Math.max(
@@ -136,7 +187,7 @@ export default function AskMe() {
     }
 
     return pages;
-  };
+  }, [currentPage, totalPages, handlePageChange]);
 
   return (
     <>
@@ -281,7 +332,7 @@ export default function AskMe() {
                       </td>
                       <td className="px-4 py-3">
                         <Link
-                          href={`/ask-me/${inquiry.id}`}
+                          href={`ask-me/${inquiry.id}`}
                           className="text-neutral-800 hover:text-neutral-600 hover:underline"
                         >
                           {inquiry.title}
@@ -331,9 +382,7 @@ export default function AskMe() {
 
       {/* Pagination */}
       {!loading && !error && totalPages > 1 && (
-        <div className="mt-6 flex justify-center gap-1">
-          {renderPagination()}
-        </div>
+        <div className="mt-6 flex justify-center gap-1">{renderPagination}</div>
       )}
 
       {/* Notice Section */}

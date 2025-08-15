@@ -7,6 +7,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
 import { useState } from 'react';
+import { createInquiry } from '../../../../lib/api/inquiries';
+import type { CategoryType } from '../../../../lib/database.types';
 
 export default function WriteInquiry() {
   const router = useRouter();
@@ -15,18 +17,51 @@ export default function WriteInquiry() {
     content: '',
     author: '',
     phone: '',
-    category: '일반문의',
+    category: '일반문의' as CategoryType,
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const categories = ['일반문의', '문제오류', '시험문의', '기술문의', '기타'];
+  const categories: CategoryType[] = [
+    '일반문의',
+    '문제오류',
+    '시험문의',
+    '기술문의',
+    '기타',
+  ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // 여기에 실제 제출 로직 구현
-    console.log('문의 제출:', formData);
 
-    // 성공 시 목록으로 이동
-    router.push('/ask-me');
+    // 필수 필드 검증
+    if (
+      !formData.title.trim() ||
+      !formData.content.trim() ||
+      !formData.author.trim()
+    ) {
+      setError('필수 항목을 모두 입력해주세요.');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      await createInquiry({
+        title: formData.title.trim(),
+        content: formData.content.trim(),
+        author: formData.author.trim(),
+        phone: formData.phone.trim() || null,
+        category: formData.category,
+      });
+
+      // 성공 시 목록으로 이동
+      router.push('/stage-engr/ask-me');
+    } catch (err) {
+      setError('문의 등록에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCancel = () => {
@@ -37,7 +72,7 @@ export default function WriteInquiry() {
     <>
       {/* Header */}
       <div className="mb-6">
-        <Link href="/ask-me">
+        <Link href="/stage-engr/ask-me">
           <Button
             variant="outline"
             className="border-neutral-300 text-neutral-600 hover:bg-neutral-50"
@@ -61,6 +96,13 @@ export default function WriteInquiry() {
           </p>
         </div>
       </div>
+
+      {/* Error Message */}
+      {error && (
+        <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
+          <p className="text-red-600 text-sm">{error}</p>
+        </div>
+      )}
 
       {/* Write Form */}
       <div className="border border-neutral-200 bg-white">
@@ -87,6 +129,7 @@ export default function WriteInquiry() {
                   }
                   className="border-neutral-300 bg-white focus:border-neutral-400"
                   required
+                  disabled={loading}
                 />
               </div>
               <div>
@@ -94,7 +137,7 @@ export default function WriteInquiry() {
                   htmlFor="phone"
                   className="mb-2 block font-medium text-neutral-700 text-sm"
                 >
-                  전화번호 <span className="text-red-500">*</span>
+                  전화번호
                 </label>
                 <Input
                   id="phone"
@@ -105,10 +148,10 @@ export default function WriteInquiry() {
                     setFormData({ ...formData, phone: e.target.value })
                   }
                   className="border-neutral-300 bg-white focus:border-neutral-400"
-                  required
+                  disabled={loading}
                 />
                 <p className="mt-1 text-neutral-500 text-xs">
-                  답변 알림을 받을 전화번호를 입력해주세요
+                  답변 알림을 받을 전화번호를 입력해주세요 (선택사항)
                 </p>
               </div>
             </div>
@@ -123,10 +166,14 @@ export default function WriteInquiry() {
                 id="category"
                 value={formData.category}
                 onChange={(e) =>
-                  setFormData({ ...formData, category: e.target.value })
+                  setFormData({
+                    ...formData,
+                    category: e.target.value as CategoryType,
+                  })
                 }
                 className="flex h-9 w-full rounded-md border border-neutral-300 bg-white px-3 py-1 text-sm shadow-xs transition-colors focus-visible:border-neutral-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/20"
                 required
+                disabled={loading}
               >
                 {categories.map((cat) => (
                   <option key={cat} value={cat}>
@@ -152,6 +199,7 @@ export default function WriteInquiry() {
                 }
                 className="border-neutral-300 bg-white focus:border-neutral-400"
                 required
+                disabled={loading}
               />
             </div>
 
@@ -171,6 +219,7 @@ export default function WriteInquiry() {
                 }
                 className="min-h-40 border-neutral-300 bg-white focus:border-neutral-400"
                 required
+                disabled={loading}
               />
             </div>
             <div className="flex justify-end gap-3 pt-4">
@@ -179,14 +228,16 @@ export default function WriteInquiry() {
                 variant="outline"
                 className="border-neutral-300 text-neutral-600 hover:bg-neutral-50"
                 onClick={handleCancel}
+                disabled={loading}
               >
                 취소
               </Button>
               <Button
                 type="submit"
-                className="bg-neutral-800 text-white hover:bg-neutral-700"
+                className="bg-neutral-800 text-white hover:bg-neutral-700 disabled:opacity-50"
+                disabled={loading}
               >
-                문의 등록
+                {loading ? '등록 중...' : '문의 등록'}
               </Button>
             </div>
           </form>

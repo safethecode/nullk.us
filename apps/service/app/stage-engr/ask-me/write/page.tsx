@@ -47,7 +47,7 @@ export default function WriteInquiry() {
       setLoading(true);
       setError(null);
 
-      await createInquiry({
+      const newInquiry = await createInquiry({
         title: formData.title.trim(),
         content: formData.content.trim(),
         author: formData.author.trim(),
@@ -55,8 +55,8 @@ export default function WriteInquiry() {
         category: formData.category,
       });
 
-      // 성공 시 목록으로 이동
-      router.push('ask-me');
+      // 성공 시 생성된 문의 상세 페이지로 이동
+      router.push(`/ask-me/${newInquiry.id}`);
     } catch (err) {
       setError('문의 등록에 실패했습니다. 다시 시도해주세요.');
     } finally {
@@ -72,7 +72,7 @@ export default function WriteInquiry() {
     <>
       {/* Header */}
       <div className="mb-6">
-        <Link href="ask-me">
+        <Link href="/ask-me">
           <Button
             variant="outline"
             className="border-neutral-300 text-neutral-600 hover:bg-neutral-50"

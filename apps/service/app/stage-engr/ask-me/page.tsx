@@ -281,99 +281,114 @@ export default function AskMe() {
         </div>
       )}
 
-      {/* Loading State */}
-      {loading && (
-        <div className="mb-6 rounded-lg border border-neutral-200 bg-white p-8">
-          <div className="flex items-center justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-neutral-800 border-b-2" />
-            <span className="ml-3 text-neutral-600">
-              문의 목록을 불러오는 중...
-            </span>
-          </div>
-        </div>
-      )}
-
       {/* Board Table */}
-      {!loading && !error && (
+      {!error && (
         <div className="overflow-x-auto">
           <div className="min-w-[800px] rounded-lg border border-neutral-200 bg-white">
-            <table className="w-full">
+            <table className="w-full table-fixed">
+              <colgroup>
+                <col className="w-16" />
+                <col />
+                <col className="w-20" />
+                <col className="w-20" />
+                <col className="w-28" />
+                <col className="w-20" />
+              </colgroup>
               <thead>
                 <tr className="border-neutral-200 border-b bg-neutral-50">
-                  <th className="w-16 px-4 py-3 text-left font-medium text-neutral-700 text-sm">
+                  <th className="px-4 py-3 text-left font-medium text-neutral-700 text-sm">
                     번호
                   </th>
                   <th className="px-4 py-3 text-left font-medium text-neutral-700 text-sm">
                     제목
                   </th>
-                  <th className="w-20 px-4 py-3 text-left font-medium text-neutral-700 text-sm">
+                  <th className="px-4 py-3 text-left font-medium text-neutral-700 text-sm">
                     작성자
                   </th>
-                  <th className="w-20 px-4 py-3 text-left font-medium text-neutral-700 text-sm">
+                  <th className="px-4 py-3 text-left font-medium text-neutral-700 text-sm">
                     조회수
                   </th>
-                  <th className="w-28 px-4 py-3 text-left font-medium text-neutral-700 text-sm">
+                  <th className="px-4 py-3 text-left font-medium text-neutral-700 text-sm">
                     작성일
                   </th>
-                  <th className="w-20 px-4 py-3 text-left font-medium text-neutral-700 text-sm">
+                  <th className="px-4 py-3 text-left font-medium text-neutral-700 text-sm">
                     상태
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {currentInquiries.length > 0 ? (
-                  currentInquiries.map((inquiry, index) => (
-                    <tr
-                      key={inquiry.id}
-                      className="border-neutral-100 border-b transition-colors hover:bg-neutral-50"
-                    >
-                      <td className="px-4 py-3 text-neutral-600 text-sm">
-                        {(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
-                      </td>
-                      <td className="px-4 py-3">
-                        <Link
-                          href={`ask-me/${inquiry.id}`}
-                          className="text-neutral-800 hover:text-neutral-600 hover:underline"
-                        >
-                          {inquiry.title}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3 text-neutral-600 text-sm">
-                        {inquiry.author}
-                      </td>
-                      <td className="px-4 py-3 text-neutral-600 text-sm">
-                        {inquiry.views}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3 text-neutral-600 text-sm">
-                        {new Date(inquiry.created_at).toLocaleDateString(
-                          'ko-KR'
-                        )}
-                      </td>
-                      <td className="px-4 py-3">
-                        <span
-                          className={`inline-flex w-fit items-center rounded-full px-2 py-0.5 font-medium text-xs ${
-                            inquiry.is_answered
-                              ? 'border border-neutral-400 bg-neutral-800 text-white'
-                              : 'border border-neutral-300 bg-neutral-200 text-neutral-600'
-                          }`}
-                        >
-                          {inquiry.is_answered ? '완료' : '대기'}
-                        </span>
+                {(() => {
+                  if (loading) {
+                    return (
+                      <tr>
+                        <td colSpan={6} className="px-4 py-8 text-center">
+                          <div className="flex items-center justify-center">
+                            <div className="h-6 w-6 animate-spin rounded-full border-neutral-800 border-b-2" />
+                            <span className="ml-3 text-neutral-600 text-sm">
+                              문의 목록을 불러오는 중...
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  }
+
+                  if (currentInquiries.length > 0) {
+                    return currentInquiries.map((inquiry, index) => (
+                      <tr
+                        key={inquiry.id}
+                        className="border-neutral-100 border-b transition-colors hover:bg-neutral-50"
+                      >
+                        <td className="px-4 py-3 text-neutral-600 text-sm">
+                          {(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
+                        </td>
+                        <td className="px-4 py-3">
+                          <Link
+                            href={`ask-me/${inquiry.id}`}
+                            className="text-neutral-800 hover:text-neutral-600 hover:underline"
+                          >
+                            {inquiry.title}
+                          </Link>
+                        </td>
+                        <td className="px-4 py-3 text-neutral-600 text-sm">
+                          {inquiry.author}
+                        </td>
+                        <td className="px-4 py-3 text-neutral-600 text-sm">
+                          {inquiry.views}
+                        </td>
+                        <td className="whitespace-nowrap px-4 py-3 text-neutral-600 text-sm">
+                          {new Date(inquiry.created_at).toLocaleDateString(
+                            'ko-KR'
+                          )}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span
+                            className={`inline-flex w-fit items-center rounded-full px-2 py-0.5 font-medium text-xs ${
+                              inquiry.is_answered
+                                ? 'border border-neutral-400 bg-neutral-800 text-white'
+                                : 'border border-neutral-300 bg-neutral-200 text-neutral-600'
+                            }`}
+                          >
+                            {inquiry.is_answered ? '완료' : '대기'}
+                          </span>
+                        </td>
+                      </tr>
+                    ));
+                  }
+
+                  return (
+                    <tr>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-8 text-center text-neutral-500"
+                      >
+                        {searchTerm || selectedCategory !== '전체'
+                          ? '검색 결과가 없습니다.'
+                          : '등록된 문의가 없습니다.'}
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td
-                      colSpan={6}
-                      className="px-4 py-8 text-center text-neutral-500"
-                    >
-                      {searchTerm || selectedCategory !== '전체'
-                        ? '검색 결과가 없습니다.'
-                        : '등록된 문의가 없습니다.'}
-                    </td>
-                  </tr>
-                )}
+                  );
+                })()}
               </tbody>
             </table>
           </div>

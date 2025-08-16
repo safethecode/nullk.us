@@ -89,7 +89,7 @@ export default function StageEngrLayout({
             />
           </Link>
           <span className="inline-flex w-fit items-center rounded-full bg-gradient-to-r from-blue-500 to-purple-600 px-2.5 py-0.5 font-medium text-white text-xs">
-            음향
+            FOH
           </span>
           <p className="text-neutral-300 text-sm">|</p>
           <div className="flex items-center gap-4">

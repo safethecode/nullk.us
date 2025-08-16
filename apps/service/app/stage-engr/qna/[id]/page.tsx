@@ -1,164 +1,239 @@
 'use client';
 
+import {
+  createQnaAnswer,
+  getQnaPostWithAnswers,
+  incrementQnaViews,
+  subscribeToQnaAnswers,
+  toggleAnswerVote,
+} from '@/lib/api/qna';
+import type {
+  QnaAnswerInsert,
+  QnaAnswerWithVote,
+  VoteType,
+} from '@/lib/database.types';
 import { Button } from '@heiglabs/design-system/button';
 import { Input } from '@heiglabs/design-system/input';
 import { Textarea } from '@heiglabs/design-system/textarea';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import type React from 'react';
-import { useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { type FormEvent, useCallback, useEffect, useState } from 'react';
 
-interface QnaPost {
-  id: number;
-  title: string;
-  content: string;
-  author: string;
-  category: string;
-  date: string;
-  views: number;
-  answersCount: number;
-  isResolved: boolean;
-  answers: Answer[];
-}
-
-interface Answer {
-  id: number;
-  content: string;
-  author: string;
-  date: string;
-  likes: number;
-  dislikes: number;
-  isAccepted: boolean;
-}
+// 헬퍼 함수: 3일이 지났는지 확인
+const isThreeDaysPassed = (createdAt: string): boolean => {
+  const questionDate = new Date(createdAt);
+  const threeDaysLater = new Date(
+    questionDate.getTime() + 3 * 24 * 60 * 60 * 1000
+  );
+  return new Date() >= threeDaysLater;
+};
 
 export default function QnaDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const qnaId = Number(params.id);
+  const queryClient = useQueryClient();
 
   const [replyContent, setReplyContent] = useState('');
   const [replyAuthor, setReplyAuthor] = useState('');
-  const [answers, setAnswers] = useState<Answer[]>([]);
 
-  // 예시 Q&A 데이터 (실제로는 API에서 가져와야 함)
-  const allQnas: QnaPost[] = [
-    {
-      id: 15,
-      title: '무대음향 3급 실기 시험에서 믹싱 콘솔 조작 순서가 헷갈려요',
-      content:
-        '실기 시험에서 믹싱 콘솔을 조작할 때 어떤 순서로 해야 하는지 모르겠어요. 경험자분들 조언 부탁드립니다.',
-      author: '음향초보자',
-      category: '시험문의',
-      date: '2025-01-20',
-      views: 142,
-      answersCount: 3,
-      isResolved: true,
-      answers: [
-        {
-          id: 1,
-          content:
-            '먼저 게인을 적절히 설정하고, EQ 조정, 다음에 이펙트 적용하는 순서로 하시면 됩니다. 실제 현장에서도 이 순서가 가장 안전해요.',
-          author: '음향경력10년',
-          date: '2025-01-20',
-          likes: 8,
-          dislikes: 0,
-          isAccepted: true,
-        },
-        {
-          id: 2,
-          content:
-            '저도 처음엔 헷갈렸는데, 기본적으로 입력단부터 출력단 순서로 설정하시면 됩니다. 시험에서는 특히 피드백 방지가 중요해요.',
-          author: '합격자',
-          date: '2025-01-20',
-          likes: 5,
-          dislikes: 1,
-          isAccepted: false,
-        },
-        {
-          id: 3,
-          content:
-            '유튜브에 관련 영상들이 많으니 참고해보세요. 실습이 가장 중요합니다.',
-          author: '강사',
-          date: '2025-01-21',
-          likes: 3,
-          dislikes: 0,
-          isAccepted: false,
-        },
-      ],
-    },
-    {
-      id: 14,
-      title: '무대조명 2급 필기 공부 방법 추천해주세요',
-      content:
-        '무대조명 2급 필기 시험을 준비하고 있는데, 어떤 방식으로 공부하는 게 효율적일까요? 합격하신 분들의 경험담 듣고 싶어요.',
-      author: '조명준비생',
-      category: '공부방법',
-      date: '2025-01-19',
-      views: 89,
-      answersCount: 2,
-      isResolved: false,
-      answers: [
-        {
-          id: 4,
-          content:
-            '저는 이론서 3번 정독하고 기출문제 반복 풀이했어요. 특히 조명 장비별 특성을 정확히 알아두시는 게 중요합니다.',
-          author: '2급합격자',
-          date: '2025-01-19',
-          likes: 12,
-          dislikes: 0,
-          isAccepted: false,
-        },
-        {
-          id: 5,
-          content:
-            '실무 경험이 있으시면 이론 위주로, 없으시면 실습 영상을 많이 보시는 걸 추천드려요.',
-          author: '조명기사',
-          date: '2025-01-20',
-          likes: 7,
-          dislikes: 1,
-          isAccepted: false,
-        },
-      ],
-    },
-    {
-      id: 13,
-      title: '무대기계 실기 시험에서 안전수칙 관련 질문입니다',
-      content:
-        '무대기계 실기 시험에서 안전수칙을 어디까지 지켜야 하나요? 시험장에서 감점 요소가 궁금합니다.',
-      author: '안전제일',
-      category: '시험문의',
-      date: '2025-01-18',
-      views: 156,
-      answersCount: 2,
-      isResolved: true,
-      answers: [
-        {
-          id: 6,
-          content:
-            '안전모, 안전화 착용은 기본이고, 장비 점검 절차를 꼭 보여주세요. 이 부분에서 감점이 많이 나요.',
-          author: '시험관',
-          date: '2025-01-18',
-          likes: 15,
-          dislikes: 0,
-          isAccepted: true,
-        },
-        {
-          id: 7,
-          content:
-            '작업 전 주변 확인, 장비 상태 점검, 작업 후 정리까지 모든 과정에서 안전수칙을 지켜야 합니다.',
-          author: '현장경력자',
-          date: '2025-01-18',
-          likes: 9,
-          dislikes: 0,
-          isAccepted: false,
-        },
-      ],
-    },
-  ];
+  // QnA 상세 조회
+  const {
+    data: qnaData,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ['qnaDetail', qnaId],
+    queryFn: () => getQnaPostWithAnswers(qnaId),
+    enabled: !Number.isNaN(qnaId) && qnaId > 0,
+    staleTime: 1000 * 60 * 2, // 2분간 캐시 유지
+    gcTime: 1000 * 60 * 5, // 5분간 가비지 컬렉션 방지
+  });
 
-  const qna = allQnas.find((q) => q.id === qnaId);
-  const qnaAnswers = qna ? [...qna.answers, ...answers] : answers;
+  // 조회수 증가 뮤테이션
+  const incrementViewsMutation = useMutation({
+    mutationFn: async () => {
+      try {
+        return await incrementQnaViews(qnaId);
+      } catch (error) {
+        console.warn('조회수 증가 API 실패, 클라이언트에서 처리:', error);
+        // API 실패 시에도 일단 성공으로 처리하여 UI 업데이트
+        return -1; // 실패를 나타내는 특수값
+      }
+    },
+    onSuccess: (newViews) => {
+      queryClient.setQueryData(['qnaDetail', qnaId], (oldData: unknown) => {
+        if (oldData && typeof oldData === 'object') {
+          const data = oldData as { views: number };
+          const updatedViews =
+            newViews === -1 ? (data.views || 0) + 1 : newViews;
+          return { ...oldData, views: updatedViews };
+        }
+        return oldData;
+      });
+      // 목록 페이지도 갱신 (API 성공 시에만)
+      if (newViews !== -1) {
+        queryClient.invalidateQueries({ queryKey: ['qnaPosts'] });
+      }
+    },
+    onError: () => {
+      // 이 부분은 실행되지 않을 것 (mutationFn에서 catch하므로)
+      console.warn('조회수 증가 완전 실패');
+    },
+  });
 
-  if (!qna) {
+  // 답변 작성 뮤테이션
+  const createAnswerMutation = useMutation({
+    mutationFn: createQnaAnswer,
+    onSuccess: () => {
+      // 답변 작성 완료 후 상세 페이지 새로고침
+      queryClient.invalidateQueries({ queryKey: ['qnaDetail', qnaId] });
+      queryClient.invalidateQueries({ queryKey: ['qnaPosts'] });
+      setReplyContent('');
+      setReplyAuthor('');
+    },
+    onError: (error) => {
+      alert(`답변 작성 실패: ${error.message}`);
+    },
+  });
+
+  // 좋아요/싫어요 토글 뮤테이션
+  const toggleVoteMutation = useMutation({
+    mutationFn: ({
+      answerId,
+      voteType,
+    }: { answerId: number; voteType: VoteType }) =>
+      toggleAnswerVote(answerId, voteType),
+    onSuccess: (result, variables) => {
+      // 낙관적 업데이트
+      queryClient.setQueryData(['qnaDetail', qnaId], (oldData: unknown) => {
+        if (!oldData) {
+          return oldData;
+        }
+
+        const typedOldData = oldData as {
+          qna_answers: QnaAnswerWithVote[];
+          [key: string]: unknown;
+        };
+
+        return {
+          ...typedOldData,
+          qna_answers: typedOldData.qna_answers.map(
+            (answer: QnaAnswerWithVote) =>
+              answer.id === variables.answerId
+                ? {
+                    ...answer,
+                    likes: result.likes,
+                    dislikes: result.dislikes,
+                    userVote: result.userVote,
+                  }
+                : answer
+          ),
+        };
+      });
+    },
+    onError: (error) => {
+      alert(`투표 실패: ${error.message}`);
+    },
+  });
+
+  // 조회수 증가 (페이지당 한 번만)
+  useEffect(() => {
+    if (qnaId && qnaId > 0) {
+      // 각 qnaId마다 고유한 키로 localStorage에 기록
+      const viewKey = `qna_viewed_${qnaId}`;
+      const hasViewed = localStorage.getItem(viewKey);
+
+      if (!hasViewed) {
+        incrementViewsMutation.mutate();
+        localStorage.setItem(viewKey, 'true');
+      }
+    }
+  }, [qnaId, incrementViewsMutation]);
+
+  // 실시간 구독 설정
+  useEffect(() => {
+    if (!qnaId) {
+      return;
+    }
+
+    const subscription = subscribeToQnaAnswers(qnaId, () => {
+      // 실시간으로 답변이 추가/수정/삭제될 때 캐시 무효화
+      queryClient.invalidateQueries({ queryKey: ['qnaDetail', qnaId] });
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [qnaId, queryClient]);
+
+  // 답변 작성 핸들러
+  const handleReplySubmit = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
+
+      if (!replyContent.trim() || !replyAuthor.trim()) {
+        alert('모든 필수 항목을 입력해주세요.');
+        return;
+      }
+
+      const answerData: QnaAnswerInsert = {
+        qna_post_id: qnaId,
+        content: replyContent.trim(),
+        author: replyAuthor.trim(),
+      };
+
+      createAnswerMutation.mutate(answerData);
+    },
+    [qnaId, replyContent, replyAuthor, createAnswerMutation]
+  );
+
+  // 좋아요/싫어요 핸들러
+  const handleVote = useCallback(
+    (answerId: number, voteType: VoteType) => {
+      toggleVoteMutation.mutate({ answerId, voteType });
+    },
+    [toggleVoteMutation]
+  );
+
+  // 로딩 상태
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-neutral-200 border-r-neutral-800 border-solid" />
+          <p className="mt-2 text-neutral-600 text-sm">
+            게시글을 불러오는 중...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // 에러 상태
+  if (error) {
+    return (
+      <div className="py-12 text-center">
+        <p className="text-lg text-red-600">
+          게시글을 불러오는데 실패했습니다.
+        </p>
+        <p className="mt-2 text-neutral-500 text-sm">{error.message}</p>
+        <div className="mt-4 space-x-2">
+          <Button onClick={() => refetch()} variant="outline">
+            다시 시도
+          </Button>
+          <Button onClick={() => router.push('/qna')} variant="outline">
+            목록으로 돌아가기
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // 데이터가 없는 경우
+  if (!qnaData) {
     return (
       <div className="py-8 text-center">
         <p className="text-neutral-500">질문을 찾을 수 없습니다.</p>
@@ -171,41 +246,7 @@ export default function QnaDetailPage() {
     );
   }
 
-  const handleReplySubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!replyContent.trim() || !replyAuthor.trim()) {
-      return;
-    }
-
-    const newAnswer: Answer = {
-      id: qnaAnswers.length + 1,
-      content: replyContent,
-      author: replyAuthor,
-      date: new Date().toISOString().split('T')[0] || '',
-      likes: 0,
-      dislikes: 0,
-      isAccepted: false,
-    };
-
-    setAnswers([...answers, newAnswer]);
-    setReplyContent('');
-    setReplyAuthor('');
-  };
-
-  const handleLike = (answerId: number) => {
-    // 실제로는 API 호출
-    // console.log('Like answer:', answerId);
-  };
-
-  const handleDislike = (answerId: number) => {
-    // 실제로는 API 호출
-    // console.log('Dislike answer:', answerId);
-  };
-
-  const handleAcceptAnswer = (answerId: number) => {
-    // 실제로는 API 호출
-    // console.log('Accept answer:', answerId);
-  };
+  const { qna_answers: answers = [] } = qnaData;
 
   return (
     <>
@@ -214,7 +255,7 @@ export default function QnaDetailPage() {
         <Link href="/qna">
           <Button
             variant="outline"
-            className="border-neutral-300 text-neutral-600 hover:bg-neutral-50"
+            className="border-neutral-300 text-neutral-600 transition-colors hover:bg-neutral-50"
           >
             ← 목록으로 돌아가기
           </Button>
@@ -222,22 +263,26 @@ export default function QnaDetailPage() {
       </div>
 
       {/* Question Detail */}
-      <div className="mb-8 rounded-lg border border-neutral-200 bg-white">
+      <div className="mb-8 rounded-lg border border-neutral-200 bg-white shadow-sm">
         {/* Question Header */}
         <div className="rounded-t-lg border-neutral-200 border-b bg-neutral-50 px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <h1 className="font-semibold text-neutral-800 text-xl">
-                {qna.title}
+                {qnaData.title}
               </h1>
               <span className="inline-flex items-center rounded bg-neutral-100 px-2 py-1 font-medium text-neutral-800 text-xs">
-                {qna.category}
+                {qnaData.category}
               </span>
-              {qna.isResolved && (
-                <span className="inline-flex items-center rounded bg-green-100 px-2 py-1 font-medium text-green-800 text-xs">
-                  ✓ 해결됨
-                </span>
-              )}
+              {answers &&
+                answers.length > 0 &&
+                answers[0] &&
+                answers[0].likes > 0 &&
+                isThreeDaysPassed(qnaData.created_at) && (
+                  <span className="inline-flex items-center rounded bg-green-100 px-2 py-1 font-medium text-green-800 text-xs">
+                    ✓ 해결됨
+                  </span>
+                )}
             </div>
           </div>
         </div>
@@ -248,13 +293,21 @@ export default function QnaDetailPage() {
             <div className="flex items-center gap-4">
               <span>
                 작성자:{' '}
-                <strong className="text-neutral-700">{qna.author}</strong>
+                <strong className="text-neutral-700">{qnaData.author}</strong>
               </span>
-              <span>카테고리: {qna.category}</span>
+              <span>카테고리: {qnaData.category}</span>
             </div>
             <div className="flex items-center gap-4">
-              <span>조회 {qna.views}</span>
-              <span className="text-neutral-500 text-xs">{qna.date}</span>
+              <span>조회 {qnaData.views}</span>
+              <span className="text-neutral-500 text-xs">
+                {new Date(qnaData.created_at).toLocaleDateString('ko-KR', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </span>
             </div>
           </div>
         </div>
@@ -263,30 +316,36 @@ export default function QnaDetailPage() {
         <div className="px-6 py-8">
           <div className="prose max-w-none">
             <p className="whitespace-pre-wrap text-neutral-700 leading-relaxed">
-              {qna.content}
+              {qnaData.content}
             </p>
           </div>
         </div>
       </div>
 
       {/* Answers Section */}
-      <div className="mb-8 rounded-lg border border-neutral-200">
+      <div className="mb-8 rounded-lg border border-neutral-200 shadow-sm">
         <div className="rounded-t-lg border-neutral-100 border-b bg-neutral-50 px-6 py-3">
           <h3 className="font-semibold text-neutral-800">
-            답변 {qnaAnswers.length}개
+            답변 {answers.length}개
           </h3>
         </div>
 
         <div className="bg-white">
-          {qnaAnswers.length > 0 ? (
-            qnaAnswers.map((answer, index) => (
+          {answers.length > 0 ? (
+            answers.map((answer, index) => (
               <div
                 key={answer.id}
                 className={`${
-                  index === qnaAnswers.length - 1
+                  index === answers.length - 1
                     ? ''
                     : 'border-neutral-100 border-b'
-                } ${answer.isAccepted ? 'bg-green-50 ring-2 ring-green-200' : ''}`}
+                } ${
+                  index === 0 &&
+                  answer.likes > 0 &&
+                  isThreeDaysPassed(qnaData.created_at)
+                    ? 'bg-blue-50 ring-2 ring-blue-200'
+                    : ''
+                } transition-all duration-200`}
               >
                 {/* Answer Header */}
                 <div className="border-neutral-50 border-b bg-neutral-25 px-6 py-3">
@@ -295,52 +354,60 @@ export default function QnaDetailPage() {
                       <span className="font-medium text-neutral-800 text-sm">
                         {answer.author}
                       </span>
-                      {answer.isAccepted && (
-                        <span className="inline-flex items-center rounded bg-green-100 px-2 py-1 font-medium text-green-800 text-xs">
-                          ✓ 채택됨
-                        </span>
-                      )}
+                      {index === 0 &&
+                        answer.likes > 0 &&
+                        isThreeDaysPassed(qnaData.created_at) && (
+                          <span className="inline-flex items-center rounded bg-blue-100 px-2 py-1 font-medium text-blue-800 text-xs">
+                            ✓ 채택됨
+                          </span>
+                        )}
                     </div>
                     <span className="text-neutral-500 text-xs">
-                      {answer.date}
+                      {new Date(answer.created_at).toLocaleDateString('ko-KR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
                     </span>
                   </div>
                 </div>
 
                 {/* Answer Content */}
                 <div className="px-6 py-4">
-                  <p className="whitespace-pre-wrap text-neutral-700 text-sm leading-relaxed">
+                  <p className="mb-4 whitespace-pre-wrap text-neutral-700 text-sm leading-relaxed">
                     {answer.content}
                   </p>
 
                   {/* Answer Actions */}
-                  <div className="mt-4 flex items-center justify-between">
+                  <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                       <button
                         type="button"
-                        onClick={() => handleLike(answer.id)}
-                        className="flex items-center gap-1 rounded px-2 py-1 text-neutral-600 text-xs hover:bg-neutral-100"
+                        onClick={() => handleVote(answer.id, 'like')}
+                        disabled={toggleVoteMutation.isPending}
+                        className={`flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
+                          answer.userVote === 'like'
+                            ? 'bg-blue-100 text-blue-700'
+                            : 'text-neutral-600 hover:bg-neutral-100'
+                        }`}
                       >
                         👍 {answer.likes}
                       </button>
                       <button
                         type="button"
-                        onClick={() => handleDislike(answer.id)}
-                        className="flex items-center gap-1 rounded px-2 py-1 text-neutral-600 text-xs hover:bg-neutral-100"
+                        onClick={() => handleVote(answer.id, 'dislike')}
+                        disabled={toggleVoteMutation.isPending}
+                        className={`flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
+                          answer.userVote === 'dislike'
+                            ? 'bg-red-100 text-red-700'
+                            : 'text-neutral-600 hover:bg-neutral-100'
+                        }`}
                       >
                         👎 {answer.dislikes}
                       </button>
                     </div>
-                    {!answer.isAccepted && !qna.isResolved && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleAcceptAnswer(answer.id)}
-                        className="border-green-300 text-green-600 hover:bg-green-50"
-                      >
-                        채택하기
-                      </Button>
-                    )}
                   </div>
                 </div>
               </div>
@@ -348,13 +415,16 @@ export default function QnaDetailPage() {
           ) : (
             <div className="px-6 py-8 text-center">
               <p className="text-neutral-500 text-sm">아직 답변이 없습니다.</p>
+              <p className="mt-1 text-neutral-400 text-xs">
+                첫 번째 답변을 작성해보세요!
+              </p>
             </div>
           )}
         </div>
       </div>
 
       {/* Reply Form */}
-      <div className="rounded-lg border border-neutral-200 bg-white">
+      <div className="rounded-lg border border-neutral-200 bg-white shadow-sm">
         <div className="rounded-t-lg border-neutral-200 border-b bg-neutral-50 px-6 py-3">
           <h3 className="font-semibold text-neutral-800">답변 작성</h3>
         </div>
@@ -370,11 +440,13 @@ export default function QnaDetailPage() {
               <Input
                 id="replyAuthor"
                 type="text"
-                placeholder="익명닉네임"
+                placeholder="닉네임을 입력해주세요"
                 value={replyAuthor}
                 onChange={(e) => setReplyAuthor(e.target.value)}
-                className="border-neutral-300 focus:border-neutral-400"
+                className="border-neutral-300 transition-colors focus:border-neutral-400"
                 required
+                maxLength={50}
+                disabled={createAnswerMutation.isPending}
               />
             </div>
             <div>
@@ -389,27 +461,33 @@ export default function QnaDetailPage() {
                 placeholder="도움이 되는 답변을 작성해주세요"
                 value={replyContent}
                 onChange={(e) => setReplyContent(e.target.value)}
-                className="min-h-32 border-neutral-300 focus:border-neutral-400"
+                className="min-h-32 border-neutral-300 transition-colors focus:border-neutral-400"
                 required
+                maxLength={3000}
+                disabled={createAnswerMutation.isPending}
               />
             </div>
             <div className="flex justify-end gap-2">
               <Button
                 type="button"
                 variant="outline"
-                className="border-neutral-300 text-neutral-600 hover:bg-neutral-50"
+                className="border-neutral-300 text-neutral-600 transition-colors hover:bg-neutral-50"
                 onClick={() => {
                   setReplyContent('');
                   setReplyAuthor('');
                 }}
+                disabled={createAnswerMutation.isPending}
               >
                 취소
               </Button>
               <Button
                 type="submit"
-                className="bg-neutral-800 text-white hover:bg-neutral-700"
+                className="bg-neutral-800 text-white transition-colors hover:bg-neutral-700"
+                disabled={createAnswerMutation.isPending}
               >
-                답변 등록
+                {createAnswerMutation.isPending
+                  ? '답변 등록 중...'
+                  : '답변 등록'}
               </Button>
             </div>
           </form>

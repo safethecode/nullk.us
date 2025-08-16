@@ -15,6 +15,7 @@
   "dependencies": {
     "@heiglabs/design-system": "workspace:*",
     "@supabase/supabase-js": "^2.55.0",
+    "@tanstack/react-query": "^5.85.3",
     "next": "^15.3.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@heiglabs/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "^4.1.6",
+    "@tanstack/react-query-devtools": "^5.85.3",
     "@types/node": "^22.15.18",
     "@types/react": "19.1.4",
     "@types/react-dom": "19.1.5",

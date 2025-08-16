@@ -2,6 +2,7 @@ import localFont from 'next/font/local';
 import type { ReactNode } from 'react';
 import '@heiglabs/design-system/styles';
 import './globals.css';
+import { QueryProvider } from '../lib/providers/query-provider';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -73,7 +74,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${pretendard.variable} antialiased`}
       >
-        {children}
+        <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
   );

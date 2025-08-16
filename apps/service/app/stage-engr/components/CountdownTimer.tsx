@@ -14,7 +14,7 @@ interface TimeLeft {
 }
 
 const EXAM_INFO = {
-  examDate: new Date('2026-03-15'), // 2026년 3월 15일 시험
+  examDate: new Date('2026-06-01'), // 2026년 6월 1일 시험 (27회 필기시험)
   retakeWaitDays: 90, // 재시험 대기 기간 90일
 };
 
@@ -103,7 +103,14 @@ export const CountdownTimer = memo(function CountdownTimer({
             <p>
               통과하지 못 하면{' '}
               <span className="font-semibold text-orange-600">
-                {EXAM_INFO.retakeWaitDays}일
+                {(() => {
+                  const today = new Date();
+                  const examDate = new Date(EXAM_INFO.examDate);
+                  const diffTime = examDate.getTime() - today.getTime();
+                  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                  const totalWaitDays = diffDays * 2; // 현재부터 시험일까지의 2배
+                  return `${totalWaitDays.toLocaleString()}일`;
+                })()}
               </span>
               을 기다려야 해요
             </p>

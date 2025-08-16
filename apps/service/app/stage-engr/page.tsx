@@ -2,8 +2,11 @@
 'use subdomain';
 
 import { Button } from '@heiglabs/design-system/button';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getProblemBooks } from '../../lib/api/problem-books';
+import type { ProblemBook } from '../../lib/database.types';
 import { BookCard } from './components/BookCard';
+import { DownloadModal } from './components/DownloadModal';
 
 // 2026년 5월 31일 시험일 설정 (컴포넌트 외부로 이동)
 const EXAM_DATE = new Date('2026-05-31T00:00:00');
@@ -15,6 +18,14 @@ export default function StageEngr() {
     days: 0,
     totalDays: 0,
   });
+
+  const [books, setBooks] = useState<ProblemBook[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // 다운로드 모달 상태
+  const [selectedBook, setSelectedBook] = useState<ProblemBook | null>(null);
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -46,67 +57,48 @@ export default function StageEngr() {
     return () => clearInterval(timer);
   }, []); // EXAM_DATE가 컴포넌트 외부에 있으므로 의존성 배열에서 제거
 
-  // books 배열을 useMemo로 메모이제이션하여 불필요한 재생성 방지
-  const books = useMemo(
-    () => [
-      {
-        title: '무대음향 3급 기출문제집',
-        subject: '무대음향',
-        grade: '3급',
-        type: '기출문제',
-        description: '무대음향 3급 자격시험 기출문제 모음집',
-        downloads: 1250,
-        size: '2.3MB',
-        isPublic: true,
-        publicDate: null,
-      },
-      {
-        title: '무대조명 3급 실기문제집',
-        subject: '무대조명',
-        grade: '3급',
-        type: '실기문제',
-        description: '무대조명 3급 실기 시험 대비 문제집',
-        downloads: 890,
-        size: '1.8MB',
-        isPublic: false,
-        publicDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // 2일 후
-      },
-      {
-        title: '무대음향 2급 이론문제집',
-        subject: '무대음향',
-        grade: '2급',
-        type: '이론문제',
-        description: '무대음향 2급 이론 시험 대비 문제집',
-        downloads: 756,
-        size: '3.1MB',
-        isPublic: true,
-        publicDate: null,
-      },
-      {
-        title: '무대조명 2급 기출문제집',
-        subject: '무대조명',
-        grade: '2급',
-        type: '기출문제',
-        description: '무대조명 2급 자격시험 기출문제 모음집',
-        downloads: 634,
-        size: '2.7MB',
-        isPublic: false,
-        publicDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7일 후
-      },
-      {
-        title: '무대음향 1급 종합문제집',
-        subject: '무대음향',
-        grade: '1급',
-        type: '종합문제',
-        description: '무대음향 1급 이론+실기 종합 문제집',
-        downloads: 445,
-        size: '4.2MB',
-        isPublic: false,
-        publicDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000), // 1일 후
-      },
-    ],
-    []
-  ); // 빈 의존성 배열로 한 번만 생성
+  // 문제집 데이터 로드
+  useEffect(() => {
+    const loadBooks = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await getProblemBooks();
+        setBooks(data);
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : '문제집을 불러오는데 실패했습니다.'
+        );
+        // Error is already handled by setting error state
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadBooks();
+  }, []);
+
+  // 다운로드 클릭 핸들러
+  const handleDownloadClick = (book: ProblemBook) => {
+    setSelectedBook(book);
+    setIsDownloadModalOpen(true);
+  };
+
+  // 다운로드 모달 닫기
+  const handleDownloadModalClose = () => {
+    setIsDownloadModalOpen(false);
+    setSelectedBook(null);
+  };
+
+  // 다운로드 성공 핸들러
+  const handleDownloadSuccess = (updatedBook: ProblemBook) => {
+    // 업데이트된 다운로드 수를 반영
+    setBooks((prevBooks) =>
+      prevBooks.map((book) => (book.id === updatedBook.id ? updatedBook : book))
+    );
+  };
 
   return (
     <>
@@ -148,12 +140,60 @@ export default function StageEngr() {
 
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-3">
         <div className="lg:col-span-3">
-          <div className="space-y-6">
-            {/* Problem Book Items */}
-            {books.map((book, index) => (
-              <BookCard key={index} book={book} />
-            ))}
-          </div>
+          {error && (
+            <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4">
+              <p className="text-red-800 text-sm">{error}</p>
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="mt-2 text-red-600 text-sm underline hover:text-red-800"
+              >
+                다시 시도
+              </button>
+            </div>
+          )}
+
+          {isLoading ? (
+            <div className="space-y-6">
+              {[...new Array(5)].map((_, index) => (
+                <div
+                  key={index}
+                  className="animate-pulse rounded-xl border border-neutral-200 bg-white p-4 sm:p-6 lg:p-8"
+                >
+                  <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
+                    <div className="flex-1">
+                      <div className="mb-3 h-6 w-3/4 rounded bg-neutral-200" />
+                      <div className="mb-4 h-4 w-full rounded bg-neutral-200" />
+                      <div className="flex gap-2">
+                        <div className="h-6 w-16 rounded bg-neutral-200" />
+                        <div className="h-6 w-12 rounded bg-neutral-200" />
+                        <div className="h-6 w-20 rounded bg-neutral-200" />
+                      </div>
+                    </div>
+                    <div className="h-12 w-32 rounded bg-neutral-200" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {books.length === 0 ? (
+                <div className="py-12 text-center">
+                  <p className="text-lg text-neutral-500">
+                    등록된 문제집이 없습니다.
+                  </p>
+                </div>
+              ) : (
+                books.map((book) => (
+                  <BookCard
+                    key={book.id}
+                    book={book}
+                    onDownloadClick={handleDownloadClick}
+                  />
+                ))
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -429,6 +469,14 @@ export default function StageEngr() {
           을 기다려야 해요.
         </p>
       </section>
+
+      {/* 다운로드 모달 */}
+      <DownloadModal
+        isOpen={isDownloadModalOpen}
+        onClose={handleDownloadModalClose}
+        book={selectedBook}
+        onDownloadSuccess={handleDownloadSuccess}
+      />
     </>
   );
 }

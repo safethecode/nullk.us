@@ -198,6 +198,92 @@ export type Database = {
           },
         ];
       };
+      problem_books: {
+        Row: {
+          id: number;
+          title: string;
+          subject: string;
+          grade: string;
+          type: string;
+          description: string;
+          file_path: string;
+          file_size_mb: number;
+          downloads: number;
+          is_public: boolean;
+          public_date: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: number;
+          title: string;
+          subject: string;
+          grade: string;
+          type: string;
+          description: string;
+          file_path: string;
+          file_size_mb: number;
+          downloads?: number;
+          is_public?: boolean;
+          public_date?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: number;
+          title?: string;
+          subject?: string;
+          grade?: string;
+          type?: string;
+          description?: string;
+          file_path?: string;
+          file_size_mb?: number;
+          downloads?: number;
+          is_public?: boolean;
+          public_date?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      download_logs: {
+        Row: {
+          id: number;
+          book_id: number;
+          name: string;
+          organization: string;
+          email: string;
+          phone: string | null;
+          downloaded_at: string;
+        };
+        Insert: {
+          id?: number;
+          book_id: number;
+          name: string;
+          organization: string;
+          email: string;
+          phone?: string | null;
+          downloaded_at?: string;
+        };
+        Update: {
+          id?: number;
+          book_id?: number;
+          name?: string;
+          organization?: string;
+          email?: string;
+          phone?: string | null;
+          downloaded_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'download_logs_book_id_fkey';
+            columns: ['book_id'];
+            isOneToOne: false;
+            referencedRelation: 'problem_books';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -207,7 +293,7 @@ export type Database = {
         Args: {
           qna_id: number;
         };
-        Returns: void;
+        Returns: undefined;
       };
       toggle_answer_vote: {
         Args: {
@@ -257,6 +343,19 @@ export type QnaAnswerVoteInsert =
 export type QnaAnswerVoteUpdate =
   Database['public']['Tables']['qna_answer_votes']['Update'];
 
+// 문제집 타입들
+export type ProblemBook = Database['public']['Tables']['problem_books']['Row'];
+export type ProblemBookInsert =
+  Database['public']['Tables']['problem_books']['Insert'];
+export type ProblemBookUpdate =
+  Database['public']['Tables']['problem_books']['Update'];
+
+export type DownloadLog = Database['public']['Tables']['download_logs']['Row'];
+export type DownloadLogInsert =
+  Database['public']['Tables']['download_logs']['Insert'];
+export type DownloadLogUpdate =
+  Database['public']['Tables']['download_logs']['Update'];
+
 // 조인된 데이터 타입
 export type InquiryWithReplies = Inquiry & {
   inquiry_replies: InquiryReply[];
@@ -300,6 +399,11 @@ export type QnaCategoryType =
   | '시험정보'
   | '합격후기'
   | '기타';
+
+// 문제집 관련 타입
+export type SubjectType = '무대음향' | '무대조명' | '무대기계';
+export type GradeType = '1급' | '2급' | '3급';
+export type BookType = '기출문제' | '실기문제' | '이론문제' | '종합문제';
 
 // 정렬 타입
 export type SortType = 'latest' | 'oldest' | 'views' | 'answered';

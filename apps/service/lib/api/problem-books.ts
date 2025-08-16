@@ -6,21 +6,30 @@ import type {
   ProblemBookInsert,
   SubjectType,
 } from '../database.types';
+
+// 공개 예정 문제집을 위한 타입 (file_path가 제거됨)
+type ProblemBookWithoutFilePath = Omit<ProblemBook, 'file_path'>;
 import { supabase } from '../supabase';
 
 // 문제집 목록 조회 (공개된 것 + 공개 예정인 것)
-export async function getProblemBooks(): Promise<ProblemBook[]> {
+export async function getProblemBooks(): Promise<
+  (ProblemBook | ProblemBookWithoutFilePath)[]
+> {
   // 모든 문제집을 한 번에 조회 (RLS 우회)
   const { data: allBooks, error } = await supabase
     .from('problem_books')
     .select('*');
 
   if (error) {
-    console.error('Error fetching all books:', error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error fetching all books:', error);
+    }
     throw new Error('문제집 목록을 가져오는데 실패했습니다.');
   }
 
-  console.log('Raw data from DB:', allBooks);
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Raw data from DB:', allBooks);
+  }
 
   // 클라이언트에서 필터링
   const filteredBooks = (allBooks || []).filter((book) => {
@@ -29,14 +38,16 @@ export async function getProblemBooks(): Promise<ProblemBook[]> {
   });
 
   // 공개 예정인 것들의 file_path 제거
-  const processedBooks = filteredBooks.map((book) => {
-    if (book.is_public === false && book.public_date !== null) {
-      // 공개 예정인 경우 file_path 제거
-      const { file_path, ...bookWithoutFilePath } = book;
-      return bookWithoutFilePath;
+  const processedBooks = filteredBooks.map(
+    (book): ProblemBook | ProblemBookWithoutFilePath => {
+      if (book.is_public === false && book.public_date !== null) {
+        // 공개 예정인 경우 file_path 제거
+        const { file_path, ...bookWithoutFilePath } = book;
+        return bookWithoutFilePath as ProblemBookWithoutFilePath;
+      }
+      return book;
     }
-    return book;
-  });
+  );
 
   // 정렬: 공개된 것 먼저, 공개 예정은 공개일 빠른 순
   processedBooks.sort((a, b) => {
@@ -54,6 +65,9 @@ export async function getProblemBooks(): Promise<ProblemBook[]> {
 
     // 3. 공개 예정 것들 내에서는 공개일 빠른 순
     if (!a.is_public && !b.is_public) {
+      if (!a.public_date || !b.public_date) {
+        return 0;
+      }
       return (
         new Date(a.public_date).getTime() - new Date(b.public_date).getTime()
       );
@@ -62,7 +76,9 @@ export async function getProblemBooks(): Promise<ProblemBook[]> {
     return 0;
   });
 
-  console.log('Filtered books:', processedBooks);
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Filtered books:', processedBooks);
+  }
 
   return processedBooks;
 }
@@ -96,7 +112,7 @@ export async function getFilteredProblemBooks(filters: {
   subject?: SubjectType;
   grade?: GradeType;
   type?: BookType;
-}): Promise<ProblemBook[]> {
+}): Promise<(ProblemBook | ProblemBookWithoutFilePath)[]> {
   // 모든 문제집을 가져온 후 클라이언트에서 필터링
   const allBooks = await getProblemBooks();
 

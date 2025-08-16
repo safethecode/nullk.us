@@ -295,6 +295,12 @@ export type Database = {
         };
         Returns: undefined;
       };
+      increment_book_downloads: {
+        Args: {
+          book_id: number;
+        };
+        Returns: undefined;
+      };
       toggle_answer_vote: {
         Args: {
           p_answer_id: number;

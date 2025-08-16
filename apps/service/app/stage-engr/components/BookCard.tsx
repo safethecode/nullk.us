@@ -4,9 +4,12 @@ import { memo, useMemo } from 'react';
 import type { ProblemBook } from '../../../lib/database.types';
 import { CountdownTimer } from './CountdownTimer';
 
+// 공개 예정 문제집을 위한 타입 (file_path가 제거됨)
+type ProblemBookWithoutFilePath = Omit<ProblemBook, 'file_path'>;
+
 interface BookCardProps {
-  book: ProblemBook;
-  onDownloadClick: (book: ProblemBook) => void;
+  book: ProblemBook | ProblemBookWithoutFilePath;
+  onDownloadClick: (book: ProblemBook | ProblemBookWithoutFilePath) => void;
 }
 
 export const BookCard = memo(function BookCard({
@@ -18,16 +21,16 @@ export const BookCard = memo(function BookCard({
     const isPublic = book.is_public;
     const now = new Date();
     const publicDate = book.public_date ? new Date(book.public_date) : null;
-    
+
     // 공개 예정인지 확인 (is_public이 false이고 public_date가 있는 경우)
     const isScheduled = !isPublic && publicDate !== null;
-    
+
     // 공개 예정일이 지났는지 확인
     const isDatePassed = publicDate ? now >= publicDate : false;
-    
+
     // 실제로 이용 가능한지 (공개이거나 공개 예정일이 지난 경우)
     const isAvailable = isPublic || isDatePassed;
-    
+
     return { isPublic, isScheduled, isAvailable };
   }, [book.is_public, book.public_date]);
 
@@ -42,7 +45,8 @@ export const BookCard = memo(function BookCard({
     if (isScheduled) {
       return {
         statusText: '공개 예정',
-        statusBadgeClass: 'border border-orange-200 bg-orange-100 text-orange-800',
+        statusBadgeClass:
+          'border border-orange-200 bg-orange-100 text-orange-800',
       };
     }
     return {
@@ -58,13 +62,13 @@ export const BookCard = memo(function BookCard({
     } else if (isScheduled) {
       buttonText = '공개 예정';
     }
-    
+
     const buttonClass = `w-full rounded-xl px-6 py-3 font-medium shadow-lg shadow-neutral-300/50 transition-all sm:px-8 lg:ml-6 lg:w-auto ${
       isAvailable
         ? 'cursor-pointer bg-gradient-to-r from-neutral-800 to-neutral-700 text-white hover:from-neutral-700 hover:to-neutral-600'
         : 'cursor-not-allowed bg-neutral-300 text-neutral-500'
     }`;
-    
+
     return { buttonText, buttonClass };
   }, [isAvailable, isScheduled]);
 
@@ -99,7 +103,9 @@ export const BookCard = memo(function BookCard({
             <h3 className="font-semibold text-lg text-neutral-800 sm:text-xl">
               {book.title}
             </h3>
-            <span className={`inline-flex w-fit items-center rounded-full px-2 py-1 font-medium text-xs ${statusBadgeClass}`}>
+            <span
+              className={`inline-flex w-fit items-center rounded-full px-2 py-1 font-medium text-xs ${statusBadgeClass}`}
+            >
               {statusText}
             </span>
           </div>

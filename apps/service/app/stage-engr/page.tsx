@@ -8,6 +8,9 @@ import type { ProblemBook } from '../../lib/database.types';
 import { BookCard } from './components/BookCard';
 import { DownloadModal } from './components/DownloadModal';
 
+// 공개 예정 문제집을 위한 타입 (file_path가 제거됨)
+type ProblemBookWithoutFilePath = Omit<ProblemBook, 'file_path'>;
+
 // 2026년 5월 31일 시험일 설정 (컴포넌트 외부로 이동)
 const EXAM_DATE = new Date('2026-05-31T00:00:00');
 
@@ -19,12 +22,16 @@ export default function StageEngr() {
     totalDays: 0,
   });
 
-  const [books, setBooks] = useState<ProblemBook[]>([]);
+  const [books, setBooks] = useState<
+    (ProblemBook | ProblemBookWithoutFilePath)[]
+  >([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // 다운로드 모달 상태
-  const [selectedBook, setSelectedBook] = useState<ProblemBook | null>(null);
+  const [selectedBook, setSelectedBook] = useState<
+    (ProblemBook | ProblemBookWithoutFilePath) | null
+  >(null);
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
 
   useEffect(() => {
@@ -81,7 +88,9 @@ export default function StageEngr() {
   }, []);
 
   // 다운로드 클릭 핸들러
-  const handleDownloadClick = (book: ProblemBook) => {
+  const handleDownloadClick = (
+    book: ProblemBook | ProblemBookWithoutFilePath
+  ) => {
     setSelectedBook(book);
     setIsDownloadModalOpen(true);
   };
@@ -93,7 +102,9 @@ export default function StageEngr() {
   };
 
   // 다운로드 성공 핸들러
-  const handleDownloadSuccess = (updatedBook: ProblemBook) => {
+  const handleDownloadSuccess = (
+    updatedBook: ProblemBook | ProblemBookWithoutFilePath
+  ) => {
     // 업데이트된 다운로드 수를 반영
     setBooks((prevBooks) =>
       prevBooks.map((book) => (book.id === updatedBook.id ? updatedBook : book))

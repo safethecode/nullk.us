@@ -15,6 +15,9 @@ import { useState } from 'react';
 import { recordDownload } from '../../../lib/api/problem-books';
 import type { ProblemBook } from '../../../lib/database.types';
 
+// 공개 예정 문제집을 위한 타입 (file_path가 제거됨)
+type ProblemBookWithoutFilePath = Omit<ProblemBook, 'file_path'>;
+
 // 유효성 검사 패턴
 const EMAIL_PATTERN = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 const PHONE_PATTERN = /^[0-9-+\s()]{10,}$/;
@@ -22,8 +25,8 @@ const PHONE_PATTERN = /^[0-9-+\s()]{10,}$/;
 interface DownloadModalProps {
   isOpen: boolean;
   onClose: () => void;
-  book: ProblemBook | null;
-  onDownloadSuccess?: (book: ProblemBook) => void;
+  book: (ProblemBook | ProblemBookWithoutFilePath) | null;
+  onDownloadSuccess?: (book: ProblemBook | ProblemBookWithoutFilePath) => void;
 }
 
 interface UserInfo {

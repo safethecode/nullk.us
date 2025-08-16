@@ -1,6 +1,73 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import type { Metadata } from 'next/types';
 import type { ReactNode } from 'react';
+
+export const metadata: Metadata = {
+  title: '무대예술전문인 자격시험 기출문제집 | 널케이 FOH',
+  description:
+    '2026년 무대예술전문인 자격시험 음향 분야 합격을 위한 최신 기출문제집. 현직 FOH 엔지니어가 직접 제작한 실전 문제와 상세 해설로 한 번에 합격하세요. 연 1회 시험 완벽 대비.',
+
+  // 검색엔진 최적화를 위한 키워드
+  keywords:
+    '무대예술전문인, 자격시험, 음향, 기출문제집, FOH 엔지니어, 무대음향, 자격증, 시험대비',
+
+  // 작성자 정보
+  authors: [{ name: '널케이 FOH' }],
+
+  // 사이트 분류
+  category: '교육/자격증',
+
+  // Open Graph 메타데이터
+  openGraph: {
+    title: '무대예술전문인 자격시험 음향 분야 기출문제집',
+    description:
+      '현직 FOH 엔지니어가 만든 무대예술전문인 자격시험 음향 분야 완벽 대비서. 2025년 최신 기출문제와 상세해설 수록.',
+    type: 'website',
+    locale: 'ko_KR',
+    siteName: '널케이 FOH',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: '무대예술전문인 자격시험 음향 분야 기출문제집',
+      },
+    ],
+  },
+
+  // Twitter 카드 설정
+  twitter: {
+    card: 'summary_large_image',
+    title: '무대예술전문인 자격시험 음향 분야 기출문제집',
+    description: '현직 FOH 엔지니어가 만든 무대예술전문인 자격시험 완벽 대비서',
+    images: ['/og-image.jpg'],
+  },
+
+  // 추가 SEO 설정
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+
+  // 정식 URL (중복 콘텐츠 방지)
+  alternates: {
+    canonical: 'http://stage-eng.nullk.us/',
+  },
+
+  // 기타 메타태그
+  other: {
+    'theme-color': '#000000', // 브랜드 컬러로 수정
+    'format-detection': 'telephone=no',
+  },
+};
 
 export default function StageEngrLayout({
   children,

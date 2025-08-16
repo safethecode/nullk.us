@@ -334,13 +334,13 @@ export default function AskMe() {
                   }
 
                   if (currentInquiries.length > 0) {
-                    return currentInquiries.map((inquiry, index) => (
+                    return currentInquiries.map((inquiry, _) => (
                       <tr
                         key={inquiry.id}
                         className="border-neutral-100 border-b transition-colors hover:bg-neutral-50"
                       >
                         <td className="px-4 py-3 text-neutral-600 text-sm">
-                          {(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
+                          {inquiry.id}
                         </td>
                         <td className="px-4 py-3">
                           <Link

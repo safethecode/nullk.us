@@ -209,13 +209,6 @@ export function DownloadModal({
               <p className="text-red-500 text-sm">{errors.phone}</p>
             )}
           </div>
-
-          <div className="rounded-md bg-blue-50 p-3">
-            <p className="text-blue-800 text-sm">
-              📋 수집된 정보는 다운로드 통계 및 문제집 개선을 위해서만
-              사용됩니다.
-            </p>
-          </div>
         </div>
 
         <DialogFooter className="gap-2">

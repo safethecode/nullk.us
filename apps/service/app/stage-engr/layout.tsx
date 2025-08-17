@@ -66,6 +66,7 @@ export const metadata: Metadata = {
   other: {
     'theme-color': '#000000', // 브랜드 컬러로 수정
     'format-detection': 'telephone=no',
+    'naver-site-verification': '79311768fadd2e93e75ebb24f70025d4c0c31f52',
   },
 };
 

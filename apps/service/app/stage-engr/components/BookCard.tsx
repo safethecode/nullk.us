@@ -123,10 +123,6 @@ export const BookCard = memo(function BookCard({
               {book.type}
             </span>
           </div>
-          <div className="mt-2 flex items-center gap-4 text-neutral-500 text-sm">
-            <span>다운로드 {book.downloads.toLocaleString()}회</span>
-            <span>{book.file_size_mb}MB</span>
-          </div>
         </div>
         <button
           type="button"

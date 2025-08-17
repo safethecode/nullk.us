@@ -1,7 +1,5 @@
 'use client';
 'use subdomain';
-
-import { Button } from '@heiglabs/design-system/button';
 import { useEffect, useState } from 'react';
 import { getProblemBooks } from '../../lib/api/problem-books';
 import type { ProblemBook } from '../../lib/database.types';
@@ -133,20 +131,13 @@ export default function StageEngr() {
       </section>
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-neutral-400 text-sm sm:text-base">
-          본 문제집 내 문제는 검수를 거치지만,{' '}
+        <p className="mx-auto text-neutral-400 text-sm sm:text-base">
+          본 문제집은 검수를 거치지만,{' '}
           <b className="block sm:inline">
-            발견하지 못 한 문제 오류 발견 시 오른쪽 메일로
+            발견하지 못 한 문제 오류 발견 시 문의 게시판을 통해
           </b>{' '}
-          제보 부탁드려요 👉
+          제보 부탁드려요 😎
         </p>
-        <Button
-          variant="outline"
-          size="sm"
-          className="w-full cursor-pointer bg-white sm:w-auto"
-        >
-          문제 오류 제보
-        </Button>
       </div>
 
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-3">

@@ -55,7 +55,6 @@ function scanForSubdomainPages(dir, basePath = '') {
             content.includes("'use subdomain';") ||
             content.includes('"use subdomain";')
           ) {
-            const routePath = basePath || '/';
             let subdomainName = basePath.split('/')[0]; // 기본값: 첫 번째 폴더명
 
             // .custom-domain 파일이 있는지 확인
@@ -86,36 +85,55 @@ function scanForSubdomainPages(dir, basePath = '') {
 }
 
 function createMiddlewareTemplate(mappings) {
+  const subdomainKeys = Object.keys(mappings)
+    .map((key) => `'${key}'`)
+    .join(' | ');
   const mappingsString = Object.entries(mappings)
     .map(([key, value]) => `  '${key}': '${value}'`)
     .join(',\n');
 
   return `import { type NextRequest, NextResponse } from 'next/server';
 
-const subDomainMapper = {
+type SubdomainKey = ${subdomainKeys};
+
+const SUBDOMAIN_MAPPER = {
 ${mappingsString},
-} as const;
+} as const satisfies Record<SubdomainKey, string>;
+
+function extractSubdomain(host: string): string {
+  return host.split('.')[0] || '';
+}
+
+function isValidSubdomain(subdomain: string): subdomain is SubdomainKey {
+  return subdomain in SUBDOMAIN_MAPPER;
+}
+
+function createRewriteUrl(request: NextRequest, basePath: string): URL {
+  const newUrl = request.nextUrl.clone();
+  newUrl.pathname = \`\${basePath}\${request.nextUrl.pathname}\`;
+  return newUrl;
+}
 
 export const middleware = (request: NextRequest) => {
-  const host = request.headers.get('host') || '';
-  const subdomain = host.split('.')[0] || '';
-
-  if (subdomain in subDomainMapper) {
-    const newUrl = request.nextUrl.clone();
-    const subdomainBasePath =
-      subDomainMapper[subdomain as keyof typeof subDomainMapper];
-
-    newUrl.pathname = \`\${subdomainBasePath}\${request.nextUrl.pathname}\`;
-
-    return NextResponse.rewrite(newUrl);
+  const host = request.headers.get('host');
+  if (!host) {
+    return NextResponse.next();
   }
-
-  return NextResponse.next();
+  
+  const subdomain = extractSubdomain(host);
+  if (!isValidSubdomain(subdomain)) {
+    return NextResponse.next();
+  }
+  
+  const basePath = SUBDOMAIN_MAPPER[subdomain];
+  const rewriteUrl = createRewriteUrl(request, basePath);
+  
+  return NextResponse.rewrite(rewriteUrl);
 };
 
 export const config = {
   matcher: [
-    '/((?!api|_next/static|/_next/image|favicon\\\\.ico|.*\\\\.png|.*\\\\.svg).*)',
+    '/((?!api|_next/static|_next/image|favicon\\\\.ico|.*\\\\.png|.*\\\\.svg).*)',
   ],
 };
 `;
@@ -155,7 +173,7 @@ function updateMiddleware(mappings) {
       middlewareContent &&
       middlewareContent.trim().length > 0
     ) {
-      const backupPath = MIDDLEWARE_PATH + '.backup';
+      const backupPath = `${MIDDLEWARE_PATH}.backup`;
       writeFileSync(backupPath, middlewareContent);
       console.log('📁 Created backup at:', backupPath);
     }
@@ -165,30 +183,60 @@ function updateMiddleware(mappings) {
       middlewareContent = createMiddlewareTemplate(mappings);
     } else {
       // 기존 파일 업데이트
+      const subdomainKeys = Object.keys(mappings)
+        .map((key) => `'${key}'`)
+        .join(' | ');
       const mappingsString = Object.entries(mappings)
         .map(([key, value]) => `  '${key}': '${value}'`)
         .join(',\n');
 
-      const newSubDomainMapper = `const subDomainMapper = {\n${mappingsString},\n} as const;`;
+      const newSubdomainType = `type SubdomainKey = ${subdomainKeys};`;
+      const newSubDomainMapper = `const SUBDOMAIN_MAPPER = {\n${mappingsString},\n} as const satisfies Record<SubdomainKey, string>;`;
 
-      // 기존 subDomainMapper 교체 (멀티라인과 따옴표를 고려한 정규식)
+      // SubdomainKey 타입 교체
+      const subdomainTypeRegex = /type SubdomainKey\s*=\s*[^;]+;/;
+      // SUBDOMAIN_MAPPER 교체 (멀티라인과 따옴표를 고려한 정규식)
       const subDomainMapperRegex =
-        /const subDomainMapper\s*=\s*\{[\s\S]*?\}\s*as\s+const\s*;/;
+        /(const\s+SUBDOMAIN_MAPPER|const\s+subDomainMapper)\s*=\s*\{[\s\S]*?\}\s*as\s+const[^;]*;/;
 
-      if (subDomainMapperRegex.test(middlewareContent)) {
+      let hasValidStructure = false;
+
+      if (
+        subdomainTypeRegex.test(middlewareContent) &&
+        subDomainMapperRegex.test(middlewareContent)
+      ) {
+        // 새 구조로 업데이트
+        middlewareContent = middlewareContent.replace(
+          subdomainTypeRegex,
+          newSubdomainType
+        );
         middlewareContent = middlewareContent.replace(
           subDomainMapperRegex,
           newSubDomainMapper
         );
-      } else {
-        console.warn('⚠️  Could not find subDomainMapper in middleware.ts');
+        hasValidStructure = true;
+      } else if (subDomainMapperRegex.test(middlewareContent)) {
+        // 구 구조에서 새 구조로 변환
+        middlewareContent = middlewareContent.replace(
+          /import\s*\{\s*type\s+NextRequest,\s*NextResponse\s*\}\s*from\s*['"]next\/server['"];/,
+          `import { type NextRequest, NextResponse } from 'next/server';\n\n${newSubdomainType}`
+        );
+        middlewareContent = middlewareContent.replace(
+          subDomainMapperRegex,
+          newSubDomainMapper
+        );
+        hasValidStructure = true;
+      }
+
+      if (!hasValidStructure) {
+        console.warn('⚠️  Could not find compatible structure in middleware.ts');
         console.log('📝 Recreating middleware file with template...');
         middlewareContent = createMiddlewareTemplate(mappings);
       }
     }
 
     // 안전한 파일 작성을 위한 원자적 업데이트
-    const tempPath = MIDDLEWARE_PATH + '.tmp';
+    const tempPath = `${MIDDLEWARE_PATH}.tmp`;
 
     // 임시 파일에 먼저 작성
     writeFileSync(tempPath, middlewareContent, 'utf-8');
@@ -254,7 +302,7 @@ function updateMiddleware(mappings) {
     console.error('❌ Failed to update middleware:', err.message);
 
     // 백업에서 복원 시도 (유효한 백업이 있는 경우만)
-    const backupPath = MIDDLEWARE_PATH + '.backup';
+    const backupPath = `${MIDDLEWARE_PATH}.backup`;
     try {
       const backupContent = readFileSync(backupPath, 'utf-8');
       if (backupContent && backupContent.trim().length > 0) {

@@ -1,6 +1,6 @@
+import { getInquiries } from '@/lib/api/inquiries';
+import { getQnaPosts } from '@/lib/api/qna';
 import type { MetadataRoute } from 'next';
-import { getInquiries } from '../../lib/api/inquiries';
-import { getQnaPosts } from '../../lib/api/qna';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://stage-engr.nullk.us';

@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
 export const metadata: Metadata = {
   title: '무대예술전문인 자격시험 기출문제집 | 널케이 FOH',
   description:
-    '2026년 무대예술전문인 자격시험 음향 분야 합격을 위한 최신 기출문제집. 현직 FOH 엔지니어가 직접 제작한 실전 문제와 상세 해설로 한 번에 합격하세요. 연 1회 시험 완벽 대비.',
+    '2026 무대예술 음향 자격시험 한번에 합격하자! 현직 FOH 엔지니어 직접 제작한 최신 기출문제집으로 기회 놓치지 마세요',
 
   // 검색엔진 최적화를 위한 키워드
   keywords:

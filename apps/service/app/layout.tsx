@@ -2,6 +2,7 @@ import localFont from 'next/font/local';
 import type { ReactNode } from 'react';
 import '@heiglabs/design-system/styles';
 import './globals.css';
+import type { Metadata } from 'next/types';
 import { QueryProvider } from '../lib/providers/query-provider';
 
 const geistSans = localFont({
@@ -63,6 +64,54 @@ const pretendard = localFont({
     },
   ],
 });
+
+export const metadata: Metadata = {
+  title: "I'm Sam",
+  description: '6 years of experience in the Software Engineering',
+
+  keywords: ['Software Engineer', '6 years of experience'],
+
+  authors: [{ name: 'Safethecode' }],
+
+  category: 'Software Engineer',
+
+  openGraph: {
+    title: 'NULLK',
+    description: '6 years of experience in the Software Engineering',
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'NULLK',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'NULLK',
+      },
+    ],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+
+  alternates: {
+    canonical: 'http://nullk.us/',
+  },
+
+  other: {
+    'theme-color': '#000000',
+    'format-detection': 'telephone=no',
+  },
+};
 
 export default function RootLayout({
   children,

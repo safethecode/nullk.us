@@ -24,19 +24,28 @@ type AnimationState = {
   showCursor: boolean;
   showDetails: boolean;
   showText: boolean;
+  showFirstLine: boolean;
+  showSecondLine: boolean;
+  showThirdLine: boolean;
 };
 
 type AnimationAction =
   | { type: 'SHOW_TEXT' }
   | { type: 'UPDATE_TEXT'; text: string }
   | { type: 'HIDE_CURSOR' }
-  | { type: 'SHOW_DETAILS' };
+  | { type: 'SHOW_DETAILS' }
+  | { type: 'SHOW_FIRST_LINE' }
+  | { type: 'SHOW_SECOND_LINE' }
+  | { type: 'SHOW_THIRD_LINE' };
 
 const initialState: AnimationState = {
   displayedText: '',
   showCursor: true,
   showDetails: false,
   showText: false,
+  showFirstLine: false,
+  showSecondLine: false,
+  showThirdLine: false,
 };
 
 function animationReducer(
@@ -52,6 +61,12 @@ function animationReducer(
       return { ...state, showCursor: false };
     case 'SHOW_DETAILS':
       return { ...state, showDetails: true };
+    case 'SHOW_FIRST_LINE':
+      return { ...state, showFirstLine: true };
+    case 'SHOW_SECOND_LINE':
+      return { ...state, showSecondLine: true };
+    case 'SHOW_THIRD_LINE':
+      return { ...state, showThirdLine: true };
     default:
       return state;
   }
@@ -91,7 +106,20 @@ function useTypingAnimation() {
           timeouts.push(
             setTimeout(() => {
               dispatch({ type: 'SHOW_DETAILS' });
+              dispatch({ type: 'SHOW_FIRST_LINE' });
             }, ANIMATION_DELAYS.DETAILS_SHOW)
+          );
+
+          timeouts.push(
+            setTimeout(() => {
+              dispatch({ type: 'SHOW_SECOND_LINE' });
+            }, ANIMATION_DELAYS.DETAILS_SHOW + 400)
+          );
+
+          timeouts.push(
+            setTimeout(() => {
+              dispatch({ type: 'SHOW_THIRD_LINE' });
+            }, ANIMATION_DELAYS.DETAILS_SHOW + 600)
           );
         }
       };
@@ -108,50 +136,172 @@ function useTypingAnimation() {
   return state;
 }
 
-const GitHubLink = memo(function GitHubLink() {
+const ExternalLinkButton = memo(function ExternalLinkButton({
+  href,
+  label,
+  children,
+}: {
+  href: string;
+  label: string;
+  children: string;
+}) {
   const handleClick = useCallback(() => {
-    window.open(
-      'https://github.com/safethecode',
-      '_blank',
-      'noopener,noreferrer'
-    );
-  }, []);
+    window.open(href, '_blank', 'noopener,noreferrer');
+  }, [href]);
 
   return (
     <button
       type="button"
       onClick={handleClick}
-      className="flex cursor-pointer items-center gap-1 transition-colors duration-200 hover:text-neutral-300"
-      aria-label="Visit GitHub profile"
+      className="flex cursor-pointer items-center gap-1 text-neutral-800 transition-colors duration-200 hover:text-neutral-300"
+      aria-label={label}
     >
       <ExternalLink className="h-4 w-4" aria-hidden="true" />
-      <span className={`text-sm ${jetBrainsMono.className}`}>GitHub</span>
+      <span className={`text-sm ${jetBrainsMono.className}`}>{children}</span>
     </button>
   );
 });
 
+const WorkedAtLink = memo(function WorkedAtLink({
+  href,
+  company,
+  highlightColor = 'text-blue-600',
+}: {
+  href?: string;
+  company: string;
+  highlightColor?: string;
+}) {
+  const handleClick = useCallback(() => {
+    if (href) {
+      window.open(href, '_blank', 'noopener,noreferrer');
+    }
+  }, [href]);
+
+  const content = (
+    <span className={`text-sm ${jetBrainsMono.className}`}>
+      <span className={`${highlightColor} font-medium`}>{company}</span>
+    </span>
+  );
+
+  if (href) {
+    return (
+      <button
+        type="button"
+        onClick={handleClick}
+        className="flex cursor-pointer items-center text-neutral-800 transition-colors duration-200 hover:text-neutral-300"
+        aria-label={`Visit ${company}`}
+      >
+        {content}
+      </button>
+    );
+  }
+
+  return <span className="flex items-center text-neutral-800">{content}</span>;
+});
+
 const DetailsSection = memo(function DetailsSection({
   isVisible,
+  showFirstLine,
+  showSecondLine,
+  showThirdLine,
 }: {
   isVisible: boolean;
+  showFirstLine: boolean;
+  showSecondLine: boolean;
+  showThirdLine: boolean;
 }) {
   if (!isVisible) {
     return null;
   }
 
   return (
-    <section className="flex gap-2" aria-label="Additional information">
-      <span className={`text-neutral-900 text-sm ${jetBrainsMono.className}`}>
-        More details
-      </span>
-      <GitHubLink />
+    <section
+      className="flex flex-col gap-2"
+      aria-label="Additional information"
+    >
+      <div
+        className={`flex transform gap-2 transition-all duration-800 ease-out ${
+          showFirstLine
+            ? 'translate-y-0 opacity-100'
+            : 'translate-y-4 opacity-0'
+        }`}
+        style={{ transitionDelay: '0ms' }}
+      >
+        <span className={`text-neutral-700 text-sm ${jetBrainsMono.className}`}>
+          More details
+        </span>
+        <ExternalLinkButton
+          href="https://github.com/safethecode"
+          label="Visit GitHub profile"
+        >
+          GitHub
+        </ExternalLinkButton>
+        <ExternalLinkButton href="https://blog.nullk.us" label="Visit blog">
+          Blog
+        </ExternalLinkButton>
+        <ExternalLinkButton href="https://cv.nullk.us" label="Visit blog">
+          CV
+        </ExternalLinkButton>
+      </div>
+      <div
+        className={`flex transform items-center gap-2 transition-all duration-800 ease-out ${
+          showSecondLine
+            ? 'translate-y-0 opacity-100'
+            : 'translate-y-4 opacity-0'
+        }`}
+        style={{ transitionDelay: '0ms' }}
+      >
+        <span className={`text-sm ${jetBrainsMono.className} text-neutral-700`}>
+          Worked{' '}
+        </span>
+        <WorkedAtLink
+          href="https://sendbird.com"
+          company="Sendbird"
+          highlightColor="text-[#6210CC]"
+        />
+        <WorkedAtLink
+          href="https://plask.ai"
+          company="PlaskAI"
+          highlightColor="text-[#1D4FD7]"
+        />
+        <span
+          className={`text-sm ${jetBrainsMono.className} items-center text-neutral-900`}
+        >
+          ··· More
+        </span>
+      </div>
+      <div
+        className={`flex transform items-center gap-2 transition-all duration-800 ease-out ${
+          showThirdLine
+            ? 'translate-y-0 opacity-100'
+            : 'translate-y-4 opacity-0'
+        }`}
+        style={{ transitionDelay: '0ms' }}
+      >
+        <span className={`text-sm ${jetBrainsMono.className} text-neutral-700`}>
+          Everyday{' '}
+        </span>
+        <ExternalLinkButton
+          href="https://products.nullk.us"
+          label="Visit Product Launch"
+        >
+          Product Launch
+        </ExternalLinkButton>
+      </div>
     </section>
   );
 });
 
 export default function Home() {
-  const { displayedText, showCursor, showDetails, showText } =
-    useTypingAnimation();
+  const {
+    displayedText,
+    showCursor,
+    showDetails,
+    showText,
+    showFirstLine,
+    showSecondLine,
+    showThirdLine,
+  } = useTypingAnimation();
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center bg-black">
@@ -184,7 +334,12 @@ export default function Home() {
               : 'translate-y-4 opacity-0'
           }`}
         >
-          <DetailsSection isVisible={showDetails} />
+          <DetailsSection
+            isVisible={showDetails}
+            showFirstLine={showFirstLine}
+            showSecondLine={showSecondLine}
+            showThirdLine={showThirdLine}
+          />
         </div>
       </main>
     </div>

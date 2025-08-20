@@ -83,7 +83,7 @@ export const metadata: Metadata = {
     siteName: 'NULLK',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/nullk-og-image.png',
         width: 1200,
         height: 630,
         alt: 'NULLK',

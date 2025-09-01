@@ -282,7 +282,7 @@ const DetailsSection = memo(function DetailsSection({
           Everyday{' '}
         </span>
         <ExternalLinkButton
-          href="https://products.nullk.us"
+          href="https://nullk.us/products"
           label="Visit Product Launch"
         >
           Product Launch

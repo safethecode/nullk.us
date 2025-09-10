@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: '/private/',
       },
     ],
-    sitemap: 'https://stage-engr.nullk.us/sitemap.xml',
-    host: 'https://stage-engr.nullk.us',
+    sitemap: 'https://nullk.us/sitemap.xml',
+    host: 'https://nullk.us',
   };
 }

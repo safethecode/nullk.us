@@ -1,6 +1,8 @@
 'use client';
 
+import { AnimatedActionButton } from '@/ui/animated-action-button';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Home() {
   return (
@@ -63,6 +65,65 @@ export default function Home() {
             <div className="text-center text-black">
               <h3 className="mb-2 font-bold text-lg">카드 3</h3>
               <p className="text-sm opacity-90">세 번째 카드입니다</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="flex h-full flex-col gap-6">
+        <p className="flex items-center gap-2 text-5xl text-neutral-900">
+          <img
+            src="/assets/icons/compass.png"
+            alt="가장 궁금하신 것들"
+            width={64}
+            height={64}
+          />
+          가장 궁금하신 것들
+        </p>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div className="group relative overflow-hidden rounded-3xl border border-gray-100 bg-gradient-to-br from-neutral-100 to-white p-8 transition-all duration-500">
+            <Image
+              src="/assets/icons/clipboard.png"
+              alt="가장 궁금하신 것들"
+              width={64}
+              height={64}
+              className="mb-6"
+            />
+            <div className="space-y-4">
+              <h3 className="font-bold text-3xl text-neutral-900 leading-tight">
+                최신 이력서
+              </h3>
+              <p className="mb-4 text-lg text-neutral-600 leading-relaxed">
+                투자정보의 이해를 도와줄 커뮤니케이션 채널
+              </p>
+
+              <div className="flex items-center">
+                <AnimatedActionButton href="/resume">
+                  바로가기
+                </AnimatedActionButton>
+              </div>
+            </div>
+          </div>
+          <div className="group relative overflow-hidden rounded-3xl border border-gray-100 bg-gradient-to-br from-neutral-100 to-white p-8 transition-all duration-500">
+            <Image
+              src="/assets/icons/technologist-light-skin-tone.png"
+              alt="가장 궁금하신 것들"
+              width={64}
+              height={64}
+              className="mb-6"
+            />
+            <div className="space-y-4">
+              <h3 className="font-bold text-3xl text-neutral-900 leading-tight">
+                경력 사항
+              </h3>
+              <p className="mb-4 text-lg text-neutral-600 leading-relaxed">
+                투자정보의 이해를 도와줄 커뮤니케이션 채널
+              </p>
+
+              <div className="flex items-center">
+                <AnimatedActionButton href="/resume">
+                  바로가기
+                </AnimatedActionButton>
+              </div>
             </div>
           </div>
         </div>

@@ -4,6 +4,7 @@ import type { Metadata } from 'next/types';
 import type { ReactNode } from 'react';
 import '@heiglabs/design-system/styles';
 import '@/styles/globals.css';
+import { Footer } from '@/ui/footer';
 
 export const metadata: Metadata = {
   title: "I'm Sam",
@@ -65,6 +66,7 @@ export default function RootLayout({
       >
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

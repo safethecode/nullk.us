@@ -1,6 +1,8 @@
 import { pretendard } from '@/styles/fonts';
+import { Header } from '@/ui/header';
 import type { Metadata } from 'next/types';
 import type { ReactNode } from 'react';
+import '@heiglabs/design-system/styles';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -58,7 +60,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${pretendard.variable} antialiased`}>{children}</body>
+      <body
+        className={`relative w-full ${pretendard.variable} mx-auto antialiased`}
+      >
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }

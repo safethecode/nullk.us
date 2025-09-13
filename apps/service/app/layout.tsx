@@ -60,7 +60,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body
         className={`relative w-full ${pretendard.variable} mx-auto antialiased`}
       >

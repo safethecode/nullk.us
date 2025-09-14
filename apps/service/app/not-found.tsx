@@ -154,7 +154,7 @@ export default function NotFound() {
     useTypingAnimation();
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center bg-black">
+    <div className="flex h-screen w-screen flex-col items-center justify-center bg-white">
       <main
         className={`transform text-center transition-all duration-800 ease-out ${
           showDetails ? '-translate-y-8' : 'translate-y-0'

@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import '@heiglabs/design-system/styles';
 import '@/styles/globals.css';
 import { Footer } from '@/ui/footer';
+import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
   title: '삼손(Sam Son) - 프론트엔드 엔지니어',
@@ -69,6 +70,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <Toaster />
       </body>
     </html>
   );

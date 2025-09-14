@@ -5,11 +5,13 @@ import Link from 'next/link';
 import type React from 'react';
 import { useState } from 'react';
 
-interface AnimatedActionButtonProps {
+interface AnimatedActionButtonProps
+  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   href: string;
   children: React.ReactNode;
   className?: string;
   icon?: React.ComponentType<{ className?: string }>;
+  onClick?: () => void;
 }
 
 export function AnimatedActionButton({
@@ -17,8 +19,17 @@ export function AnimatedActionButton({
   children,
   className = '',
   icon: Icon = ArrowRight,
+  onClick,
+  ...props
 }: AnimatedActionButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      e.preventDefault();
+      onClick();
+    }
+  };
 
   return (
     <Link
@@ -26,6 +37,8 @@ export function AnimatedActionButton({
       className={`flex items-center gap-2 overflow-visible rounded-full bg-primary px-4 py-2 font-medium text-lg text-white! transition-colors duration-200 hover:bg-primary/90 ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={handleClick}
+      {...props}
     >
       {children}
       <div className="relative h-5 w-5 overflow-hidden rounded-full bg-white">

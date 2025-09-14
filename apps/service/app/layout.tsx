@@ -7,21 +7,23 @@ import '@/styles/globals.css';
 import { Footer } from '@/ui/footer';
 
 export const metadata: Metadata = {
-  title: "I'm Sam",
-  description: '5 years of experience in the Software Engineering',
+  title: '삼손(Sam Son) - 프론트엔드 엔지니어',
+  description:
+    '찾을 수 없는 곳에서 보석을 찾는, 5년차 FE 엔지니어, 손지민입니다.',
 
-  keywords: ['Software Engineer', '5 years of experience'],
+  keywords: ['프론트엔드 엔지니어', '5년차 FE 엔지니어', '손지민'],
 
-  authors: [{ name: 'Safethecode' }],
+  authors: [{ name: '손지민' }],
 
-  category: 'Software Engineer',
+  category: '프론트엔드 엔지니어',
 
   openGraph: {
-    title: 'NULLK',
-    description: '5 years of experience in the Software Engineering',
+    title: '삼손(Sam Son) - 프론트엔드 엔지니어',
+    description:
+      '찾을 수 없는 곳에서 보석을 찾는, 5년차 FE 엔지니어, 손지민입니다.',
     type: 'website',
-    locale: 'en_US',
-    siteName: 'NULLK',
+    locale: 'ko_KR',
+    siteName: '삼손(Sam Son)',
     images: [
       {
         url: '/og/nullk-og-image.png',

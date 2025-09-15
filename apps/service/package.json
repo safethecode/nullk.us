@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@heiglabs/design-system": "workspace:*",
+    "@react-email/components": "0.5.3",
     "@supabase/supabase-js": "^2.55.0",
     "@tanstack/react-query": "^5.85.3",
     "next": "^15.3.2",

@@ -55,3 +55,29 @@ a {
   bottom: -25px;
   background-image: url("/assets/icons/side-rounded-mask.svg");
 }
+
+.detail-button-container-right {
+  position: relative;
+}
+
+.detail-button-container-right::before {
+  content: "";
+  position: absolute;
+  width: 32px;
+  height: 36px;
+  right: -14px;
+  bottom: 60px;
+  background-image: url("/assets/icons/side-rounded-mask.svg");
+  transform: scaleX(-1);
+}
+
+.detail-button-container-right::after {
+  content: "";
+  position: absolute;
+  width: 32px;
+  height: 36px;
+  left: -42px;
+  bottom: -16px;
+  background-image: url("/assets/icons/side-rounded-mask.svg");
+  transform: scaleX(-1);
+}

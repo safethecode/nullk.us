@@ -70,7 +70,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
-        <Toaster />
+        <Toaster position="bottom-center" />
       </body>
     </html>
   );

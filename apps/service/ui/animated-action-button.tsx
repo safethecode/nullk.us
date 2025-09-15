@@ -9,7 +9,6 @@ interface AnimatedActionButtonProps
   extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   href: string;
   children: React.ReactNode;
-  className?: string;
   icon?: React.ComponentType<{ className?: string }>;
   onClick?: () => void;
 }
@@ -17,7 +16,6 @@ interface AnimatedActionButtonProps
 export function AnimatedActionButton({
   href,
   children,
-  className = '',
   icon: Icon = ArrowRight,
   onClick,
   ...props
@@ -34,7 +32,7 @@ export function AnimatedActionButton({
   return (
     <Link
       href={href}
-      className={`flex items-center gap-2 overflow-visible rounded-full bg-primary px-4 py-2 font-medium text-lg text-white! transition-colors duration-200 hover:bg-primary/90 ${className}`}
+      className="flex items-center gap-2 overflow-visible rounded-full bg-primary px-4 py-2 font-medium text-lg text-white! transition-colors duration-200 hover:bg-primary/90"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}

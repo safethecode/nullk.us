@@ -71,7 +71,7 @@ export default function Home() {
       </section>
       <section className="flex h-full flex-col gap-6">
         <p className="flex items-center gap-2 text-5xl text-neutral-900">
-          <img
+          <Image
             src="/assets/icons/compass.png"
             alt="가장 궁금하신 것들"
             width={64}

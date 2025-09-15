@@ -59,7 +59,9 @@ export function Header() {
           ))}
         </nav>
         <div className="hidden items-center space-x-4 md:flex">
-          <AnimatedActionButton href="/join">커피챗 요청</AnimatedActionButton>
+          <AnimatedActionButton href="/coffee-chat">
+            커피챗 요청
+          </AnimatedActionButton>
         </div>
       </div>
     </header>

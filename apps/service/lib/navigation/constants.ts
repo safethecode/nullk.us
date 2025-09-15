@@ -36,7 +36,7 @@ export const landingNavigationItems: NavigationItem[] = [
   },
   {
     label: '도전과제',
-    href: '/challenge',
+    href: '/achievement',
     icon: Target,
   },
 ];

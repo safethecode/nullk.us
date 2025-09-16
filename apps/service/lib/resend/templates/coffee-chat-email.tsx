@@ -9,8 +9,6 @@ import {
   Section,
   Text,
 } from '@react-email/components';
-// biome-ignore lint/correctness/noUnusedImports: <explanation>
-import React from 'react';
 
 interface CoffeeChatEmailProps {
   requesterName: string;
@@ -99,7 +97,7 @@ const main = {
 
 const container = {
   backgroundColor: '#ffffff',
-  margin: '0 auto',
+  margin: '64px auto',
   padding: '20px 0 48px',
   marginBottom: '64px',
   maxWidth: '600px',

@@ -1,10 +1,10 @@
 import {
-  Code,
-  Earth,
+  Calendar,
+  FolderOpen,
   type LucideIcon,
-  Newspaper,
-  Shield,
-  Target,
+  PenTool,
+  Trophy,
+  User,
 } from 'lucide-react';
 
 export interface NavigationItem {
@@ -16,27 +16,27 @@ export interface NavigationItem {
 export const landingNavigationItems: NavigationItem[] = [
   {
     label: '소개',
-    href: '/',
-    icon: Earth,
+    href: '/greetings',
+    icon: User,
   },
   {
-    label: '기술과 서비스',
-    href: '/products',
-    icon: Code,
+    label: '참여 프로젝트',
+    href: '/projects',
+    icon: FolderOpen,
   },
   {
-    label: '약속과 책임',
-    href: '/promise',
-    icon: Shield,
+    label: '하루 일기',
+    href: '/daily-diary',
+    icon: Calendar,
   },
   {
-    label: '소식',
-    href: '/news',
-    icon: Newspaper,
+    label: '블로그',
+    href: '/blogs',
+    icon: PenTool,
   },
   {
     label: '도전과제',
     href: '/achievement',
-    icon: Target,
+    icon: Trophy,
   },
 ];

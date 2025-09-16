@@ -46,7 +46,7 @@ export function Header() {
               onMouseLeave={() => setHoveredNavIndex(null)}
             >
               {item.label}
-              <div className="relative ml-1 h-5 w-5 overflow-hidden rounded-full bg-white">
+              <div className="relative ml-1 h-5 w-5 overflow-hidden rounded-lg bg-white">
                 <item.icon
                   className={`absolute h-5 w-5 transition-transform duration-300 ease-out ${
                     hoveredNavIndex === index

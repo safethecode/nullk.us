@@ -5,21 +5,30 @@ import Link from 'next/link';
 import type React from 'react';
 import { useState } from 'react';
 
-interface AnimatedActionButtonProps
-  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-  href: string;
+interface BaseAnimatedActionButtonProps {
   children: React.ReactNode;
   icon?: React.ComponentType<{ className?: string }>;
   onClick?: () => void;
+  className?: string;
 }
 
-export function AnimatedActionButton({
-  href,
-  children,
-  icon: Icon = ArrowRight,
-  onClick,
-  ...props
-}: AnimatedActionButtonProps) {
+interface LinkAnimatedActionButtonProps extends BaseAnimatedActionButtonProps {
+  href: string;
+  type?: never;
+}
+
+interface ButtonAnimatedActionButtonProps
+  extends BaseAnimatedActionButtonProps {
+  href?: never;
+  type: 'button' | 'submit' | 'reset';
+}
+
+type AnimatedActionButtonProps =
+  | LinkAnimatedActionButtonProps
+  | ButtonAnimatedActionButtonProps;
+
+export function AnimatedActionButton(props: AnimatedActionButtonProps) {
+  const { children, icon: Icon = ArrowRight, onClick, className } = props;
   const [isHovered, setIsHovered] = useState(false);
 
   const handleClick = (e: React.MouseEvent) => {
@@ -29,15 +38,8 @@ export function AnimatedActionButton({
     }
   };
 
-  return (
-    <Link
-      href={href}
-      className="flex items-center gap-2 overflow-visible rounded-full bg-primary px-4 py-2 font-medium text-lg text-white! transition-colors duration-200 hover:bg-primary/90"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={handleClick}
-      {...props}
-    >
+  const buttonContent = (
+    <>
       {children}
       <div className="relative h-5 w-5 overflow-hidden rounded-full bg-white">
         <Icon
@@ -47,6 +49,31 @@ export function AnimatedActionButton({
           className={`absolute h-5 w-5 text-primary transition-transform duration-300 ${isHovered ? 'translate-x-0' : '-translate-x-10'}`}
         />
       </div>
-    </Link>
+    </>
   );
+
+  const commonProps = {
+    className: `cursor-pointer flex items-center gap-2 overflow-visible rounded-full bg-primary px-4 py-2 font-medium text-lg text-white! transition-colors duration-200 hover:bg-primary/90 ${className || ''}`,
+    onMouseEnter: () => setIsHovered(true),
+    onMouseLeave: () => setIsHovered(false),
+    onClick: handleClick,
+  };
+
+  if ('type' in props) {
+    return (
+      <button type={props.type} {...commonProps}>
+        {buttonContent}
+      </button>
+    );
+  }
+
+  if ('href' in props) {
+    return (
+      <Link href={props.href} {...commonProps}>
+        {buttonContent}
+      </Link>
+    );
+  }
+
+  throw new Error('Either href or type must be provided');
 }

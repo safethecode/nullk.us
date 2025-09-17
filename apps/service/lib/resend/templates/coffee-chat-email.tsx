@@ -16,6 +16,7 @@ interface CoffeeChatEmailProps {
   requesterEmail: string;
   meetingType: 'remote' | 'in-person';
   requestDate: string;
+  message: string;
 }
 
 export const CoffeeChatEmail = ({
@@ -24,6 +25,7 @@ export const CoffeeChatEmail = ({
   requesterEmail,
   meetingType,
   requestDate,
+  message,
 }: CoffeeChatEmailProps) => {
   const meetingTypeText = meetingType === 'remote' ? '원격' : '대면';
 
@@ -58,6 +60,9 @@ export const CoffeeChatEmail = ({
               </Text>
               <Text style={infoText}>
                 <strong>요청 일자:</strong> {requestDate}
+              </Text>
+              <Text style={infoText}>
+                <strong>메시지:</strong> {message}
               </Text>
             </Section>
 

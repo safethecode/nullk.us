@@ -1,5 +1,4 @@
 import {
-  Calendar,
   FolderOpen,
   type LucideIcon,
   PenTool,
@@ -23,11 +22,6 @@ export const landingNavigationItems: NavigationItem[] = [
     label: '참여 프로젝트',
     href: '/projects',
     icon: FolderOpen,
-  },
-  {
-    label: '하루 일기',
-    href: '/daily-diary',
-    icon: Calendar,
   },
   {
     label: '블로그',

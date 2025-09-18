@@ -19,7 +19,7 @@ export function Header() {
         >
           <Link href="/" className="flex items-center">
             <Image
-              src="/assets/logo/sam-logo.svg"
+              src="/assets/logos/sam-son/sam-logo.svg"
               alt="삼손 로고"
               width={38}
               height={23}
@@ -27,7 +27,7 @@ export function Header() {
               onMouseLeave={() => setIsLogoLeftHover(false)}
             />
             <Image
-              src="/assets/logo/son-logo.svg"
+              src="/assets/logos/sam-son/son-logo.svg"
               alt="삼손 로고"
               width={34}
               height={23}

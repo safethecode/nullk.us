@@ -29,13 +29,11 @@ export function Footer() {
   return (
     <footer className="mx-auto max-w-7xl bg-white px-4 py-16 sm:px-6 lg:px-8">
       <div className="space-y-12">
-        {/* Main Footer Content */}
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-4">
-          {/* Logo and Description */}
           <div className="lg:col-span-2">
             <div className="mb-6 flex items-center gap-2">
               <Image
-                src="/assets/logo/samson-full-logo.svg"
+                src="/assets/logos/sam-son/samson-full-logo.svg"
                 alt="삼손 로고"
                 width={72}
                 height={23}

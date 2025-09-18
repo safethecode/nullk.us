@@ -1,6 +1,7 @@
 'use client';
 
 import { AnimatedActionButton } from '@/ui/animated-action-button';
+import { BrandLogoCard } from '@/ui/brand-logo-card';
 import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
 
@@ -152,6 +153,18 @@ export default function Home() {
           />
           함께해 주셔서 감사합니다
         </p>
+        <div className="grid grid-cols-2 gap-6 lg:grid-cols-5">
+          {Array.from({ length: 5 }).map((_, index) => (
+            // TODO: 브랜드 로고 추가
+            <BrandLogoCard
+              key={index}
+              src="/assets/logos/corp/sendbird-logo.svg"
+              alt="Sendbird"
+              width={248}
+              height={64}
+            />
+          ))}
+        </div>
       </section>
     </main>
   );

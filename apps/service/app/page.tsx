@@ -72,8 +72,19 @@ export default function Home() {
       <section className="flex h-full flex-col gap-6">
         <p className="flex items-center gap-2 text-5xl text-neutral-900">
           <Image
+            src="/assets/icons/handshake-no-skin-tone-light-skin-tone.png"
+            alt="삼손에 대한 소중한 리뷰"
+            width={64}
+            height={64}
+          />
+          소중한 리뷰
+        </p>
+      </section>
+      <section className="flex h-full flex-col gap-6">
+        <p className="flex items-center gap-2 text-5xl text-neutral-900">
+          <Image
             src="/assets/icons/compass.png"
-            alt="가장 궁금하신 것들"
+            alt="삼손에 대한 가장 궁금하신 것들"
             width={64}
             height={64}
           />
@@ -83,7 +94,7 @@ export default function Home() {
           <div className="group relative overflow-hidden rounded-3xl border border-gray-100 bg-gradient-to-br from-neutral-100 to-white p-8 transition-all duration-500">
             <Image
               src="/assets/icons/clipboard.png"
-              alt="가장 궁금하신 것들"
+              alt="최신 이력서"
               width={64}
               height={64}
               className="mb-6"
@@ -93,7 +104,9 @@ export default function Home() {
                 최신 이력서
               </h3>
               <p className="mb-4 text-lg text-neutral-600 leading-relaxed">
-                투자정보의 이해를 도와줄 커뮤니케이션 채널
+                2025년 9월 18일 기준 <strong>최신 이력서</strong>
+                <br />
+                프론트엔드 엔지니어부터 사업 경험까지 있어요
               </p>
 
               <div className="flex items-center">
@@ -106,7 +119,7 @@ export default function Home() {
           <div className="group relative overflow-hidden rounded-3xl border border-gray-100 bg-gradient-to-br from-neutral-100 to-white p-8 transition-all duration-500">
             <Image
               src="/assets/icons/technologist-light-skin-tone.png"
-              alt="가장 궁금하신 것들"
+              alt="경력 사항"
               width={64}
               height={64}
               className="mb-6"
@@ -116,17 +129,30 @@ export default function Home() {
                 경력 사항
               </h3>
               <p className="mb-4 text-lg text-neutral-600 leading-relaxed">
-                투자정보의 이해를 도와줄 커뮤니케이션 채널
+                2019년 ⎯ 2025년 현재까지
+                <br />
+                그동안 경험했던 것들을 자세히 기록했어요
               </p>
 
               <div className="flex items-center">
-                <AnimatedActionButton href="/resume">
+                <AnimatedActionButton href="/experience">
                   바로가기
                 </AnimatedActionButton>
               </div>
             </div>
           </div>
         </div>
+      </section>
+      <section className="flex h-full flex-col gap-6">
+        <p className="flex items-center gap-2 text-5xl text-neutral-900">
+          <Image
+            src="/assets/icons/heart-with-ribbon.png"
+            alt="함께해주신 분들"
+            width={64}
+            height={64}
+          />
+          함께해 주셔서 감사합니다
+        </p>
       </section>
     </main>
   );

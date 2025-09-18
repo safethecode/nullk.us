@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatedActionButton } from '@/ui/animated-action-button';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
 
 export default function Home() {
@@ -38,13 +38,12 @@ export default function Home() {
               </p>
             </div>
             <div className="absolute bottom-0 left-0 mt-6 rounded-tr-[20px] bg-white pt-[19px] pr-[30px] pb-[21px] pl-[30px]">
-              <button
-                type="button"
-                className="detail-button-container inline-flex cursor-pointer items-center gap-3 rounded-full bg-black px-8 py-4 font-medium text-lg text-white transition-all"
+              <AnimatedActionButton
+                href="/coffee-chat"
+                className="detail-button-container px-10 py-4"
               >
                 자세히 보기
-                <ArrowRight className="h-5 w-5" />
-              </button>
+              </AnimatedActionButton>
             </div>
           </div>
         </div>

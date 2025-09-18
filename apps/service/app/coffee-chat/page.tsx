@@ -9,6 +9,7 @@ import {
 import { AnimatedActionButton } from '@/ui/animated-action-button';
 import { FormField } from '@/ui/form-field';
 import { MeetingTypeField } from '@/ui/meeting-type-field';
+import confetti from 'canvas-confetti';
 import type React from 'react';
 import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
@@ -49,6 +50,20 @@ export default function CoffeeChatPage() {
         toast.success(
           response.message || '커피챗 요청이 성공적으로 전송되었습니다!'
         );
+
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: [
+            '#FFD700',
+            '#FFA500',
+            '#FF6347',
+            '#32CD32',
+            '#1E90FF',
+            '#9370DB',
+          ],
+        });
 
         resetForm();
       } catch (error) {

@@ -1,84 +1,93 @@
-# Turborepo starter
+# nullk.us
 
-This Turborepo starter is maintained by the Turborepo core team.
+> 찾을 수 없는 곳에서 보석을 찾는, FE 엔지니어 손지민의 포트폴리오
 
-## Using this example
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+[![Turborepo](https://img.shields.io/badge/Turborepo-Monorepo-EF4444?style=flat-square&logo=turborepo)](https://turbo.build/)
 
-Run the following command:
+## ∴ 소개
 
-```sh
-npx create-turbo@latest
-```
+프론트엔드 개발자의 여정과 경험을 담은 인터랙티브 포트폴리오 웹사이트입니다.  
 
-## What's inside?
+단순히 정보를 나열하는 것을 넘어, 방문자가 직접 경험하고 즐길 수 있는 공간을 만들었습니다.
 
-This Turborepo includes the following packages/apps:
+**→ Live Demo**: [nullk.us](https://nullk.us)
 
-### Apps and Packages
+## § 주요 기능
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@heiglabs/design-system`: a stub React component library shared by both `web` and `docs` applications
-- `@heiglabs/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@heiglabs/typescript-config`: `tsconfig.json`s used throughout the monorepo
+### ⌘ 완벽한 반응형 디자인
+- 모바일부터 데스크톱까지 모든 디바이스 최적화
+- 부드러운 애니메이션과 인터랙션
+- 직관적인 네비게이션과 UX
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### ※ 도전 과제 시스템
+- 방문자 인게이지먼트를 위한 게임화 요소
+- 실시간 진행도 추적
+- 로컬 스토리지를 활용한 상태 저장
 
-### Utilities
+### ◆ 인터랙티브 리뷰 섹션
+- 동료들의 피드백과 추천사
+- 스와이프 가능한 캐러셀 UI
+- 세련된 그라데이션 효과
 
-This Turborepo has some additional tools already setup for you:
+### ⌗ 커피챗 요청 시스템
+- 간편한 폼 제출
+- 이메일 알림 (Resend API)
+- 성공 시 컨페티 애니메이션
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+## ⚙ 기술 스택
 
-### Build
+### Frontend
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+- **Icons**: Lucide React
+- **Animations**: Framer Motion, canvas-confetti
 
-To build all apps and packages, run the following command:
+### Infrastructure
+- **Monorepo**: Turborepo
+- **Package Manager**: pnpm
+- **Deployment**: Vercel
+- **Email**: Resend
 
-```
-cd my-turborepo
-pnpm build
-```
+### Code Quality
+- **Linting**: Biome
+- **Type Checking**: TypeScript
+- **Formatting**: Biome
 
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+## ▸ 프로젝트 구조
 
 ```
-npx turbo link
+nullk.us/
+├── apps/
+│   └── service/          # 메인 Next.js 애플리케이션
+│       ├── app/          # 페이지 라우트
+│       ├── lib/          # 비즈니스 로직
+│       ├── ui/           # UI 컴포넌트
+│       └── styles/       # 글로벌 스타일
+├── packages/
+│   ├── design-system/    # 공유 UI 컴포넌트
+│   ├── eslint-config/    # ESLint 설정
+│   └── typescript-config/# TypeScript 설정
+└── turbo.json           # Turborepo 설정
 ```
 
-## Useful Links
+## ∷ 페이지 구성
 
-Learn more about the power of Turborepo:
+| 페이지 | 경로 | 설명 |
+|--------|------|------|
+| 홈 | `/` | 메인 랜딩 페이지 |
+| 인사말 | `/greetings` | 자기소개 및 철학 |
+| 프로젝트 | `/projects` | 진행한 프로젝트 소개 |
+| 블로그 | `/blogs` | 개발 경험 공유 (준비중) |
+| 도전과제 | `/achievement` | 인터랙티브 도전 과제 |
+| 커피챗 | `/coffee-chat` | 커피챗 신청 폼 |
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+---
+
+<div align="center">
+  <sub>Built with ♥ by Sam Son</sub>
+</div>

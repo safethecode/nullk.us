@@ -2,7 +2,7 @@
 
 import { AnimatedActionButton } from '@/ui/animated-action-button';
 import { BrandLogoCard } from '@/ui/brand-logo-card';
-import { Sparkles } from 'lucide-react';
+import { Briefcase, Code2, Sparkles, Users } from 'lucide-react';
 import Image from 'next/image';
 
 export default function Home() {
@@ -51,34 +51,35 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4 lg:w-64 lg:flex-col">
-          <div className="flex h-32 items-center justify-center rounded-3xl bg-neutral-100 p-4 sm:h-40 sm:p-6 lg:h-48">
+          <div className="flex h-32 flex-col items-center justify-center gap-3 rounded-3xl border border-gray-100 bg-gradient-to-br from-blue-50 to-white p-4 sm:h-40 sm:p-6 lg:h-48">
+            <Briefcase className="h-8 w-8 text-gray-700 sm:h-10 sm:w-10" />
             <div className="text-center text-black">
-              <h3 className="mb-1 font-bold text-base sm:mb-2 sm:text-lg">
-                5 Years
+              <h3 className="mb-1 font-bold text-xl sm:mb-2 sm:text-2xl">
+                5+ Years
               </h3>
               <p className="text-xs opacity-90 sm:text-sm">
-                첫 번째 카드입니다
+                프론트엔드 개발 경력
               </p>
             </div>
           </div>
-          <div className="flex h-32 items-center justify-center rounded-3xl bg-neutral-100 p-4 sm:h-40 sm:p-6 lg:h-48">
+          <div className="flex h-32 flex-col items-center justify-center gap-3 rounded-3xl border border-gray-100 bg-gradient-to-br from-purple-50 to-white p-4 sm:h-40 sm:p-6 lg:h-48">
+            <Code2 className="h-8 w-8 text-gray-700 sm:h-10 sm:w-10" />
             <div className="text-center text-black">
-              <h3 className="mb-1 font-bold text-base sm:mb-2 sm:text-lg">
-                카드 2
+              <h3 className="mb-1 font-bold text-xl sm:mb-2 sm:text-2xl">
+                15+ Projects
               </h3>
               <p className="text-xs opacity-90 sm:text-sm">
-                두 번째 카드입니다
+                다양한 프로젝트 경험
               </p>
             </div>
           </div>
-          <div className="flex h-32 items-center justify-center rounded-3xl bg-neutral-100 p-4 sm:h-40 sm:p-6 lg:h-48">
+          <div className="flex h-32 flex-col items-center justify-center gap-3 rounded-3xl border border-gray-100 bg-gradient-to-br from-green-50 to-white p-4 sm:h-40 sm:p-6 lg:h-48">
+            <Users className="h-8 w-8 text-gray-700 sm:h-10 sm:w-10" />
             <div className="text-center text-black">
-              <h3 className="mb-1 font-bold text-base sm:mb-2 sm:text-lg">
-                카드 3
+              <h3 className="mb-1 font-bold text-xl sm:mb-2 sm:text-2xl">
+                10+ Teams
               </h3>
-              <p className="text-xs opacity-90 sm:text-sm">
-                세 번째 카드입니다
-              </p>
+              <p className="text-xs opacity-90 sm:text-sm">다양한 팀과 협업</p>
             </div>
           </div>
         </div>

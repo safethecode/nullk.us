@@ -2,7 +2,7 @@
 
 import { AnimatedActionButton } from '@/ui/animated-action-button';
 import { BrandLogoCard } from '@/ui/brand-logo-card';
-import { Briefcase, Code2, Sparkles, Users } from 'lucide-react';
+import { Briefcase, Code2, Quote, Sparkles, Users } from 'lucide-react';
 import Image from 'next/image';
 
 export default function Home() {
@@ -95,6 +95,55 @@ export default function Home() {
           />
           소중한 리뷰
         </p>
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
+          <article className="rounded-3xl border border-gray-100 bg-gradient-to-br from-neutral-50 to-white p-6 sm:p-8">
+            <Quote className="mb-4 h-8 w-8 text-gray-400 sm:mb-6" />
+            <p className="mb-6 text-base text-gray-700 leading-relaxed sm:text-lg">
+              항상 꼼꼼하고 책임감 있게 업무를 처리하시는 모습이 인상
+              깊었습니다. 특히 프론트엔드 개발 역량이 뛰어나십니다.
+            </p>
+            <div className="space-y-1">
+              <p className="font-bold text-gray-900 text-sm sm:text-base">
+                김철수
+              </p>
+              <p className="text-gray-600 text-xs sm:text-sm">
+                백엔드 개발자 · ABC 회사
+              </p>
+            </div>
+          </article>
+
+          <article className="rounded-3xl border border-gray-100 bg-gradient-to-br from-neutral-50 to-white p-6 sm:p-8">
+            <Quote className="mb-4 h-8 w-8 text-gray-400 sm:mb-6" />
+            <p className="mb-6 text-base text-gray-700 leading-relaxed sm:text-lg">
+              함께 일하면서 많은 것을 배울 수 있었습니다. 항상 긍정적이고
+              적극적인 태도로 팀에 좋은 영향을 주셨습니다.
+            </p>
+            <div className="space-y-1">
+              <p className="font-bold text-gray-900 text-sm sm:text-base">
+                박영희
+              </p>
+              <p className="text-gray-600 text-xs sm:text-sm">
+                디자이너 · XYZ 스튜디오
+              </p>
+            </div>
+          </article>
+
+          <article className="rounded-3xl border border-gray-100 bg-gradient-to-br from-neutral-50 to-white p-6 sm:p-8">
+            <Quote className="mb-4 h-8 w-8 text-gray-400 sm:mb-6" />
+            <p className="mb-6 text-base text-gray-700 leading-relaxed sm:text-lg">
+              빠른 문제 해결 능력과 커뮤니케이션 능력이 탁월하십니다. 프로젝트를
+              함께 하면서 많은 도움을 받았습니다.
+            </p>
+            <div className="space-y-1">
+              <p className="font-bold text-gray-900 text-sm sm:text-base">
+                이민준
+              </p>
+              <p className="text-gray-600 text-xs sm:text-sm">
+                프로덕트 매니저 · DEF 테크
+              </p>
+            </div>
+          </article>
+        </div>
       </section>
       <section className="flex h-full flex-col gap-6">
         <p className="flex items-center gap-2 text-3xl text-neutral-900 sm:text-4xl lg:text-5xl">

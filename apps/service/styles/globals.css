@@ -36,24 +36,35 @@ a {
   position: relative;
 }
 
-.detail-button-container::before {
-  content: "";
-  position: absolute;
-  width: 32px;
-  height: 36px;
-  left: -32px;
-  bottom: 75px;
-  background-image: url("/assets/icons/side-rounded-mask.svg");
+/* 모바일에서는 장식 요소 숨김 */
+.detail-button-container::before,
+.detail-button-container::after {
+  display: none;
 }
 
-.detail-button-container::after {
-  content: "";
-  position: absolute;
-  width: 32px;
-  height: 36px;
-  right: -60px;
-  bottom: -25px;
-  background-image: url("/assets/icons/side-rounded-mask.svg");
+/* 데스크톱에서만 장식 요소 표시 */
+@media (min-width: 1024px) {
+  .detail-button-container::before {
+    display: block;
+    content: "";
+    position: absolute;
+    width: 32px;
+    height: 36px;
+    left: -32px;
+    bottom: 75px;
+    background-image: url("/assets/icons/side-rounded-mask.svg");
+  }
+
+  .detail-button-container::after {
+    display: block;
+    content: "";
+    position: absolute;
+    width: 32px;
+    height: 36px;
+    right: -60px;
+    bottom: -25px;
+    background-image: url("/assets/icons/side-rounded-mask.svg");
+  }
 }
 
 .detail-button-container-right {

@@ -22,14 +22,14 @@ export function FormField({
   onChange,
 }: FormFieldProps) {
   return (
-    <div className="space-y-2">
+    <div className="space-y-1.5">
       <label
         htmlFor={name}
-        className="flex items-center gap-1 font-semibold text-neutral-900"
+        className="flex items-center gap-1 text-[13px] font-medium text-neutral-700"
       >
         {label}
         {required && (
-          <span className="text-red-500" aria-label="필수">
+          <span className="text-red-400" aria-label="필수">
             *
           </span>
         )}
@@ -42,7 +42,7 @@ export function FormField({
           onChange={onChange}
           rows={4}
           required={required}
-          className="w-full resize-none rounded-xl border border-gray-200 bg-white px-4 py-3 text-neutral-900 placeholder-neutral-500 transition-colors focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+          className="w-full resize-none rounded-xl border border-neutral-200 bg-white px-3.5 py-2.5 text-[14px] text-neutral-900 placeholder-neutral-300 transition-colors focus:border-neutral-400 focus:outline-none"
           placeholder={placeholder}
           aria-describedby={`${name}-description`}
         />
@@ -54,7 +54,7 @@ export function FormField({
           value={value}
           onChange={onChange}
           required={required}
-          className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-neutral-900 placeholder-neutral-500 transition-colors focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+          className="w-full rounded-xl border border-neutral-200 bg-white px-3.5 py-2.5 text-[14px] text-neutral-900 placeholder-neutral-300 transition-colors focus:border-neutral-400 focus:outline-none"
           placeholder={placeholder}
           aria-describedby={`${name}-description`}
         />

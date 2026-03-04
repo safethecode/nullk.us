@@ -79,66 +79,64 @@ export default function CoffeeChatPage() {
     },
     [formData, resetForm]
   );
+
   return (
-    <main className="mx-auto max-w-4xl px-8 py-12">
-      <div className="mb-8 text-left">
-        <h1 className="mb-4 font-bold text-4xl text-gray-900">커피챗 요청</h1>
-        <p className="text-gray-600 text-lg">
-          어떤 이야기라도 좋습니다 ⎯ 서로의 경험과 인사이트를 공유하고 싶습니다.
-        </p>
-      </div>
-      <section className="mx-auto w-full">
-        <div className="rounded-3xl border border-gray-100 bg-gradient-to-br from-neutral-50 to-white p-8">
-          <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <FormField
-                name="name"
-                label={FORM_FIELDS.name.label}
-                placeholder={FORM_FIELDS.name.placeholder}
-                required={FORM_FIELDS.name.required}
-                value={formData.name}
-                onChange={handleInputChange}
-              />
-              <FormField
-                name="company"
-                label={FORM_FIELDS.company.label}
-                placeholder={FORM_FIELDS.company.placeholder}
-                required={FORM_FIELDS.company.required}
-                value={formData.company}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <FormField
-                name="email"
-                label={FORM_FIELDS.email.label}
-                placeholder={FORM_FIELDS.email.placeholder}
-                type={FORM_FIELDS.email.type}
-                required={FORM_FIELDS.email.required}
-                value={formData.email}
-                onChange={handleInputChange}
-              />
-              <MeetingTypeField
-                value={formData.meetingType}
-                onChange={handleInputChange}
-              />
-            </div>
-            <FormField
-              name="message"
-              label={FORM_FIELDS.message.label}
-              placeholder={FORM_FIELDS.message.placeholder}
-              type={FORM_FIELDS.message.type}
-              value={formData.message}
-              onChange={handleInputChange}
-            />
-            <div className="w-full pt-4">
-              <AnimatedActionButton type="submit">
-                {isSubmitting ? '전송 중...' : '커피(☕️) 마시기'}
-              </AnimatedActionButton>
-            </div>
-          </form>
+    <main className="mx-auto w-full max-w-[52rem] px-6 py-16 sm:px-8 lg:py-20">
+      <h1 className="mb-2 font-bold text-[2rem] tracking-tight text-neutral-900 sm:text-4xl">
+        커피챗
+      </h1>
+      <p className="mb-12 text-[15px] text-neutral-400">
+        어떤 이야기라도 좋습니다. 서로의 경험과 인사이트를 나눠요.
+      </p>
+
+      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <FormField
+            name="name"
+            label={FORM_FIELDS.name.label}
+            placeholder={FORM_FIELDS.name.placeholder}
+            required={FORM_FIELDS.name.required}
+            value={formData.name}
+            onChange={handleInputChange}
+          />
+          <FormField
+            name="company"
+            label={FORM_FIELDS.company.label}
+            placeholder={FORM_FIELDS.company.placeholder}
+            required={FORM_FIELDS.company.required}
+            value={formData.company}
+            onChange={handleInputChange}
+          />
         </div>
-      </section>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <FormField
+            name="email"
+            label={FORM_FIELDS.email.label}
+            placeholder={FORM_FIELDS.email.placeholder}
+            type={FORM_FIELDS.email.type}
+            required={FORM_FIELDS.email.required}
+            value={formData.email}
+            onChange={handleInputChange}
+          />
+          <MeetingTypeField
+            value={formData.meetingType}
+            onChange={handleInputChange}
+          />
+        </div>
+        <FormField
+          name="message"
+          label={FORM_FIELDS.message.label}
+          placeholder={FORM_FIELDS.message.placeholder}
+          type={FORM_FIELDS.message.type}
+          value={formData.message}
+          onChange={handleInputChange}
+        />
+        <div className="pt-2">
+          <AnimatedActionButton type="submit">
+            {isSubmitting ? '전송 중...' : '커피챗 신청하기'}
+          </AnimatedActionButton>
+        </div>
+      </form>
     </main>
   );
 }

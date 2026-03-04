@@ -3,8 +3,8 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-  --primary: #171717;
+  --foreground: #0a0a0a;
+  --primary: #0a0a0a;
 }
 
 html,
@@ -18,7 +18,7 @@ body {
   background: var(--background);
   ::selection {
     color: white;
-    background-color: var(--primary);
+    background-color: #10b981;
   }
 }
 
@@ -45,13 +45,11 @@ a {
   position: relative;
 }
 
-/* 모바일에서는 장식 요소 숨김 */
 .detail-button-container::before,
 .detail-button-container::after {
   display: none;
 }
 
-/* 데스크톱에서만 장식 요소 표시 */
 @media (min-width: 1024px) {
   .detail-button-container::before {
     display: block;

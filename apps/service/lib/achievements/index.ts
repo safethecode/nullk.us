@@ -11,5 +11,5 @@ export * from './trackers';
 export * from './triggers';
 
 // 매니저와 훅들
-export { achievementManager } from './manager';
+export { getAchievementManager } from './manager';
 export * from './use-achievements';

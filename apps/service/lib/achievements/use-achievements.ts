@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { achievementManager } from './manager';
+import { getAchievementManager } from './manager';
 import type { Achievement, AchievementKey } from './types';
 
 export function useAchievements() {
@@ -11,30 +11,32 @@ export function useAchievements() {
   const [allAchievements, setAllAchievements] = useState<Achievement[]>([]);
 
   useEffect(() => {
-    setUnlockedAchievements(achievementManager.getUnlockedAchievements());
-    setAllAchievements(achievementManager.getAllAchievements());
+    const manager = getAchievementManager();
 
-    const unsubscribe = achievementManager.addListener(() => {
-      setUnlockedAchievements(achievementManager.getUnlockedAchievements());
+    setUnlockedAchievements(manager.getUnlockedAchievements());
+    setAllAchievements(manager.getAllAchievements());
+
+    const unsubscribe = manager.addListener(() => {
+      setUnlockedAchievements(manager.getUnlockedAchievements());
     });
 
     return unsubscribe;
   }, []);
 
   const unlockAchievement = (key: AchievementKey) => {
-    achievementManager.unlockAchievement(key);
+    getAchievementManager().unlockAchievement(key);
   };
 
   const isUnlocked = (key: AchievementKey) => {
-    return achievementManager.isAchievementUnlocked(key);
+    return getAchievementManager().isAchievementUnlocked(key);
   };
 
   const resetAll = () => {
-    achievementManager.resetAll();
+    getAchievementManager().resetAll();
   };
 
   const forceUnlock = (key: AchievementKey) => {
-    achievementManager.forceUnlock(key);
+    getAchievementManager().forceUnlock(key);
   };
 
   return {

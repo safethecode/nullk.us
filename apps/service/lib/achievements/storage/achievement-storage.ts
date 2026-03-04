@@ -1,32 +1,39 @@
 import type { AchievementKey } from '../types';
 import { ACHIEVEMENTS } from '../types';
 
+function getBrowserStorage(): Storage | null {
+  try {
+    const s = globalThis?.window?.localStorage;
+    if (s && typeof s.getItem === 'function') {
+      return s;
+    }
+  } catch {
+    // SSR or Node.js 22+ broken localStorage
+  }
+  return null;
+}
+
 export class AchievementStorage {
   private getAchievementKey(key: AchievementKey): string {
     return `achievement-${key}`;
   }
 
   isUnlocked(key: AchievementKey): boolean {
-    if (typeof window === 'undefined') {
-      return false;
-    }
-    const stored = localStorage.getItem(this.getAchievementKey(key));
+    const stored = getBrowserStorage()?.getItem(this.getAchievementKey(key));
     return stored === 'true';
   }
 
   unlock(key: AchievementKey): void {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(this.getAchievementKey(key), 'true');
-    }
+    getBrowserStorage()?.setItem(this.getAchievementKey(key), 'true');
   }
 
   resetAll(): void {
-    if (typeof window === 'undefined') {
+    const s = getBrowserStorage();
+    if (!s) {
       return;
     }
-
     for (const key of Object.keys(ACHIEVEMENTS)) {
-      localStorage.removeItem(this.getAchievementKey(key as AchievementKey));
+      s.removeItem(this.getAchievementKey(key as AchievementKey));
     }
   }
 

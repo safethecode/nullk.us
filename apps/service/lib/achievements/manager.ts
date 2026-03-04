@@ -144,4 +144,14 @@ class AchievementManager {
   }
 }
 
-export const achievementManager = AchievementManager.getInstance();
+let _manager: AchievementManager | null = null;
+
+export function getAchievementManager(): AchievementManager {
+  if (!_manager) {
+    _manager = AchievementManager.getInstance();
+  }
+  return _manager;
+}
+
+/** @deprecated Use getAchievementManager() instead */
+export const achievementManager = null as unknown as AchievementManager;

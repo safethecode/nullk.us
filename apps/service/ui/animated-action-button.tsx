@@ -41,19 +41,19 @@ export function AnimatedActionButton(props: AnimatedActionButtonProps) {
   const buttonContent = (
     <>
       {children}
-      <div className="relative h-5 w-5 overflow-hidden rounded-full bg-white">
+      <div className="relative h-4 w-4 overflow-hidden">
         <Icon
-          className={`absolute h-5 w-5 text-primary transition-transform duration-300 ${isHovered ? 'translate-x-10' : 'translate-x-0'}`}
+          className={`absolute h-4 w-4 text-white transition-transform duration-300 ${isHovered ? 'translate-x-8' : 'translate-x-0'}`}
         />
         <Icon
-          className={`absolute h-5 w-5 text-primary transition-transform duration-300 ${isHovered ? 'translate-x-0' : '-translate-x-10'}`}
+          className={`absolute h-4 w-4 text-white transition-transform duration-300 ${isHovered ? 'translate-x-0' : '-translate-x-8'}`}
         />
       </div>
     </>
   );
 
   const commonProps = {
-    className: `cursor-pointer flex items-center gap-2 overflow-visible rounded-full bg-primary px-4 py-2 font-medium text-lg text-white! transition-colors duration-200 hover:bg-primary/90 ${className || ''}`,
+    className: `cursor-pointer inline-flex items-center gap-1.5 rounded-full bg-neutral-900 px-4 py-2 text-[13px] font-medium text-white! transition-all duration-200 hover:bg-neutral-800 active:scale-[0.97] ${className || ''}`,
     onMouseEnter: () => setIsHovered(true),
     onMouseLeave: () => setIsHovered(false),
     onClick: handleClick,

@@ -8,29 +8,29 @@ import { Footer } from '@/ui/footer';
 import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
-  title: '삼손(Sam Son) - 프론트엔드 엔지니어',
+  title: '손지민 - Product Builder (FE Specialist, 풀스택)',
   description:
-    '찾을 수 없는 곳에서 보석을 찾는, 5년차 FE 엔지니어, 손지민입니다.',
+    '어떤 도메인에서든 거침없이, 돈을 버는 프로덕트 빌더. 프론트엔드부터 백엔드, 비즈니스까지 전방위 경험을 보유한 풀스택 개발자입니다.',
 
-  keywords: ['프론트엔드 엔지니어', '5년차 FE 엔지니어', '손지민'],
+  keywords: ['프론트엔드 엔지니어', '풀스택 개발자', '프로덕트 빌더', '손지민', 'Product Builder', 'React', 'TypeScript', 'Next.js'],
 
   authors: [{ name: '손지민' }],
 
-  category: '프론트엔드 엔지니어',
+  category: 'Product Builder',
 
   openGraph: {
-    title: '삼손(Sam Son) - 프론트엔드 엔지니어',
+    title: '손지민 - Product Builder (FE Specialist, 풀스택)',
     description:
-      '찾을 수 없는 곳에서 보석을 찾는, 5년차 FE 엔지니어, 손지민입니다.',
+      '어떤 도메인에서든 거침없이, 돈을 버는 프로덕트 빌더. 프론트엔드부터 백엔드, 비즈니스까지 전방위 경험을 보유한 풀스택 개발자입니다.',
     type: 'website',
     locale: 'ko_KR',
-    siteName: '삼손(Sam Son)',
+    siteName: '손지민 Portfolio',
     images: [
       {
         url: '/og/nullk-og-image.png',
         width: 1200,
         height: 630,
-        alt: 'NULLK',
+        alt: '손지민 - Product Builder',
       },
     ],
   },

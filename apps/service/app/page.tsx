@@ -25,7 +25,6 @@ const experiences = [
       'Electron 기반 로컬 앱 개발 (컷편집, 타임라인 트랙, AI 채팅 등)',
       'Golang, FFmpeg 기반 인코딩 서버 구축 · SQS 메시징',
       'CES 2025 라스베가스 대전관 제품 부스 운영 및 해외 네트워크 구축',
-      '라스커 스튜디오 BI/CI 브랜딩 총괄 → Prepix 서비스명 채택',
     ],
     stack: ['React', 'Next.js', 'Golang', 'NestJS', 'Electron', 'TypeScript'],
   },

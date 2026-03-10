@@ -5,7 +5,6 @@ interface AchievementCardProps {
   name: string;
   description: string;
   isUnlocked: boolean;
-  bgColor?: string;
   IconComponent?: React.ComponentType<{ className?: string }>;
 }
 

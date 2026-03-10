@@ -9,7 +9,6 @@ import {
   Mail,
   MapPin,
 } from 'lucide-react';
-import Link from 'next/link';
 import { useState } from 'react';
 
 const experiences = [
@@ -178,7 +177,10 @@ const projects = [
     description:
       '단일 프롬프트를 하위 태스크로 자동 분해하고, 모델 선택·병렬 실행·결과 검증까지 자동화한 터미널 기반 AI 오케스트레이션 시스템',
     link: 'https://github.com/safethecode/orc',
-    highlights: ['앤트로픽 테이크 홈 기준 2,147 사이클 돌파', '추가 개입 없이 AI가 자동으로 판단·실행'],
+    highlights: [
+      '앤트로픽 테이크 홈 기준 2,147 사이클 돌파',
+      '추가 개입 없이 AI가 자동으로 판단·실행',
+    ],
     status: 'ongoing' as const,
   },
   {
@@ -187,14 +189,18 @@ const projects = [
     period: '2026.01',
     description: '포화된 두쫀쿠 유행 속 수치화를 위한 종합지수',
     link: 'https://djjk-web.vercel.app/',
-    highlights: ['네이버 검색 API 및 인스타 데이터 활용', 'Cron 기반 카페별 주가 트레이딩'],
+    highlights: [
+      '네이버 검색 API 및 인스타 데이터 활용',
+      'Cron 기반 카페별 주가 트레이딩',
+    ],
     status: 'completed' as const,
   },
   {
     title: '핏짜',
     subtitle: '개발자를 위한 뉴스레터',
     period: '2023.09 ~ 2024.12',
-    description: 'IT 직군 종사자를 위해 매주 월요일 IT 이슈·스타트업 소식을 전하는 뉴스레터',
+    description:
+      'IT 직군 종사자를 위해 매주 월요일 IT 이슈·스타트업 소식을 전하는 뉴스레터',
     link: 'https://tzza.xyz',
     highlights: ['구독자 657명 달성', '콘텐츠 큐레이션 및 발행 운영'],
     status: 'completed' as const,
@@ -222,61 +228,128 @@ const projects = [
 ];
 
 const skills = {
-  Frontend: ['React', 'React Native', 'TypeScript', 'Next.js', 'Sass', 'Styled-Components'],
+  Frontend: [
+    'React',
+    'React Native',
+    'TypeScript',
+    'Next.js',
+    'Sass',
+    'Styled-Components',
+  ],
   Backend: ['NestJS', 'Golang', 'MongoDB', 'MariaDB', 'Supabase'],
   'State & Tools': ['Redux', 'Redux Saga', 'Recoil', 'Electron'],
   Infra: ['AWS (S3·EC2·Fargate)', 'FFmpeg', 'Docker'],
 };
 
-const domains = ['이커머스', '금융', 'SaaS', 'B2B', '방송·엔터테인먼트', 'AI·ML'];
+const domains = [
+  '이커머스',
+  '금융',
+  'SaaS',
+  'B2B',
+  '방송·엔터테인먼트',
+  'AI·ML',
+];
 
 const awards = [
-  { title: '2023 서울대학교 예비창업패키지 선정', org: '서울대학교', year: '2023', note: '사업비 약 4,000만원' },
+  {
+    title: '2023 서울대학교 예비창업패키지 선정',
+    org: '서울대학교',
+    year: '2023',
+    note: '사업비 약 4,000만원',
+  },
   { title: '컴업 2023 아카데미 리그 선발', org: 'COMEUP', year: '2023' },
-  { title: '제12회 청년기업가대회 본선 진출', org: '', year: '2023', note: '유일한 예비창업자' },
-  { title: '제주 스마트관광 빅데이터 해커톤 공학교육혁신센터장상', org: '제주대학교', year: '2022' },
-  { title: '제20회 앱잼(APPJAM) 생활 부문 우수상', org: '중소벤처기업부 / SK플래닛', year: '2021' },
-  { title: '제2회 한국공항공사 고교생 창업 경진대회 최우수상', org: '한국공항공사', year: '2021', note: '118개 팀 중 최고상' },
-  { title: '제7회 부산 창업 아이디어 경진대회 한국남부발전사장상', org: '한국남부발전', year: '2021' },
-  { title: 'JunctionX Global Hackathon Track Winner (2nd)', org: 'JunctionX', year: '2020' },
-  { title: '제10회 e-ICON 세계대회 스마트교육학회장상', org: '스마트교육학회', year: '2020' },
-  { title: '제4회 정부혁신제안 끝장개발대회 정부혁신전략추진단상', org: '행정안전부', year: '2020' },
+  {
+    title: '제12회 청년기업가대회 본선 진출',
+    org: '',
+    year: '2023',
+    note: '유일한 예비창업자',
+  },
+  {
+    title: '제주 스마트관광 빅데이터 해커톤 공학교육혁신센터장상',
+    org: '제주대학교',
+    year: '2022',
+  },
+  {
+    title: '제20회 앱잼(APPJAM) 생활 부문 우수상',
+    org: '중소벤처기업부 / SK플래닛',
+    year: '2021',
+  },
+  {
+    title: '제2회 한국공항공사 고교생 창업 경진대회 최우수상',
+    org: '한국공항공사',
+    year: '2021',
+    note: '118개 팀 중 최고상',
+  },
+  {
+    title: '제7회 부산 창업 아이디어 경진대회 한국남부발전사장상',
+    org: '한국남부발전',
+    year: '2021',
+  },
+  {
+    title: 'JunctionX Global Hackathon Track Winner (2nd)',
+    org: 'JunctionX',
+    year: '2020',
+  },
+  {
+    title: '제10회 e-ICON 세계대회 스마트교육학회장상',
+    org: '스마트교육학회',
+    year: '2020',
+  },
+  {
+    title: '제4회 정부혁신제안 끝장개발대회 정부혁신전략추진단상',
+    org: '행정안전부',
+    year: '2020',
+  },
   { title: '제7회 선린 해커톤 금상', org: '선린인터넷고등학교', year: '2021' },
-  { title: '2018년 제주 블록체인 해커톤 우수상', org: '제주창조경제혁신센터', year: '2018' },
+  {
+    title: '2018년 제주 블록체인 해커톤 우수상',
+    org: '제주창조경제혁신센터',
+    year: '2018',
+  },
 ];
 
 const statusConfig = {
-  ongoing: { label: '진행 중', className: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-  completed: { label: '완료', className: 'bg-neutral-50 text-neutral-600 border-neutral-200' },
+  ongoing: {
+    label: '진행 중',
+    className: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  },
+  completed: {
+    label: '완료',
+    className: 'bg-neutral-50 text-neutral-600 border-neutral-200',
+  },
 };
 
 export default function Home() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showAllExperiences, setShowAllExperiences] = useState(false);
 
-  const visibleExperiences = showAllExperiences ? experiences : experiences.slice(0, 6);
+  const visibleExperiences = showAllExperiences
+    ? experiences
+    : experiences.slice(0, 6);
 
   return (
     <main className="mx-auto w-full max-w-[52rem] px-6 py-16 sm:px-8 lg:py-20">
       {/* ── Hero ── */}
       <section className="mb-20">
-        <h1 className="mb-3 font-bold text-[2.75rem] leading-[1.1] tracking-tight text-neutral-900 sm:text-6xl">
+        <h1 className="mb-3 font-bold text-[2.75rem] text-neutral-900 leading-[1.1] tracking-tight sm:text-6xl">
           손지민
         </h1>
         <p className="mb-5 text-lg text-neutral-500 sm:text-xl">
-          Product Builder{' '}
-          <span className="text-neutral-300">·</span>{' '}
-          FE Specialist, 풀스택
+          Product Builder <span className="text-neutral-300">·</span> FE
+          Specialist, 풀스택
         </p>
 
-        <p className="mb-8 max-w-lg text-[15px] leading-relaxed text-neutral-600">
+        <p className="mb-8 max-w-lg text-[15px] text-neutral-600 leading-relaxed">
           어떤 도메인이든 본질만을 고민하며, 결국 성과를 만들어 냅니다.
           <br />
           본질을 위해 끊임없이 질문하고, 끝내 만들어 냅니다.
         </p>
 
         <div className="mb-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-neutral-400">
-          <a href="mailto:sam@nullk.us" className="flex items-center gap-1.5 transition-colors hover:text-neutral-900">
+          <a
+            href="mailto:sam@nullk.us"
+            className="flex items-center gap-1.5 transition-colors hover:text-neutral-900"
+          >
             <Mail className="h-3.5 w-3.5" />
             sam@nullk.us
           </a>
@@ -327,9 +400,16 @@ export default function Home() {
               body: 'AI 시대, 사람의 무기는 경험입니다. 걸어보지 못한 길도 동료들과 함께 부딪히며 헤쳐나갑니다.',
             },
           ].map((item) => (
-            <div key={item.quote} className="border-l-2 border-neutral-200 pl-5 transition-colors hover:border-neutral-900">
-              <p className="mb-1 font-semibold text-[15px] text-neutral-900">{item.quote}</p>
-              <p className="text-[13px] leading-relaxed text-neutral-400">{item.body}</p>
+            <div
+              key={item.quote}
+              className="border-neutral-200 border-l-2 pl-5 transition-colors hover:border-neutral-900"
+            >
+              <p className="mb-1 font-semibold text-[15px] text-neutral-900">
+                {item.quote}
+              </p>
+              <p className="text-[13px] text-neutral-400 leading-relaxed">
+                {item.body}
+              </p>
             </div>
           ))}
         </div>
@@ -351,18 +431,26 @@ export default function Home() {
                   onClick={() => setExpandedId(isExpanded ? null : exp.id)}
                   className="flex w-full items-start gap-4 px-5 py-4 text-left sm:items-center sm:px-6"
                 >
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-neutral-50 text-[11px] font-bold text-neutral-400 transition-colors group-hover:bg-neutral-100">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-neutral-50 font-bold text-[11px] text-neutral-400 transition-colors group-hover:bg-neutral-100">
                     {exp.company.replace(/[()주]/g, '').slice(0, 2)}
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-                      <h3 className="font-semibold text-[15px] text-neutral-900">{exp.company}</h3>
-                      <span className="text-[13px] text-neutral-400">{exp.role}</span>
+                      <h3 className="font-semibold text-[15px] text-neutral-900">
+                        {exp.company}
+                      </h3>
+                      <span className="text-[13px] text-neutral-400">
+                        {exp.role}
+                      </span>
                     </div>
-                    <p className="mt-0.5 text-[13px] text-neutral-500">{exp.summary}</p>
+                    <p className="mt-0.5 text-[13px] text-neutral-500">
+                      {exp.summary}
+                    </p>
                   </div>
                   <div className="flex flex-shrink-0 flex-col items-end gap-1">
-                    <span className="hidden text-[12px] text-neutral-400 sm:block">{exp.period}</span>
+                    <span className="hidden text-[12px] text-neutral-400 sm:block">
+                      {exp.period}
+                    </span>
                     <ChevronDown
                       className={`h-4 w-4 text-neutral-300 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
                     />
@@ -370,11 +458,16 @@ export default function Home() {
                 </button>
 
                 {isExpanded && (
-                  <div className="border-t border-neutral-50 px-5 pb-5 pt-4 sm:px-6">
-                    <p className="mb-3 text-[12px] text-neutral-400 sm:hidden">{exp.period}</p>
+                  <div className="border-neutral-50 border-t px-5 pt-4 pb-5 sm:px-6">
+                    <p className="mb-3 text-[12px] text-neutral-400 sm:hidden">
+                      {exp.period}
+                    </p>
                     <ul className="space-y-1.5">
                       {exp.highlights.map((h, i) => (
-                        <li key={i} className="flex gap-2 text-[13px] leading-relaxed text-neutral-600">
+                        <li
+                          key={i}
+                          className="flex gap-2 text-[13px] text-neutral-600 leading-relaxed"
+                        >
                           <span className="mt-[7px] h-1 w-1 flex-shrink-0 rounded-full bg-neutral-300" />
                           {h}
                         </li>
@@ -385,7 +478,7 @@ export default function Home() {
                         {exp.stack.map((tech) => (
                           <span
                             key={tech}
-                            className="rounded-md bg-neutral-50 px-2 py-0.5 text-[11px] font-medium text-neutral-500"
+                            className="rounded-md bg-neutral-50 px-2 py-0.5 font-medium text-[11px] text-neutral-500"
                           >
                             {tech}
                           </span>
@@ -403,7 +496,7 @@ export default function Home() {
           <button
             type="button"
             onClick={() => setShowAllExperiences(true)}
-            className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-xl border border-dashed border-neutral-200 py-3 text-[13px] font-medium text-neutral-400 transition-colors hover:border-neutral-300 hover:text-neutral-600"
+            className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-xl border border-neutral-200 border-dashed py-3 font-medium text-[13px] text-neutral-400 transition-colors hover:border-neutral-300 hover:text-neutral-600"
           >
             나머지 {experiences.length - 6}개 경력 더 보기
             <ChevronDown className="h-3.5 w-3.5" />
@@ -427,31 +520,40 @@ export default function Home() {
                     <h3 className="font-semibold text-[15px] text-neutral-900 transition-colors group-hover:text-neutral-700">
                       {project.title}
                     </h3>
-                    <p className="text-[12px] text-neutral-400">{project.subtitle}</p>
+                    <p className="text-[12px] text-neutral-400">
+                      {project.subtitle}
+                    </p>
                   </div>
-                  <span className={`flex-shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-medium ${status.className}`}>
+                  <span
+                    className={`flex-shrink-0 rounded-full border px-2 py-0.5 font-medium text-[11px] ${status.className}`}
+                  >
                     {status.label}
                   </span>
                 </div>
-                <p className="mb-3 flex-1 text-[13px] leading-relaxed text-neutral-500">
+                <p className="mb-3 flex-1 text-[13px] text-neutral-500 leading-relaxed">
                   {project.description}
                 </p>
                 <div className="mb-3 space-y-1">
                   {project.highlights.map((h, i) => (
-                    <p key={i} className="flex gap-1.5 text-[12px] text-neutral-400">
+                    <p
+                      key={i}
+                      className="flex gap-1.5 text-[12px] text-neutral-400"
+                    >
                       <span className="mt-[5px] h-1 w-1 flex-shrink-0 rounded-full bg-neutral-200" />
                       {h}
                     </p>
                   ))}
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[12px] text-neutral-300">{project.period}</span>
+                  <span className="text-[12px] text-neutral-300">
+                    {project.period}
+                  </span>
                   {project.link && (
                     <a
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-0.5 text-[12px] font-medium text-neutral-400 transition-colors hover:text-neutral-900"
+                      className="flex items-center gap-0.5 font-medium text-[12px] text-neutral-400 transition-colors hover:text-neutral-900"
                     >
                       보기
                       <ArrowUpRight className="h-3 w-3" />
@@ -470,14 +572,14 @@ export default function Home() {
         <div className="space-y-5">
           {Object.entries(skills).map(([category, items]) => (
             <div key={category}>
-              <p className="mb-2 text-[12px] font-medium uppercase tracking-wider text-neutral-400">
+              <p className="mb-2 font-medium text-[12px] text-neutral-400 uppercase tracking-wider">
                 {category}
               </p>
               <div className="flex flex-wrap gap-1.5">
                 {items.map((skill) => (
                   <span
                     key={skill}
-                    className="rounded-lg border border-neutral-100 bg-white px-3 py-1.5 text-[13px] font-medium text-neutral-700 transition-colors hover:border-neutral-200 hover:bg-neutral-50"
+                    className="rounded-lg border border-neutral-100 bg-white px-3 py-1.5 font-medium text-[13px] text-neutral-700 transition-colors hover:border-neutral-200 hover:bg-neutral-50"
                   >
                     {skill}
                   </span>
@@ -486,7 +588,7 @@ export default function Home() {
             </div>
           ))}
           <div>
-            <p className="mb-2 text-[12px] font-medium uppercase tracking-wider text-neutral-400">
+            <p className="mb-2 font-medium text-[12px] text-neutral-400 uppercase tracking-wider">
               산업 지식
             </p>
             <div className="flex flex-wrap gap-1.5">
@@ -512,11 +614,13 @@ export default function Home() {
               key={award.title}
               className="flex items-start gap-3 rounded-xl border border-neutral-100 px-4 py-3 transition-shadow hover:shadow-sm"
             >
-              <span className="mt-0.5 flex-shrink-0 text-[12px] font-medium text-neutral-300">
+              <span className="mt-0.5 flex-shrink-0 font-medium text-[12px] text-neutral-300">
                 {award.year}
               </span>
               <div className="min-w-0">
-                <p className="text-[13px] font-medium leading-snug text-neutral-800">{award.title}</p>
+                <p className="font-medium text-[13px] text-neutral-800 leading-snug">
+                  {award.title}
+                </p>
                 {(award.org || award.note) && (
                   <p className="mt-0.5 text-[12px] text-neutral-400">
                     {[award.org, award.note].filter(Boolean).join(' · ')}
@@ -535,10 +639,16 @@ export default function Home() {
           <div className="rounded-2xl border border-neutral-100 p-5">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h3 className="font-semibold text-[15px] text-neutral-900">선린인터넷고등학교</h3>
-                <p className="text-[13px] text-neutral-500">IT경영 · 멀티미디어</p>
+                <h3 className="font-semibold text-[15px] text-neutral-900">
+                  선린인터넷고등학교
+                </h3>
+                <p className="text-[13px] text-neutral-500">
+                  IT경영 · 멀티미디어
+                </p>
               </div>
-              <span className="text-[12px] text-neutral-400">2019.03 ~ 2022.02</span>
+              <span className="text-[12px] text-neutral-400">
+                2019.03 ~ 2022.02
+              </span>
             </div>
             <ul className="mt-3 space-y-1">
               <li className="flex gap-2 text-[13px] text-neutral-500">
@@ -555,10 +665,17 @@ export default function Home() {
           <div className="rounded-2xl border border-neutral-100 p-5">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h3 className="font-semibold text-[15px] text-neutral-900">AI / SW엔지니어 트랙 프로젝트 코치</h3>
-                <p className="text-[13px] text-neutral-500">엘리스 KDT 프로그램 · SW 엔지니어 트랙 1기 최우수 코치 (평점 5.0)</p>
+                <h3 className="font-semibold text-[15px] text-neutral-900">
+                  AI / SW엔지니어 트랙 프로젝트 코치
+                </h3>
+                <p className="text-[13px] text-neutral-500">
+                  엘리스 KDT 프로그램 · SW 엔지니어 트랙 1기 최우수 코치 (평점
+                  5.0)
+                </p>
               </div>
-              <span className="flex-shrink-0 text-[12px] text-neutral-400">2021.11 ~ 2023.01</span>
+              <span className="flex-shrink-0 text-[12px] text-neutral-400">
+                2021.11 ~ 2023.01
+              </span>
             </div>
             <ul className="mt-3 space-y-1">
               <li className="flex gap-2 text-[13px] text-neutral-500">
@@ -567,7 +684,8 @@ export default function Home() {
               </li>
               <li className="flex gap-2 text-[13px] text-neutral-500">
                 <span className="mt-[7px] h-1 w-1 flex-shrink-0 rounded-full bg-neutral-300" />
-                소프트웨어 마에스트로 수강생 320명 대상 웹 기초 사전학습 및 커리어 코칭
+                소프트웨어 마에스트로 수강생 320명 대상 웹 기초 사전학습 및
+                커리어 코칭
               </li>
             </ul>
           </div>
@@ -575,12 +693,16 @@ export default function Home() {
           <div className="rounded-2xl border border-neutral-100 p-5">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h3 className="font-semibold text-[15px] text-neutral-900">Quiet, AI Agent · Unnoticed</h3>
+                <h3 className="font-semibold text-[15px] text-neutral-900">
+                  Quiet, AI Agent · Unnoticed
+                </h3>
                 <p className="text-[13px] text-neutral-500">
                   AI-Agent를 가장 티 안 나게 쓰는 커뮤니티
                 </p>
               </div>
-              <span className="flex-shrink-0 text-[12px] text-neutral-400">2026.01 ~ 진행 중</span>
+              <span className="flex-shrink-0 text-[12px] text-neutral-400">
+                2026.01 ~ 진행 중
+              </span>
             </div>
           </div>
         </div>
@@ -591,12 +713,20 @@ export default function Home() {
         <SectionHeader>함께한 곳들</SectionHeader>
         <div className="flex flex-wrap gap-2">
           {[
-            '라스커', '센드버드', '리플에이아이', '플라스크', '오늘의꽃',
-            '스카이랩스', '러너스컴퍼니', '로랩스', '라틀라스', '비긴메이트',
+            '라스커',
+            '센드버드',
+            '리플에이아이',
+            '플라스크',
+            '오늘의꽃',
+            '스카이랩스',
+            '러너스컴퍼니',
+            '로랩스',
+            '라틀라스',
+            '비긴메이트',
           ].map((name) => (
             <span
               key={name}
-              className="rounded-lg border border-neutral-100 px-3 py-1.5 text-[13px] font-medium text-neutral-500 transition-colors hover:border-neutral-200 hover:text-neutral-700"
+              className="rounded-lg border border-neutral-100 px-3 py-1.5 font-medium text-[13px] text-neutral-500 transition-colors hover:border-neutral-200 hover:text-neutral-700"
             >
               {name}
             </span>

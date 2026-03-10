@@ -152,6 +152,3 @@ export function getAchievementManager(): AchievementManager {
   }
   return _manager;
 }
-
-/** @deprecated Use getAchievementManager() instead */
-export const achievementManager = null as unknown as AchievementManager;

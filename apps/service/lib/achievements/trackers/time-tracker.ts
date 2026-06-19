@@ -5,7 +5,7 @@ export class TimeTracker {
   private startTime = 0;
   private intervalId: NodeJS.Timeout | null = null;
 
-  private onTimeUpdate: TimeUpdateCallback;
+  private readonly onTimeUpdate: TimeUpdateCallback;
 
   constructor(onTimeUpdate: TimeUpdateCallback) {
     this.onTimeUpdate = onTimeUpdate;

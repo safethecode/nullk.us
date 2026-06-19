@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from './constants';
-import type { SuccessResponseData, ValidationError } from './types';
+import { NextResponse } from "next/server";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "./constants";
+import type { SuccessResponseData, ValidationError } from "./types";
 
 export function createErrorResponse(errors: ValidationError[], status = 400) {
   return NextResponse.json(
@@ -30,10 +30,10 @@ export function createSuccessResponse(data: SuccessResponseData) {
 }
 
 export function formatKoreanDate(): string {
-  return new Date().toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    weekday: 'long',
+  return new Date().toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "long",
   });
 }

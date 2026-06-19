@@ -1,3 +1,15 @@
-<svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M2 -8.74228e-08C2 27 7 32 34 32L34 34L0 34L-1.48619e-06 0L2 -8.74228e-08Z" fill="white"/>
+<svg
+  fill="none"
+  height="34"
+  viewBox="0 0 34 34"
+  width="34"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title>Side rounded mask</title>
+  <path
+    clip-rule="evenodd"
+    d="M2 -8.74228e-08C2 27 7 32 34 32L34 34L0 34L-1.48619e-06 0L2 -8.74228e-08Z"
+    fill="white"
+    fill-rule="evenodd"
+  />
 </svg>

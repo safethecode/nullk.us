@@ -1,22 +1,23 @@
-'use client';
-import { showAchievementToast } from '@/ui/achievement-sonner-toast';
-import { AchievementStorage } from './storage';
-import { ScrollTracker, TimeTracker } from './trackers';
+"use client";
+import { showAchievementToast } from "@/ui/achievement-sonner-toast";
+import { AchievementStorage } from "./storage/achievement-storage";
+import { ScrollTracker } from "./trackers/scroll-tracker";
+import { TimeTracker } from "./trackers/time-tracker";
 import {
   type AchievementTrigger,
   createScrollTrigger,
   createTimeTrigger,
-  triggerRegistry,
-} from './triggers';
-import type { Achievement, AchievementKey } from './types';
-import { ACHIEVEMENTS } from './types';
+} from "./triggers/achievement-triggers";
+import { triggerRegistry } from "./triggers/trigger-registry";
+import type { Achievement, AchievementKey } from "./types/achievement";
+import { ACHIEVEMENTS } from "./types/achievement";
 
 class AchievementManager {
   private static instance: AchievementManager;
-  private listeners: Set<() => void> = new Set();
-  private storage: AchievementStorage;
-  private scrollTracker: ScrollTracker;
-  private timeTracker: TimeTracker;
+  private readonly listeners: Set<() => void> = new Set();
+  private readonly storage: AchievementStorage;
+  private readonly scrollTracker: ScrollTracker;
+  private readonly timeTracker: TimeTracker;
 
   private constructor() {
     this.storage = new AchievementStorage();
@@ -30,8 +31,8 @@ class AchievementManager {
     const scrollTrigger = createScrollTrigger();
     const timeTrigger = createTimeTrigger();
 
-    triggerRegistry.register('scroll', scrollTrigger, 'scroll');
-    triggerRegistry.register('time', timeTrigger, 'time');
+    triggerRegistry.register("scroll", scrollTrigger, "scroll");
+    triggerRegistry.register("time", timeTrigger, "time");
   }
 
   static getInstance(): AchievementManager {
@@ -46,7 +47,7 @@ class AchievementManager {
     this.timeTracker.start();
   }
 
-  private handleScrollProgress = (percent: number): void => {
+  private readonly handleScrollProgress = (percent: number): void => {
     const unlockedAchievements = triggerRegistry.checkScrollTriggers(
       percent,
       this.storage
@@ -56,7 +57,7 @@ class AchievementManager {
     }
   };
 
-  private handleTimeUpdate = (seconds: number): void => {
+  private readonly handleTimeUpdate = (seconds: number): void => {
     const unlockedAchievements = triggerRegistry.checkTimeTriggers(
       seconds,
       this.storage
@@ -126,7 +127,7 @@ class AchievementManager {
   registerTrigger(
     name: string,
     trigger: AchievementTrigger,
-    type: 'scroll' | 'time' = 'scroll'
+    type: "scroll" | "time" = "scroll"
   ): void {
     triggerRegistry.register(name, trigger, type);
   }

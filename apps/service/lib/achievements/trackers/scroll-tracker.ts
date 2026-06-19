@@ -4,38 +4,38 @@ export class ScrollTracker {
   private isTracking = false;
   private ticking = false;
 
-  private onProgress: ScrollProgressCallback;
+  private readonly onProgress: ScrollProgressCallback;
 
   constructor(onProgress: ScrollProgressCallback) {
     this.onProgress = onProgress;
   }
 
   start(): void {
-    if (typeof window === 'undefined' || this.isTracking) {
+    if (typeof window === "undefined" || this.isTracking) {
       return;
     }
 
     this.isTracking = true;
-    window.addEventListener('scroll', this.handleScroll, { passive: true });
+    window.addEventListener("scroll", this.handleScroll, { passive: true });
   }
 
   stop(): void {
-    if (typeof window === 'undefined' || !this.isTracking) {
+    if (typeof window === "undefined" || !this.isTracking) {
       return;
     }
 
     this.isTracking = false;
-    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener("scroll", this.handleScroll);
   }
 
-  private handleScroll = (): void => {
+  private readonly handleScroll = (): void => {
     if (!this.ticking) {
       requestAnimationFrame(this.updateScrollProgress);
       this.ticking = true;
     }
   };
 
-  private updateScrollProgress = (): void => {
+  private readonly updateScrollProgress = (): void => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const docHeight =
       document.documentElement.scrollHeight - window.innerHeight;

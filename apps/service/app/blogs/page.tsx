@@ -1,9 +1,9 @@
-import { AnimatedActionButton } from '@/ui/animated-action-button';
+import { AnimatedActionButton } from "@/ui/animated-action-button";
 
 export default function BlogsPage() {
   return (
     <main className="mx-auto w-full max-w-[52rem] px-6 py-16 sm:px-8 lg:py-20">
-      <h1 className="mb-2 font-bold text-[2rem] tracking-tight text-neutral-900 sm:text-4xl">
+      <h1 className="mb-2 font-bold text-[2rem] text-neutral-900 tracking-tight sm:text-4xl">
         블로그
       </h1>
       <p className="mb-12 text-[15px] text-neutral-400">
@@ -14,12 +14,10 @@ export default function BlogsPage() {
         <p className="mb-1 font-semibold text-[15px] text-neutral-900">
           곧 찾아뵙겠습니다
         </p>
-        <p className="mb-8 text-[13px] leading-relaxed text-neutral-400">
+        <p className="mb-8 text-[13px] text-neutral-400 leading-relaxed">
           더 나은 콘텐츠로 준비 중입니다.
         </p>
-        <AnimatedActionButton href="/">
-          홈으로 돌아가기
-        </AnimatedActionButton>
+        <AnimatedActionButton href="/">홈으로 돌아가기</AnimatedActionButton>
       </section>
     </main>
   );

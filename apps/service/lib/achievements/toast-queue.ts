@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import type React from 'react';
-import { toast } from 'sonner';
+import type React from "react";
+import { toast } from "sonner";
 
 interface ToastItem {
-  id: string;
-  title: string;
-  subtitle: string;
+  bgColor?: string;
   icon?: React.ReactNode;
   iconColor?: string;
-  bgColor?: string;
+  id: string;
+  subtitle: string;
+  title: string;
 }
 
 class ToastQueue {
@@ -27,10 +27,10 @@ class ToastQueue {
     return ToastQueue.instance;
   }
 
-  addToast(item: Omit<ToastItem, 'id'>): void {
+  addToast(item: Omit<ToastItem, "id">): void {
     const toastItem: ToastItem = {
       ...item,
-      id: `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id: `toast-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
     };
 
     this.queue.push(toastItem);
@@ -64,11 +64,11 @@ class ToastQueue {
     this.isProcessing = false;
   }
 
-  private async showToast(item: ToastItem): Promise<void> {
+  private showToast(item: ToastItem): Promise<void> {
     return new Promise((resolve) => {
-      const React = require('react');
+      const React = require("react");
       const AchievementSonnerToast =
-        require('@/ui/achievement-sonner-toast').default;
+        require("@/ui/achievement-sonner-toast").default;
 
       const toastId = toast.custom(
         () =>

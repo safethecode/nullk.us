@@ -1,5 +1,7 @@
-'use client';
+"use client";
 
+import { ArrowUpRight, ChevronDown, Mail, MapPin } from "lucide-react";
+import { useState } from "react";
 import {
   AWARDS,
   DOMAINS,
@@ -7,17 +9,9 @@ import {
   PROJECTS,
   SKILLS,
   STATUS_CONFIG,
-} from '@/lib/home/constants';
-import { AnimatedActionButton } from '@/ui/animated-action-button';
-import {
-  ArrowUpRight,
-  ChevronDown,
-  Github,
-  Linkedin,
-  Mail,
-  MapPin,
-} from 'lucide-react';
-import { useState } from 'react';
+} from "@/lib/home/constants";
+import { AnimatedActionButton } from "@/ui/animated-action-button";
+import { GitHubIcon, LinkedInIcon } from "@/ui/social-icons";
 
 export default function Home() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -47,28 +41,28 @@ export default function Home() {
 
         <div className="mb-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-neutral-400">
           <a
-            href="mailto:sam@nullk.us"
             className="flex items-center gap-1.5 transition-colors hover:text-neutral-900"
+            href="mailto:sam@nullk.us"
           >
             <Mail className="h-3.5 w-3.5" />
             sam@nullk.us
           </a>
           <a
-            href="https://github.com/safethecode"
-            target="_blank"
-            rel="noopener noreferrer"
             className="flex items-center gap-1.5 transition-colors hover:text-neutral-900"
+            href="https://github.com/safethecode"
+            rel="noopener noreferrer"
+            target="_blank"
           >
-            <Github className="h-3.5 w-3.5" />
+            <GitHubIcon className="h-3.5 w-3.5" />
             GitHub
           </a>
           <a
-            href="https://linkedin.com/in/safethecode"
-            target="_blank"
-            rel="noopener noreferrer"
             className="flex items-center gap-1.5 transition-colors hover:text-neutral-900"
+            href="https://linkedin.com/in/safethecode"
+            rel="noopener noreferrer"
+            target="_blank"
           >
-            <Linkedin className="h-3.5 w-3.5" />
+            <LinkedInIcon className="h-3.5 w-3.5" />
             LinkedIn
           </a>
           <span className="flex items-center gap-1.5">
@@ -88,21 +82,21 @@ export default function Home() {
         <div className="space-y-6">
           {[
             {
-              quote: '경쟁사가 가장 무서워 할 무기입니다.',
-              body: '어떤 도메인이든 본질만을 고민하며, 결국 성과를 만들어 냅니다.',
+              quote: "경쟁사가 가장 무서워 할 무기입니다.",
+              body: "어떤 도메인이든 본질만을 고민하며, 결국 성과를 만들어 냅니다.",
             },
             {
-              quote: '어떤 조직에서도 분위기 메이커입니다.',
-              body: '억지 공감, 억지 대화는 하지 않습니다. 팀원 모두가 진짜로 웃을 수 있는 자리를 만듭니다.',
+              quote: "어떤 조직에서도 분위기 메이커입니다.",
+              body: "억지 공감, 억지 대화는 하지 않습니다. 팀원 모두가 진짜로 웃을 수 있는 자리를 만듭니다.",
             },
             {
-              quote: '경험으로 싸우는 사람입니다.',
-              body: 'AI 시대, 사람의 무기는 경험입니다. 걸어보지 못한 길도 동료들과 함께 부딪히며 헤쳐나갑니다.',
+              quote: "경험으로 싸우는 사람입니다.",
+              body: "AI 시대, 사람의 무기는 경험입니다. 걸어보지 못한 길도 동료들과 함께 부딪히며 헤쳐나갑니다.",
             },
           ].map((item) => (
             <div
-              key={item.quote}
               className="border-neutral-200 border-l-2 pl-5 transition-colors hover:border-neutral-900"
+              key={item.quote}
             >
               <p className="mb-1 font-semibold text-[15px] text-neutral-900">
                 {item.quote}
@@ -123,16 +117,16 @@ export default function Home() {
             const isExpanded = expandedId === exp.id;
             return (
               <div
-                key={exp.id}
                 className="group rounded-2xl border border-neutral-100 bg-white transition-all hover:border-neutral-200 hover:shadow-sm"
+                key={exp.id}
               >
                 <button
-                  type="button"
-                  onClick={() => setExpandedId(isExpanded ? null : exp.id)}
                   className="flex w-full items-start gap-4 px-5 py-4 text-left sm:items-center sm:px-6"
+                  onClick={() => setExpandedId(isExpanded ? null : exp.id)}
+                  type="button"
                 >
                   <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-neutral-50 font-bold text-[11px] text-neutral-400 transition-colors group-hover:bg-neutral-100">
-                    {exp.company.replace(/[()주]/g, '').slice(0, 2)}
+                    {exp.company.replace(/[()주]/g, "").slice(0, 2)}
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
@@ -152,7 +146,7 @@ export default function Home() {
                       {exp.period}
                     </span>
                     <ChevronDown
-                      className={`h-4 w-4 text-neutral-300 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+                      className={`h-4 w-4 text-neutral-300 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
                     />
                   </div>
                 </button>
@@ -163,10 +157,10 @@ export default function Home() {
                       {exp.period}
                     </p>
                     <ul className="space-y-1.5">
-                      {exp.highlights.map((h, i) => (
+                      {exp.highlights.map((h) => (
                         <li
-                          key={i}
                           className="flex gap-2 text-[13px] text-neutral-600 leading-relaxed"
+                          key={h}
                         >
                           <span className="mt-[7px] h-1 w-1 flex-shrink-0 rounded-full bg-neutral-300" />
                           {h}
@@ -177,8 +171,8 @@ export default function Home() {
                       <div className="mt-4 flex flex-wrap gap-1.5">
                         {exp.stack.map((tech) => (
                           <span
-                            key={tech}
                             className="rounded-md bg-neutral-50 px-2 py-0.5 font-medium text-[11px] text-neutral-500"
+                            key={tech}
                           >
                             {tech}
                           </span>
@@ -194,9 +188,9 @@ export default function Home() {
 
         {!showAllExperiences && EXPERIENCES.length > 6 && (
           <button
-            type="button"
-            onClick={() => setShowAllExperiences(true)}
             className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-xl border border-neutral-200 border-dashed py-3 font-medium text-[13px] text-neutral-400 transition-colors hover:border-neutral-300 hover:text-neutral-600"
+            onClick={() => setShowAllExperiences(true)}
+            type="button"
           >
             나머지 {EXPERIENCES.length - 6}개 경력 더 보기
             <ChevronDown className="h-3.5 w-3.5" />
@@ -212,8 +206,8 @@ export default function Home() {
             const status = STATUS_CONFIG[project.status];
             return (
               <div
-                key={project.title}
                 className="group flex flex-col rounded-2xl border border-neutral-100 p-5 transition-all hover:border-neutral-200 hover:shadow-sm"
+                key={project.title}
               >
                 <div className="mb-3 flex items-start justify-between gap-2">
                   <div>
@@ -234,10 +228,10 @@ export default function Home() {
                   {project.description}
                 </p>
                 <div className="mb-3 space-y-1">
-                  {project.highlights.map((h, i) => (
+                  {project.highlights.map((h) => (
                     <p
-                      key={i}
                       className="flex gap-1.5 text-[12px] text-neutral-400"
+                      key={h}
                     >
                       <span className="mt-[5px] h-1 w-1 flex-shrink-0 rounded-full bg-neutral-200" />
                       {h}
@@ -250,10 +244,10 @@ export default function Home() {
                   </span>
                   {project.link && (
                     <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
                       className="flex items-center gap-0.5 font-medium text-[12px] text-neutral-400 transition-colors hover:text-neutral-900"
+                      href={project.link}
+                      rel="noopener noreferrer"
+                      target="_blank"
                     >
                       보기
                       <ArrowUpRight className="h-3 w-3" />
@@ -278,8 +272,8 @@ export default function Home() {
               <div className="flex flex-wrap gap-1.5">
                 {items.map((skill) => (
                   <span
-                    key={skill}
                     className="rounded-lg border border-neutral-100 bg-white px-3 py-1.5 font-medium text-[13px] text-neutral-700 transition-colors hover:border-neutral-200 hover:bg-neutral-50"
+                    key={skill}
                   >
                     {skill}
                   </span>
@@ -294,8 +288,8 @@ export default function Home() {
             <div className="flex flex-wrap gap-1.5">
               {DOMAINS.map((d) => (
                 <span
-                  key={d}
                   className="rounded-lg border border-neutral-100 bg-white px-3 py-1.5 text-[13px] text-neutral-500"
+                  key={d}
                 >
                   {d}
                 </span>
@@ -311,8 +305,8 @@ export default function Home() {
         <div className="grid gap-2 sm:grid-cols-2">
           {AWARDS.map((award) => (
             <div
-              key={award.title}
               className="flex items-start gap-3 rounded-xl border border-neutral-100 px-4 py-3 transition-shadow hover:shadow-sm"
+              key={award.title}
             >
               <span className="mt-0.5 flex-shrink-0 font-medium text-[12px] text-neutral-300">
                 {award.year}
@@ -323,7 +317,7 @@ export default function Home() {
                 </p>
                 {(award.org || award.note) && (
                   <p className="mt-0.5 text-[12px] text-neutral-400">
-                    {[award.org, award.note].filter(Boolean).join(' · ')}
+                    {[award.org, award.note].filter(Boolean).join(" · ")}
                   </p>
                 )}
               </div>
@@ -413,20 +407,20 @@ export default function Home() {
         <SectionHeader>함께한 곳들</SectionHeader>
         <div className="flex flex-wrap gap-2">
           {[
-            '라스커',
-            '센드버드',
-            '리플에이아이',
-            '플라스크',
-            '오늘의꽃',
-            '스카이랩스',
-            '러너스컴퍼니',
-            '로랩스',
-            '라틀라스',
-            '비긴메이트',
+            "라스커",
+            "센드버드",
+            "리플에이아이",
+            "플라스크",
+            "오늘의꽃",
+            "스카이랩스",
+            "러너스컴퍼니",
+            "로랩스",
+            "라틀라스",
+            "비긴메이트",
           ].map((name) => (
             <span
-              key={name}
               className="rounded-lg border border-neutral-100 px-3 py-1.5 font-medium text-[13px] text-neutral-500 transition-colors hover:border-neutral-200 hover:text-neutral-700"
+              key={name}
             >
               {name}
             </span>

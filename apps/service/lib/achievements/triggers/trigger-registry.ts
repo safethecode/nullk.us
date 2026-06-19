@@ -1,6 +1,6 @@
-import type { AchievementStorage } from '../storage';
-import type { AchievementKey } from '../types';
-import type { AchievementTrigger } from './achievement-triggers';
+import type { AchievementStorage } from "../storage/achievement-storage";
+import type { AchievementKey } from "../types/achievement";
+import type { AchievementTrigger } from "./achievement-triggers";
 
 export interface TriggerCondition {
   check(progress: number, storage: AchievementStorage): boolean;
@@ -8,19 +8,19 @@ export interface TriggerCondition {
 }
 
 export class TriggerRegistry {
-  private triggers: Map<string, AchievementTrigger> = new Map();
-  private scrollTriggers: Set<string> = new Set();
-  private timeTriggers: Set<string> = new Set();
+  private readonly triggers: Map<string, AchievementTrigger> = new Map();
+  private readonly scrollTriggers: Set<string> = new Set();
+  private readonly timeTriggers: Set<string> = new Set();
 
   register(
     name: string,
     trigger: AchievementTrigger,
-    type: 'scroll' | 'time' = 'scroll'
+    type: "scroll" | "time" = "scroll"
   ): void {
     this.triggers.set(name, trigger);
-    if (type === 'scroll') {
+    if (type === "scroll") {
       this.scrollTriggers.add(name);
-    } else if (type === 'time') {
+    } else if (type === "time") {
       this.timeTriggers.add(name);
     }
   }

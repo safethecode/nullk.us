@@ -1,9 +1,9 @@
-import { AnimatedActionButton } from '@/ui/animated-action-button';
+import { AnimatedActionButton } from "@/ui/animated-action-button";
 
 export default function ProductsPage() {
   return (
     <main className="mx-auto w-full max-w-[52rem] px-6 py-16 sm:px-8 lg:py-20">
-      <h1 className="mb-2 font-bold text-[2rem] tracking-tight text-neutral-900 sm:text-4xl">
+      <h1 className="mb-2 font-bold text-[2rem] text-neutral-900 tracking-tight sm:text-4xl">
         프로덕트
       </h1>
       <p className="mb-12 text-[15px] text-neutral-400">
@@ -14,7 +14,7 @@ export default function ProductsPage() {
         <p className="mb-1 font-semibold text-[15px] text-neutral-900">
           준비 중입니다
         </p>
-        <p className="mb-8 text-[13px] leading-relaxed text-neutral-400">
+        <p className="mb-8 text-[13px] text-neutral-400 leading-relaxed">
           새로운 프로덕트를 준비하고 있습니다.
         </p>
         <AnimatedActionButton href="/projects">

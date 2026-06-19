@@ -1,30 +1,30 @@
-import { MEETING_TYPES } from '@/lib/coffee-chat';
-import type React from 'react';
+import type React from "react";
+import { MEETING_TYPES } from "@/lib/coffee-chat/constants";
 
 interface MeetingTypeFieldProps {
-  value: 'remote' | 'in-person';
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  value: "remote" | "in-person";
 }
 
 export function MeetingTypeField({ value, onChange }: MeetingTypeFieldProps) {
   return (
     <div className="space-y-1.5">
       <label
+        className="flex items-center gap-1 font-medium text-[13px] text-neutral-700"
         htmlFor="meetingType"
-        className="flex items-center gap-1 text-[13px] font-medium text-neutral-700"
       >
         미팅 형태
-        <span className="text-red-400" aria-label="필수">
+        <span aria-hidden="true" className="text-red-400">
           *
         </span>
       </label>
       <select
+        aria-describedby="meetingType-description"
+        className="w-full rounded-xl border border-neutral-200 bg-white px-3.5 py-2.5 text-[14px] text-neutral-900 transition-colors focus:border-neutral-400 focus:outline-none"
         id="meetingType"
         name="meetingType"
-        value={value}
         onChange={onChange}
-        className="w-full rounded-xl border border-neutral-200 bg-white px-3.5 py-2.5 text-[14px] text-neutral-900 transition-colors focus:border-neutral-400 focus:outline-none"
-        aria-describedby="meetingType-description"
+        value={value}
       >
         {MEETING_TYPES.map(({ value, label }) => (
           <option key={value} value={value}>

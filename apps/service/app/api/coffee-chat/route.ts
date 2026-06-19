@@ -1,21 +1,28 @@
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { Resend } from "resend";
+import { EMAIL_CONFIG, ERROR_MESSAGES } from "@/lib/coffee-chat/constants";
+import type { CoffeeChatRequest } from "@/lib/coffee-chat/types";
 import {
-  type CoffeeChatRequest,
-  EMAIL_CONFIG,
-  ERROR_MESSAGES,
   createErrorResponse,
   createSuccessResponse,
   formatKoreanDate,
-  validateRequest,
-} from '@/lib/coffee-chat';
-import { CoffeeChatEmail } from '@/lib/resend/templates/coffee-chat-email';
-import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+} from "@/lib/coffee-chat/utils";
+import { validateRequest } from "@/lib/coffee-chat/validation";
+import { CoffeeChatEmail } from "@/lib/resend/templates/coffee-chat-email";
 
 export async function POST(request: NextRequest) {
   try {
+    const resendApiKey = process.env.RESEND_API_KEY;
+
+    if (!resendApiKey) {
+      return NextResponse.json(
+        { error: ERROR_MESSAGES.EMAIL_SEND_FAILED },
+        { status: 500 }
+      );
+    }
+
+    const resend = new Resend(resendApiKey);
     const body: CoffeeChatRequest = await request.json();
 
     const validationErrors = validateRequest(body);
@@ -36,7 +43,7 @@ export async function POST(request: NextRequest) {
         requesterEmail: email,
         meetingType,
         requestDate: formatKoreanDate(),
-        message: message || '',
+        message: message || "",
       }),
     });
 
@@ -55,7 +62,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       {
-        error: `${error instanceof Error ? error.message : 'Unknown error'}, ${ERROR_MESSAGES.SERVER_ERROR}`,
+        error: `${error instanceof Error ? error.message : "Unknown error"}, ${ERROR_MESSAGES.SERVER_ERROR}`,
       },
       { status: 500 }
     );

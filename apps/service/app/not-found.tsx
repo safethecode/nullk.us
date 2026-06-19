@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { JetBrains_Mono } from 'next/font/google';
-import Link from 'next/link';
-import { memo, useEffect, useReducer } from 'react';
+import { JetBrains_Mono } from "next/font/google";
+import Link from "next/link";
+import { memo, useEffect, useReducer } from "react";
 
 const jetBrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-jetBrainsMono',
+  subsets: ["latin"],
+  variable: "--font-jetBrainsMono",
 });
 
 const ANIMATION_DELAYS = {
@@ -17,23 +17,23 @@ const ANIMATION_DELAYS = {
   DETAILS_SHOW: 800,
 } as const;
 
-const GREETING_TEXT = '404 Not Found' as const;
+const GREETING_TEXT = "404 Not Found" as const;
 
-type AnimationState = {
+interface AnimationState {
   displayedText: string;
   showCursor: boolean;
   showDetails: boolean;
   showText: boolean;
-};
+}
 
 type AnimationAction =
-  | { type: 'SHOW_TEXT' }
-  | { type: 'UPDATE_TEXT'; text: string }
-  | { type: 'HIDE_CURSOR' }
-  | { type: 'SHOW_DETAILS' };
+  | { type: "SHOW_TEXT" }
+  | { type: "UPDATE_TEXT"; text: string }
+  | { type: "HIDE_CURSOR" }
+  | { type: "SHOW_DETAILS" };
 
 const initialState: AnimationState = {
-  displayedText: '',
+  displayedText: "",
   showCursor: true,
   showDetails: false,
   showText: false,
@@ -44,13 +44,13 @@ function animationReducer(
   action: AnimationAction
 ): AnimationState {
   switch (action.type) {
-    case 'SHOW_TEXT':
+    case "SHOW_TEXT":
       return { ...state, showText: true };
-    case 'UPDATE_TEXT':
+    case "UPDATE_TEXT":
       return { ...state, displayedText: action.text };
-    case 'HIDE_CURSOR':
+    case "HIDE_CURSOR":
       return { ...state, showCursor: false };
-    case 'SHOW_DETAILS':
+    case "SHOW_DETAILS":
       return { ...state, showDetails: true };
     default:
       return state;
@@ -66,7 +66,7 @@ function useTypingAnimation() {
 
     timeouts.push(
       setTimeout(() => {
-        dispatch({ type: 'SHOW_TEXT' });
+        dispatch({ type: "SHOW_TEXT" });
       }, ANIMATION_DELAYS.INITIAL_SLIDE)
     );
 
@@ -74,7 +74,7 @@ function useTypingAnimation() {
       const typeNextChar = () => {
         if (charIndex <= GREETING_TEXT.length) {
           dispatch({
-            type: 'UPDATE_TEXT',
+            type: "UPDATE_TEXT",
             text: GREETING_TEXT.slice(0, charIndex),
           });
           charIndex++;
@@ -84,13 +84,13 @@ function useTypingAnimation() {
         } else {
           timeouts.push(
             setTimeout(() => {
-              dispatch({ type: 'HIDE_CURSOR' });
+              dispatch({ type: "HIDE_CURSOR" });
             }, ANIMATION_DELAYS.CURSOR_FADE)
           );
 
           timeouts.push(
             setTimeout(() => {
-              dispatch({ type: 'SHOW_DETAILS' });
+              dispatch({ type: "SHOW_DETAILS" });
             }, ANIMATION_DELAYS.DETAILS_SHOW)
           );
         }
@@ -119,14 +119,14 @@ const DetailsSection = memo(function DetailsSection({
 
   return (
     <section
-      className="flex flex-col gap-2"
       aria-label="Additional information"
+      className="flex flex-col gap-2"
     >
       <div
         className={`flex transform gap-2 transition-all duration-800 ease-out ${
-          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+          isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
         }`}
-        style={{ transitionDelay: '0ms' }}
+        style={{ transitionDelay: "0ms" }}
       >
         <span className={`text-neutral-700 text-sm ${jetBrainsMono.className}`}>
           The page you're looking for doesn't exist.
@@ -134,13 +134,13 @@ const DetailsSection = memo(function DetailsSection({
       </div>
       <div
         className={`flex transform items-center gap-2 transition-all duration-800 ease-out ${
-          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+          isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
         }`}
-        style={{ transitionDelay: '200ms' }}
+        style={{ transitionDelay: "200ms" }}
       >
         <Link
-          href="/"
           className={`text-sm ${jetBrainsMono.className} text-neutral-500 transition-colors duration-200 hover:text-neutral-300`}
+          href="/"
         >
           ← Go back home
         </Link>
@@ -156,22 +156,22 @@ export default function NotFound() {
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center bg-white">
       <main
-        className={`transform text-center transition-all duration-800 ease-out ${
-          showDetails ? '-translate-y-8' : 'translate-y-0'
-        }`}
         aria-live="polite"
+        className={`transform text-center transition-all duration-800 ease-out ${
+          showDetails ? "-translate-y-8" : "translate-y-0"
+        }`}
       >
         <h1
           className={`text-neutral-500 ${jetBrainsMono.className} transform transition-all duration-800 ease-out ${
-            showText ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            showText ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
           {displayedText}
           <span
-            className={`text-neutral-400 transition-opacity duration-500 ${
-              showCursor ? 'animate-pulse opacity-100' : 'opacity-0'
-            }`}
             aria-hidden="true"
+            className={`text-neutral-400 transition-opacity duration-500 ${
+              showCursor ? "animate-pulse opacity-100" : "opacity-0"
+            }`}
           >
             |
           </span>
@@ -180,8 +180,8 @@ export default function NotFound() {
         <div
           className={`mt-3 transform transition-all duration-800 ease-out ${
             showDetails
-              ? 'translate-y-0 opacity-100'
-              : 'translate-y-4 opacity-0'
+              ? "translate-y-0 opacity-100"
+              : "translate-y-4 opacity-0"
           }`}
         >
           <DetailsSection isVisible={showDetails} />

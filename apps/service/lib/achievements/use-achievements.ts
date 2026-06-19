@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { getAchievementManager } from './manager';
-import type { Achievement, AchievementKey } from './types';
+import { useEffect, useState } from "react";
+import { getAchievementManager } from "./manager";
+import type { Achievement, AchievementKey } from "./types/achievement";
 
 export function useAchievements() {
   const [unlockedAchievements, setUnlockedAchievements] = useState<
@@ -27,9 +27,8 @@ export function useAchievements() {
     getAchievementManager().unlockAchievement(key);
   };
 
-  const isUnlocked = (key: AchievementKey) => {
-    return getAchievementManager().isAchievementUnlocked(key);
-  };
+  const isUnlocked = (key: AchievementKey) =>
+    getAchievementManager().isAchievementUnlocked(key);
 
   const resetAll = () => {
     getAchievementManager().resetAll();

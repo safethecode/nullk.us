@@ -1,10 +1,10 @@
-import type { AchievementKey } from '../types';
-import { ACHIEVEMENTS } from '../types';
+import type { AchievementKey } from "../types/achievement";
+import { ACHIEVEMENTS } from "../types/achievement";
 
 function getBrowserStorage(): Storage | null {
   try {
     const s = globalThis?.window?.localStorage;
-    if (s && typeof s.getItem === 'function') {
+    if (s && typeof s.getItem === "function") {
       return s;
     }
   } catch {
@@ -20,11 +20,11 @@ export class AchievementStorage {
 
   isUnlocked(key: AchievementKey): boolean {
     const stored = getBrowserStorage()?.getItem(this.getAchievementKey(key));
-    return stored === 'true';
+    return stored === "true";
   }
 
   unlock(key: AchievementKey): void {
-    getBrowserStorage()?.setItem(this.getAchievementKey(key), 'true');
+    getBrowserStorage()?.setItem(this.getAchievementKey(key), "true");
   }
 
   resetAll(): void {

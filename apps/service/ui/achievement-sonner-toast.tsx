@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { toastQueue } from '@/lib/achievements/toast-queue';
-import { ArrowUpRight, MapPin } from 'lucide-react';
-import type React from 'react';
+import { ArrowUpRight, MapPin } from "lucide-react";
+import type React from "react";
+import { toastQueue } from "@/lib/achievements/toast-queue";
 
 interface AchievementSonnerToastProps {
-  title?: string;
-  subtitle?: string;
+  bgColor?: string;
   icon?: React.ReactNode;
   iconColor?: string;
-  bgColor?: string;
+  subtitle?: string;
+  title?: string;
 }
 
 export default function AchievementSonnerToast({

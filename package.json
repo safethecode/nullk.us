@@ -4,28 +4,28 @@
   "type": "module",
   "private": true,
   "engines": {
-    "node": ">=18"
+    "node": ">=20.9.0"
   },
-  "packageManager": "pnpm@9.0.0",
+  "packageManager": "pnpm@11.8.0",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "lint": "ultracite lint",
-    "format": "ultracite format",
+    "lint": "ultracite check",
+    "format": "ultracite fix",
     "boundaries": "turbo boundaries",
     "bump-ui": "npx shadcn@latest add --all --overwrite -c packages/design-system",
     "migrate": "cd packages/database && npx prisma format && npx prisma generate && npx prisma db push",
     "clean": "git clean -xdf node_modules",
-    "check-types": "turbo run check-types"
+    "check-types": "pnpm --filter service check-types && pnpm --filter @heiglabs/design-system typecheck"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@types/node": "^22.15.31",
-    "turbo": "^2.5.4",
-    "typescript": "5.8.3",
-    "ultracite": "^4.2.8"
+    "@biomejs/biome": "2.5.0",
+    "@types/node": "^24.13.2",
+    "turbo": "^2.9.18",
+    "typescript": "6.0.3",
+    "ultracite": "^7.8.3"
   },
   "dependencies": {
-    "lucide-react": "^0.510.0"
+    "lucide-react": "^1.21.0"
   }
 }

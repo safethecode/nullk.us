@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { useAchievements } from '@/lib/achievements';
-import AchievementCard from '@/ui/achievement-card';
-import { Clock, MapPin, Scroll, Star, Target, Trophy } from 'lucide-react';
+import { Clock, MapPin, Scroll, Star, Target, Trophy } from "lucide-react";
+import { useAchievements } from "@/lib/achievements/use-achievements";
+import AchievementCard from "@/ui/achievement-card";
 
 const ACHIEVEMENT_ICONS = {
-  'profile-visit': Trophy,
-  'resume-view': Star,
-  'career-view': Target,
-  'page-scroll-50': Scroll,
-  'page-scroll-100': Scroll,
-  'time-spent-30s': Clock,
-  'time-spent-1m': Clock,
-  'time-spent-5m': Clock,
+  "profile-visit": Trophy,
+  "resume-view": Star,
+  "career-view": Target,
+  "page-scroll-50": Scroll,
+  "page-scroll-100": Scroll,
+  "time-spent-30s": Clock,
+  "time-spent-1m": Clock,
+  "time-spent-5m": Clock,
 } as const;
 
 export default function Achievement() {
@@ -24,10 +24,10 @@ export default function Achievement() {
   return (
     <main className="mx-auto w-full max-w-[52rem] px-6 py-16 sm:px-8 lg:py-20">
       <div className="mb-2 flex items-baseline gap-3">
-        <h1 className="font-bold text-[2rem] tracking-tight text-neutral-900 sm:text-4xl">
+        <h1 className="font-bold text-[2rem] text-neutral-900 tracking-tight sm:text-4xl">
           도전 과제
         </h1>
-        <span className="text-[15px] font-medium text-neutral-300">
+        <span className="font-medium text-[15px] text-neutral-300">
           {unlockedCount}/{totalCount}
         </span>
       </div>
@@ -39,7 +39,9 @@ export default function Achievement() {
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-100">
           <div
             className="h-full rounded-full bg-emerald-500 transition-all duration-500"
-            style={{ width: `${totalCount > 0 ? (unlockedCount / totalCount) * 100 : 0}%` }}
+            style={{
+              width: `${totalCount > 0 ? (unlockedCount / totalCount) * 100 : 0}%`,
+            }}
           />
         </div>
       </div>
@@ -51,11 +53,11 @@ export default function Achievement() {
 
           return (
             <AchievementCard
+              description={achievement.description}
+              IconComponent={IconComponent}
+              isUnlocked={isUnlocked}
               key={achievement.key}
               name={achievement.name}
-              description={achievement.description}
-              isUnlocked={isUnlocked}
-              IconComponent={IconComponent}
             />
           );
         })}

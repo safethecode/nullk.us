@@ -1,12 +1,12 @@
-import type { ApiError, ApiResponse, FormData } from './types';
+import type { ApiError, ApiResponse, FormData } from "./types";
 
 export async function submitCoffeeChatRequest(
   formData: FormData
 ): Promise<ApiResponse> {
-  const response = await fetch('/api/coffee-chat', {
-    method: 'POST',
+  const response = await fetch("/api/coffee-chat", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(formData),
   });
@@ -18,5 +18,5 @@ export async function submitCoffeeChatRequest(
   }
 
   const errorData = data as ApiError;
-  throw new Error(errorData.error || '요청 전송에 실패했습니다.');
+  throw new Error(errorData.error || "요청 전송에 실패했습니다.");
 }

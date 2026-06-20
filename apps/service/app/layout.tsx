@@ -9,9 +9,9 @@ import { Footer } from "@/ui/footer";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://nullk.us"),
-  title: "손지민 - Product Builder (FE Specialist, 풀스택)",
+  title: "손지민 - nullk.us",
   description:
-    "어떤 도메인에서든 거침없이, 돈을 버는 프로덕트 빌더. 프론트엔드부터 백엔드, 비즈니스까지 전방위 경험을 보유한 풀스택 개발자입니다.",
+    "손지민의 작업, 생각, 개발 기록을 모아둔 개인 콘텐츠 홈입니다.",
 
   keywords: [
     "프론트엔드 엔지니어",
@@ -29,9 +29,9 @@ export const metadata: Metadata = {
   category: "Product Builder",
 
   openGraph: {
-    title: "손지민 - Product Builder (FE Specialist, 풀스택)",
+    title: "손지민 - nullk.us",
     description:
-      "어떤 도메인에서든 거침없이, 돈을 버는 프로덕트 빌더. 프론트엔드부터 백엔드, 비즈니스까지 전방위 경험을 보유한 풀스택 개발자입니다.",
+      "손지민의 작업, 생각, 개발 기록을 모아둔 개인 콘텐츠 홈입니다.",
     type: "website",
     locale: "ko_KR",
     siteName: "손지민 Portfolio",
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
   },
 
   other: {
-    "theme-color": "#000000",
+    "theme-color": "#ffffff",
     "format-detection": "telephone=no",
   },
 };

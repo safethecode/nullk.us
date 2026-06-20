@@ -12,6 +12,7 @@
   "dependencies": {
     "@heiglabs/design-system": "workspace:*",
     "canvas-confetti": "^1.9.4",
+    "cmdk": "^1.1.1",
     "next": "16.2.9",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",

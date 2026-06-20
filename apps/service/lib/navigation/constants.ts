@@ -1,7 +1,6 @@
 import {
   FolderOpen,
   type LucideIcon,
-  PenTool,
   Trophy,
   User,
 } from "lucide-react";
@@ -22,11 +21,6 @@ export const landingNavigationItems: NavigationItem[] = [
     label: "참여 프로젝트",
     href: "/projects",
     icon: FolderOpen,
-  },
-  {
-    label: "블로그",
-    href: "/blogs",
-    icon: PenTool,
   },
   {
     label: "도전과제",

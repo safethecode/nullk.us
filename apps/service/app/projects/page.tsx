@@ -81,95 +81,90 @@ const PROJECTS: Project[] = [
   },
 ];
 
-const STATUS_CONFIG: Record<
-  ProjectStatus,
-  { label: string; className: string }
-> = {
+const STATUS_CONFIG: Record<ProjectStatus, { label: string }> = {
   ongoing: {
     label: "진행 중",
-    className: "bg-emerald-50 text-emerald-700 border-emerald-200",
   },
   completed: {
     label: "완료",
-    className: "bg-neutral-50 text-neutral-500 border-neutral-200",
   },
   archived: {
     label: "아카이브",
-    className: "bg-neutral-50 text-neutral-400 border-neutral-200",
   },
 };
 
 export default function ProjectsPage() {
   return (
-    <main className="mx-auto w-full max-w-[52rem] px-6 py-16 sm:px-8 lg:py-20">
-      <h1 className="mb-2 font-bold text-[2rem] text-neutral-900 tracking-tight sm:text-4xl">
-        프로젝트
-      </h1>
-      <p className="mb-12 text-[15px] text-neutral-400">
-        지금까지 진행했던 프로젝트들을 소개합니다.
-      </p>
+    <main className="mx-auto min-h-[calc(100svh-4rem)] w-full max-w-208 px-6 py-10 sm:px-8 lg:py-14">
+      <section>
+        <div className="mb-7 px-1 sm:px-4">
+          <h1 className="font-medium text-lg text-neutral-600 leading-tight">
+            Projects
+          </h1>
+          <p className="mt-1 text-sm text-neutral-300 leading-tight">
+            지금까지 진행했던 작업들
+          </p>
+        </div>
 
-      <div className="space-y-4">
-        {PROJECTS.map((project) => {
-          const status = STATUS_CONFIG[project.status];
-          return (
-            <article
-              className="group rounded-2xl border border-neutral-100 p-5 transition-all hover:border-neutral-200 hover:shadow-sm sm:p-6"
-              key={project.id}
-            >
-              <div className="mb-3 flex items-start justify-between gap-3">
-                <div>
-                  <h2 className="font-semibold text-[15px] text-neutral-900">
-                    {project.title}
-                  </h2>
-                  <p className="text-[12px] text-neutral-400">
+        <div className="overflow-hidden border-neutral-50 border-y">
+          {PROJECTS.map((project) => {
+            const status = STATUS_CONFIG[project.status];
+            const content = (
+              <>
+                <div className="min-w-0">
+                  <div className="flex min-w-0 items-center gap-2">
+                    <h2 className="truncate text-base text-neutral-500 leading-tight transition-colors group-hover:text-neutral-900">
+                      {project.title}
+                    </h2>
+                    {project.link && (
+                      <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-neutral-200 transition-colors group-hover:text-neutral-500" />
+                    )}
+                  </div>
+                  <p className="mt-1 truncate text-sm text-neutral-300 leading-tight">
                     {project.subtitle}
                   </p>
+                  <p className="mt-3 line-clamp-2 text-sm text-neutral-400 leading-relaxed sm:line-clamp-1">
+                    {project.description}
+                  </p>
+                  {project.tags && (
+                    <p className="mt-2 truncate text-xs text-neutral-300 leading-tight">
+                      {project.tags.join(" · ")}
+                    </p>
+                  )}
                 </div>
-                <span
-                  className={`flex-shrink-0 rounded-full border px-2 py-0.5 font-medium text-[11px] ${status.className}`}
+
+                <div className="flex shrink-0 flex-row items-center gap-2 text-sm text-neutral-300 leading-tight sm:flex-col sm:items-end sm:gap-1">
+                  <span>{project.period}</span>
+                  <span>{status.label}</span>
+                </div>
+              </>
+            );
+
+            const className =
+              "group grid min-h-4 grid-cols-[minmax(0,1fr)] gap-3 border-neutral-50 border-b px-1 py-4 transition-colors last:border-b-0 hover:bg-neutral-50 sm:grid-cols-[minmax(0,1fr)_auto] sm:px-4";
+
+            if (project.link) {
+              return (
+                <a
+                  className={className}
+                  href={project.link}
+                  key={project.id}
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
-                  {status.label}
-                </span>
-              </div>
+                  {content}
+                </a>
+              );
+            }
 
-              <p className="mb-3 text-[13px] text-neutral-500 leading-relaxed">
-                {project.description}
-              </p>
-
-              {project.tags && (
-                <div className="mb-3 flex flex-wrap gap-1.5">
-                  {project.tags.map((tag) => (
-                    <span
-                      className="rounded-md bg-neutral-50 px-2 py-0.5 font-medium text-[11px] text-neutral-500"
-                      key={tag}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              <div className="flex items-center justify-between">
-                <span className="text-[12px] text-neutral-300">
-                  {project.period}
-                </span>
-                {project.link && (
-                  <a
-                    className="flex items-center gap-0.5 font-medium text-[12px] text-neutral-400 transition-colors hover:text-neutral-900"
-                    href={project.link}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    보기
-                    <ArrowUpRight className="h-3 w-3" />
-                  </a>
-                )}
-              </div>
-            </article>
-          );
-        })}
-      </div>
+            return (
+              <article className={className} key={project.id}>
+                {content}
+              </article>
+            );
+          })}
+        </div>
+      </section>
     </main>
   );
 }

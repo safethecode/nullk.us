@@ -19,7 +19,7 @@
     "check-types": "pnpm --filter service check-types && pnpm --filter @heiglabs/design-system typecheck"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.0",
+    "@biomejs/biome": "2.5.1",
     "@types/node": "^24.13.2",
     "turbo": "^2.9.18",
     "typescript": "6.0.3",

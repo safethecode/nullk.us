@@ -1,3 +1,5 @@
+import type { IncubatorProject } from "./projects";
+
 const PREFERRED_CARD_SIZE = 48;
 const MINIMUM_GAP = 8;
 
@@ -8,23 +10,9 @@ export interface GridLayout {
   tileCount: number;
 }
 
-export interface IncubatorProject {
-  href: string;
-  logoSrc: string;
-  title: string;
-}
-
 export type IncubatorTile =
   | { kind: "project"; project: IncubatorProject }
   | { id: number; kind: "placeholder" };
-
-export const INCUBATOR_PROJECTS: readonly IncubatorProject[] = [
-  {
-    href: "https://github.com/safethecode/wratop",
-    logoSrc: "/assets/logos/projects/wratop-icon.png",
-    title: "Wratop",
-  },
-];
 
 function calculateTrackCount(length: number) {
   if (!Number.isFinite(length) || length <= 0) {

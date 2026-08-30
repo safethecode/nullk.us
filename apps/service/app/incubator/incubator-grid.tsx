@@ -11,8 +11,8 @@ import {
   calculateGridLayout,
   createIncubatorTiles,
   type GridLayout,
-  INCUBATOR_PROJECTS,
 } from "./grid-layout";
+import { INCUBATOR_PROJECTS } from "./projects";
 
 const EMPTY_LAYOUT: GridLayout = {
   cardSize: 0,
@@ -84,12 +84,12 @@ export function IncubatorGrid() {
       const { project } = tile;
 
       return (
-        <Tooltip key={project.href}>
+        <Tooltip key={project.url}>
           <TooltipTrigger asChild>
             <a
               aria-label={`${project.title} 프로젝트 열기`}
               className="group relative overflow-hidden rounded-xl bg-neutral-100 outline-none transition-[filter,box-shadow] hover:brightness-95 focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-inset"
-              href={project.href}
+              href={project.url}
               rel="noopener noreferrer"
               style={cardStyle}
               target="_blank"
@@ -99,7 +99,7 @@ export function IncubatorGrid() {
                 className="scale-[1.225] object-cover transition-transform duration-300 ease-out group-hover:scale-100 group-focus-visible:scale-100 motion-reduce:transition-none"
                 fill
                 sizes="48px"
-                src={project.logoSrc}
+                src={project.logo}
               />
             </a>
           </TooltipTrigger>

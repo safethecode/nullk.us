@@ -8,6 +8,24 @@ export interface GridLayout {
   tileCount: number;
 }
 
+export interface IncubatorProject {
+  href: string;
+  logoSrc: string;
+  title: string;
+}
+
+export type IncubatorTile =
+  | { kind: "project"; project: IncubatorProject }
+  | { id: number; kind: "placeholder" };
+
+export const INCUBATOR_PROJECTS: readonly IncubatorProject[] = [
+  {
+    href: "https://github.com/safethecode/wratop",
+    logoSrc: "/assets/logos/projects/wratop-icon.png",
+    title: "Wratop",
+  },
+];
+
 function calculateTrackCount(length: number) {
   if (!Number.isFinite(length) || length <= 0) {
     return 0;
@@ -41,4 +59,17 @@ export function calculateGridLayout(width: number, height: number): GridLayout {
     rows,
     tileCount: columns * rows,
   };
+}
+
+export function createIncubatorTiles(
+  projects: readonly IncubatorProject[],
+  tileCount: number
+): IncubatorTile[] {
+  return Array.from({ length: tileCount }, (_, index) => {
+    const project = projects[index];
+
+    return project
+      ? { kind: "project", project }
+      : { id: index, kind: "placeholder" };
+  });
 }

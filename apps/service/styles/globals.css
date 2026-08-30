@@ -22,6 +22,11 @@ body {
   }
 }
 
+body:has([data-page-shell="standalone"]) > header,
+body:has([data-page-shell="standalone"]) > footer {
+  display: none;
+}
+
 * {
   box-sizing: border-box;
   font-family: "Pretendard", sans-serif;

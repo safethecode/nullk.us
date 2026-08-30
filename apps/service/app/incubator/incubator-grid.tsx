@@ -1,8 +1,18 @@
 "use client";
 
-import type { ReactNode } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@heiglabs/design-system/tooltip";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { calculateGridLayout, type GridLayout } from "./grid-layout";
+import {
+  calculateGridLayout,
+  createIncubatorTiles,
+  type GridLayout,
+  INCUBATOR_PROJECTS,
+} from "./grid-layout";
 
 const EMPTY_LAYOUT: GridLayout = {
   cardSize: 0,
@@ -58,21 +68,51 @@ export function IncubatorGrid() {
     height: layout.cardSize,
     width: layout.cardSize,
   };
-  const cards: ReactNode[] = [];
+  const cards = createIncubatorTiles(INCUBATOR_PROJECTS, layout.tileCount).map(
+    (tile) => {
+      if (tile.kind === "placeholder") {
+        return (
+          <div
+            aria-hidden="true"
+            className="rounded-xl bg-neutral-100"
+            key={`incubator-card-${tile.id}`}
+            style={cardStyle}
+          />
+        );
+      }
 
-  for (let cardNumber = 0; cardNumber < layout.tileCount; cardNumber += 1) {
-    cards.push(
-      <div
-        className="rounded-xl bg-neutral-100"
-        key={`incubator-card-${cardNumber}`}
-        style={cardStyle}
-      />
-    );
-  }
+      const { project } = tile;
+
+      return (
+        <Tooltip key={project.href}>
+          <TooltipTrigger asChild>
+            <a
+              aria-label={`${project.title} 프로젝트 열기`}
+              className="group relative overflow-hidden rounded-xl bg-neutral-100 outline-none transition-[filter,box-shadow] hover:brightness-95 focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-inset"
+              href={project.href}
+              rel="noopener noreferrer"
+              style={cardStyle}
+              target="_blank"
+            >
+              <Image
+                alt=""
+                className="scale-[1.225] object-cover transition-transform duration-300 ease-out group-hover:scale-100 group-focus-visible:scale-100 motion-reduce:transition-none"
+                fill
+                sizes="48px"
+                src={project.logoSrc}
+              />
+            </a>
+          </TooltipTrigger>
+          <TooltipContent className="z-[110]" sideOffset={6}>
+            {project.title}
+          </TooltipContent>
+        </Tooltip>
+      );
+    }
+  );
 
   return (
     <div
-      aria-hidden="true"
       className="grid min-h-0 flex-1 content-between justify-between gap-2 overflow-hidden"
       ref={containerRef}
       style={gridStyle}

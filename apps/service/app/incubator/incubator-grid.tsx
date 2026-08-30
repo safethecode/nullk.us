@@ -103,7 +103,10 @@ export function IncubatorGrid() {
               />
             </a>
           </TooltipTrigger>
-          <TooltipContent className="z-[110]" sideOffset={6}>
+          <TooltipContent
+            className="incubator-tooltip-spring z-[110]"
+            sideOffset={6}
+          >
             {project.title}
           </TooltipContent>
         </Tooltip>

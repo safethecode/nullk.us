@@ -36,3 +36,52 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+@keyframes incubator-tooltip-spring-in {
+  0% {
+    opacity: 0;
+    scale: 0.72;
+  }
+  55% {
+    opacity: 1;
+    scale: 1.06;
+  }
+  78% {
+    scale: 0.98;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes incubator-tooltip-spring-out {
+  0% {
+    opacity: 1;
+    scale: 1;
+  }
+  30% {
+    opacity: 1;
+    scale: 1.03;
+  }
+  100% {
+    opacity: 0;
+    scale: 0.82;
+  }
+}
+
+.incubator-tooltip-spring[data-state="instant-open"],
+.incubator-tooltip-spring[data-state="delayed-open"] {
+  animation: incubator-tooltip-spring-in 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.incubator-tooltip-spring[data-state="closed"] {
+  animation: incubator-tooltip-spring-out 220ms cubic-bezier(0.4, 0, 0.2, 1)
+    forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .incubator-tooltip-spring {
+    animation: none;
+  }
+}

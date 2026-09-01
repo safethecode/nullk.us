@@ -49,6 +49,12 @@ body:has([data-page-footer="hidden"]) > footer {
   font-synthesis: none;
 }
 
+.protected-person-image {
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
 .service-essence-input {
   box-shadow: inset 0 -1px 0 #171717;
   transition: box-shadow 180ms ease;

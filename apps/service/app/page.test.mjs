@@ -53,6 +53,27 @@ test("home presents all 24 photos as one personal collage", async () => {
   assert.ok(introSection.props.className.includes("min-h-[calc(100svh-5rem)]"));
 });
 
+test("home portraits resist selection and browser download gestures", async () => {
+  const page = await Home();
+  const elements = collectElements(page);
+  const photoSection = elements.find(
+    (element) => element.props["aria-label"] === "인물 사진 모음"
+  );
+  const portraits = elements.filter(
+    (element) =>
+      element.type === Image && element.props.src.startsWith("/assets/people/")
+  );
+
+  assert.ok(photoSection.props.className.includes("select-none"));
+  assert.equal(portraits.length, 24);
+
+  for (const portrait of portraits) {
+    assert.equal(portrait.props.draggable, false);
+    assert.ok(portrait.props.className.includes("protected-person-image"));
+    assert.ok(portrait.props.className.includes("pointer-events-none"));
+  }
+});
+
 test("home frames the personal note with local square marks", async () => {
   const page = await Home();
   const note = collectElements(page).find(

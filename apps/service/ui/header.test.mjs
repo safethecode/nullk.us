@@ -42,6 +42,8 @@ test("home header centers the logo above a small text menu", () => {
 
   assert.equal(logoImages.length, 2);
   assert.ok(centerContainer);
+  assert.ok(centerContainer.props.className.includes("h-20"));
+  assert.ok(centerContainer.props.className.includes("pt-3"));
   assert.ok(logoSlot);
   assert.ok(homeLink);
   assert.ok(homeMenu);

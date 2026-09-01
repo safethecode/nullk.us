@@ -49,6 +49,7 @@ test("home presents all 24 photos as one personal collage", async () => {
   assert.ok(photoSection.props.className.includes("sm:max-w-[34rem]"));
   assert.ok(introSection.props.className.includes("px-4"));
   assert.ok(introSection.props.className.includes("py-10"));
+  assert.ok(introSection.props.className.includes("min-h-[calc(100svh-5rem)]"));
 });
 
 test("home uses editorial labels to express personality", async () => {

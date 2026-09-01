@@ -11,7 +11,7 @@ export default function Home() {
     <main data-page-footer="hidden">
       <section
         aria-label="개인 소개"
-        className="relative flex min-h-[calc(100svh-4rem)] w-full items-center justify-center overflow-hidden px-4 py-10 sm:px-8 sm:py-20"
+        className="relative flex min-h-[calc(100svh-5rem)] w-full items-center justify-center overflow-hidden px-4 py-10 sm:px-8 sm:py-20"
       >
         <section className="flex w-full flex-col items-center">
           <section

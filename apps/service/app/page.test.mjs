@@ -51,7 +51,7 @@ test("home presents all 24 photos as one personal collage", async () => {
   assert.ok(introSection.props.className.includes("py-10"));
 });
 
-test("home uses editorial English labels to express personality", async () => {
+test("home uses editorial labels to express personality", async () => {
   const page = await Home();
   const text = collectText(page);
   const editorialSection = collectElements(page).find(
@@ -61,15 +61,13 @@ test("home uses editorial English labels to express personality", async () => {
     (element) => element.type === "em"
   );
 
-  assert.ok(text.includes("Coffee(#1)"));
-  assert.ok(text.includes("Frontend(#12)"));
-  assert.ok(text.includes("Products(#24)"));
-  assert.ok(text.includes("Curiosity(#∞)"));
+  assert.ok(text.includes("커피(#1)"));
+  assert.ok(text.includes("프론트엔드(#12)"));
+  assert.ok(text.includes("완성도 높은 제품(#24)"));
+  assert.ok(text.includes("호기심(#∞)"));
   assert.ok(editorialSection.props.className.includes("font-inter-tight"));
   assert.ok(
-    editorialSection.props.className.includes(
-      "text-[clamp(0.78rem,3.8vw,1.7rem)]"
-    )
+    editorialSection.props.className.includes("text-[clamp(1rem,5vw,1.7rem)]")
   );
   assert.ok(editorialSection.props.className.includes("max-w-[22rem]"));
   assert.ok(editorialSection.props.className.includes("sm:max-w-[30rem]"));
@@ -85,34 +83,46 @@ test("home opts out of the shared footer", async () => {
   assert.equal(page.props["data-page-footer"], "hidden");
 });
 
-test("home presents a subtle scroll cue", async () => {
+test("home removes the scroll cue when there is no second section", async () => {
   const page = await Home();
   const text = collectText(page);
-  const scrollCue = collectElements(page).find(
-    (element) =>
-      element.type === "p" && collectText(element).includes("scroll down")
-  );
 
-  assert.ok(text.includes("scroll down"));
-  assert.ok(scrollCue.props.className.includes("left-1/2"));
-  assert.ok(scrollCue.props.className.includes("-translate-x-1/2"));
-  assert.ok(!scrollCue.props.className.includes("sm:left-"));
+  assert.ok(!text.includes("scroll down"));
 });
 
-test("home asks for the essence of a service in the second section", async () => {
+test("home keeps the service question floating at the bottom right", async () => {
   const page = await Home();
   const elements = collectElements(page);
   const text = collectText(page);
-  const questionSection = elements.find(
+  const questionDetails = elements.find(
+    (element) => element.type === "details"
+  );
+  const questionToggle = elements.find((element) => element.type === "summary");
+  const questionPanel = elements.find(
     (element) => element.props["aria-labelledby"] === "service-essence-question"
   );
   const answerInput = elements.find(
     (element) =>
       element.type === "input" && element.props.name === "serviceEssence"
   );
+  const answerButton = elements.find(
+    (element) => element.type === "button" && collectText(element) === "OK"
+  );
 
-  assert.ok(questionSection);
+  assert.ok(questionDetails);
+  assert.equal(questionDetails.props.open, true);
+  assert.ok(questionDetails.props.className.includes("fixed"));
+  assert.ok(questionDetails.props.className.includes("right-4"));
+  assert.ok(questionDetails.props.className.includes("bottom-4"));
+  assert.ok(questionToggle.props.className.includes("group-open:absolute"));
+  assert.ok(collectText(questionToggle).includes("Question"));
+  assert.ok(collectText(questionToggle).includes("×"));
+  assert.ok(questionPanel);
+  assert.ok(text.includes("Question"));
   assert.ok(text.includes("What is the essence of your service?"));
   assert.equal(answerInput.props.type, "text");
   assert.equal(answerInput.props.maxLength, 80);
+  assert.ok(answerInput.props.className.includes("service-essence-input"));
+  assert.ok(!answerInput.props.className.includes("border-b"));
+  assert.equal(answerButton.props.type, "button");
 });

@@ -16,14 +16,14 @@ export default function Home() {
         <section className="flex w-full flex-col items-center">
           <section
             aria-label="개인 키워드"
-            className="mb-6 w-full max-w-[22rem] text-center font-inter-tight font-light text-[clamp(0.78rem,3.8vw,1.7rem)] text-neutral-800 leading-[1.2] tracking-[-0.055em] sm:mb-9 sm:max-w-[30rem] sm:leading-[1.16]"
+            className="mb-6 w-full max-w-[22rem] text-center font-inter-tight font-light text-[clamp(1rem,5vw,1.7rem)] text-neutral-800 leading-[1.2] tracking-[-0.055em] sm:mb-9 sm:max-w-[30rem] sm:leading-[1.16]"
           >
             <p className="whitespace-nowrap">
-              Coffee<em className="italic">(#1)</em> / Frontend
-              <em className="italic">(#12)</em> /
+              커피<em className="italic">(#1)</em> / 프론트엔드
+              <em className="italic">(#12)</em>
             </p>
             <p className="whitespace-nowrap">
-              Products<em className="italic">(#24)</em> / Curiosity
+              완성도 높은 제품<em className="italic">(#24)</em> / 호기심
               <em className="italic">(#∞)</em>
             </p>
           </section>
@@ -54,51 +54,63 @@ export default function Home() {
             </p>
           </div>
         </section>
-
-        <p className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap font-jetbrains-mono text-[10px] text-neutral-400 tracking-[0.08em] sm:bottom-6">
-          <span aria-hidden="true" className="home-scroll-cue-arrow">
-            ↓
-          </span>
-          scroll down
-        </p>
       </section>
 
-      <section
-        aria-labelledby="service-essence-question"
-        className="flex min-h-svh items-center justify-center px-5 py-20"
+      <details
+        className="group fixed right-4 bottom-4 z-40 w-fit font-service-mono text-neutral-900 open:w-[min(calc(100vw-2rem),22rem)] sm:right-6 sm:bottom-6"
+        open
       >
-        <div className="w-full max-w-[22rem] border border-neutral-900 border-dashed bg-white text-center font-service-mono text-neutral-900">
-          <div className="border-neutral-900 border-b border-dashed px-7 py-10 sm:px-10 sm:py-12">
-            <p className="mb-4 text-[9px] uppercase leading-none tracking-[0.16em]">
-              One small question
+        <summary
+          aria-label="Toggle question"
+          className="ml-auto flex cursor-pointer list-none items-center justify-center bg-white px-4 py-2.5 text-[10px] shadow-[inset_0_0_0_1px_#171717,0_5px_18px_rgba(0,0,0,0.08)] transition-[transform,box-shadow] duration-180 hover:-translate-y-0.5 hover:shadow-[inset_0_0_0_1px_#171717,0_8px_24px_rgba(0,0,0,0.12)] group-open:absolute group-open:top-3 group-open:right-3 group-open:z-10 group-open:size-5 group-open:bg-transparent group-open:p-0 group-open:text-[16px] group-open:shadow-none group-open:hover:translate-y-0"
+        >
+          <span className="group-open:hidden">Question</span>
+          <span aria-hidden="true" className="hidden group-open:inline">
+            ×
+          </span>
+        </summary>
+
+        <section
+          aria-labelledby="service-essence-question"
+          className="hidden w-full border border-neutral-900 border-dashed bg-white text-center shadow-[0_8px_28px_rgba(0,0,0,0.08)] group-open:block"
+        >
+          <div className="border-neutral-900 border-b border-dashed px-7 py-8 sm:px-9 sm:py-9">
+            <p className="mb-4 text-[9px] uppercase leading-none tracking-[0.02em]">
+              Question
             </p>
             <h2
-              className="text-[15px] leading-[1.55] tracking-[-0.045em] sm:text-[16px]"
+              className="text-[15px] leading-[1.55] tracking-[-0.015em] sm:text-[16px]"
               id="service-essence-question"
             >
               What is the essence of your service?
             </h2>
           </div>
 
-          <label
-            className="flex flex-col items-center px-7 py-7 sm:px-10 sm:py-8"
-            htmlFor="service-essence-answer"
-          >
-            <span className="mb-4 text-[9px] uppercase leading-none tracking-[0.16em]">
+          <div className="flex flex-col items-center px-7 py-6 sm:px-9 sm:py-7">
+            <label
+              className="mb-4 text-[9px] uppercase leading-none tracking-normal"
+              htmlFor="service-essence-answer"
+            >
               Your answer
-            </span>
+            </label>
             <input
               autoComplete="off"
-              className="w-full border-0 border-neutral-900 border-b bg-transparent px-1 pb-1.5 text-center text-[12px] uppercase tracking-[0.05em] outline-none placeholder:text-neutral-300 focus:border-b-2"
+              className="service-essence-input w-full border-0 bg-transparent px-1 pb-1.5 text-center text-[12px] uppercase tracking-normal outline-none placeholder:text-neutral-300"
               id="service-essence-answer"
               maxLength={80}
               name="serviceEssence"
               placeholder="TYPE HERE"
               type="text"
             />
-          </label>
-        </div>
-      </section>
+            <button
+              className="mt-5 text-[11px] underline decoration-1 underline-offset-4 transition-[opacity,transform] duration-150 hover:opacity-55 active:translate-y-px"
+              type="button"
+            >
+              OK
+            </button>
+          </div>
+        </section>
+      </details>
     </main>
   );
 }

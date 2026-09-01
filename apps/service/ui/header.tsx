@@ -42,7 +42,7 @@ export function HomeHeader() {
         </div>
         <nav
           aria-label="홈 메뉴"
-          className="mb-4 flex items-center gap-4 whitespace-nowrap text-[10px] text-neutral-400"
+          className="flex items-center gap-4 whitespace-nowrap text-[10px] text-neutral-400"
         >
           {landingNavigationItems.map((item) => (
             <Link

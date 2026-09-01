@@ -37,8 +37,8 @@ export function HomeHeader() {
   return (
     <header className="sticky top-0 z-50 bg-white/85 backdrop-blur-md">
       <div className="mx-auto px-4 sm:px-8">
-        <div className="flex flex-col items-center py-4">
-          <div className="mb-2.5 flex justify-center">
+        <div className="flex flex-col items-center gap-2.5 py-4">
+          <div className="flex justify-center">
             <SamsonLogo />
           </div>
           <nav

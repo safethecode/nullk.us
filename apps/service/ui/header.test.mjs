@@ -34,7 +34,10 @@ test("home header centers the logo above a small text menu", () => {
   );
   const logoContainer = headerElements.find(
     (element) =>
-      element.type === "div" && element.props.className.includes("mb-2.5")
+      element.type === "div" &&
+      Children.toArray(element.props.children).some(
+        (child) => isValidElement(child) && child.type === SamsonLogo
+      )
   );
   const logoSlot = headerElements.find(
     (element) => element.type === SamsonLogo
@@ -55,9 +58,11 @@ test("home header centers the logo above a small text menu", () => {
   assert.ok(!horizontalContainer.props.className.includes("py-"));
   assert.ok(headerContainer);
   assert.ok(headerContainer.props.className.includes("py-4"));
+  assert.ok(headerContainer.props.className.includes("gap-2.5"));
   assert.ok(!headerContainer.props.className.includes("px-"));
   assert.ok(!headerContainer.props.className.includes("h-20"));
   assert.ok(logoContainer);
+  assert.ok(!logoContainer.props.className.includes("mb-"));
   assert.ok(!logoContainer.props.className.includes("mt-"));
   assert.ok(logoSlot);
   assert.ok(homeLink);

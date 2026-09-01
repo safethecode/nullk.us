@@ -163,6 +163,17 @@ test("home presents a centered arrow-only scroll cue", async () => {
   assert.ok(scrollCue.props.className.includes("-translate-x-1/2"));
 });
 
+test("home scroll cue arrow can receive its vertical transform animation", async () => {
+  const page = await Home();
+  const arrow = collectElements(page).find(
+    (element) =>
+      element.type === "span" &&
+      element.props.className.includes("home-scroll-cue-arrow")
+  );
+
+  assert.ok(arrow.props.className.includes("inline-block"));
+});
+
 test("home keeps the service question floating at the bottom right", async () => {
   const page = await Home();
   const elements = collectElements(page);

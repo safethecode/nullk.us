@@ -1,4 +1,19 @@
+import type { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  robots: {
+    index: true,
+    follow: true,
+    noimageindex: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: true,
+      "max-image-preview": "none",
+    },
+  },
+};
 
 const PERSON_IMAGES = Array.from(
   { length: 24 },
@@ -43,6 +58,7 @@ export default function Home() {
                   loading="eager"
                   sizes="(max-width: 639px) 16vw, 68px"
                   src={src}
+                  unoptimized
                 />
               </div>
             ))}

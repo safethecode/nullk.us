@@ -8,6 +8,10 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: "/private/",
       },
+      {
+        userAgent: "Googlebot-Image",
+        disallow: "/assets/people/",
+      },
     ],
     sitemap: "https://nullk.us/sitemap.xml",
     host: "https://nullk.us",

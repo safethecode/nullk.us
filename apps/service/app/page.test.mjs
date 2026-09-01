@@ -2,7 +2,9 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import Image from "next/image";
 import React, { Children, isValidElement } from "react";
-import Home from "./page.tsx";
+import * as homePage from "./page.tsx";
+
+const Home = homePage.default;
 
 globalThis.React = React;
 
@@ -69,9 +71,21 @@ test("home portraits resist selection and browser download gestures", async () =
 
   for (const portrait of portraits) {
     assert.equal(portrait.props.draggable, false);
+    assert.equal(portrait.props.unoptimized, true);
     assert.ok(portrait.props.className.includes("protected-person-image"));
     assert.ok(portrait.props.className.includes("pointer-events-none"));
   }
+});
+
+test("home asks search engines not to index its portraits", () => {
+  const { metadata } = homePage;
+
+  assert.ok(metadata);
+  assert.equal(metadata.robots.index, true);
+  assert.equal(metadata.robots.follow, true);
+  assert.equal(metadata.robots.noimageindex, true);
+  assert.equal(metadata.robots.googleBot.noimageindex, true);
+  assert.equal(metadata.robots.googleBot["max-image-preview"], "none");
 });
 
 test("home frames the personal note with local square marks", async () => {

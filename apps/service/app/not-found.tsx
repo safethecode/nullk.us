@@ -1,13 +1,8 @@
 "use client";
 
-import { JetBrains_Mono } from "next/font/google";
 import Link from "next/link";
 import { memo, useEffect, useReducer } from "react";
-
-const jetBrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetBrainsMono",
-});
+import { jetBrainsMono } from "@/styles/fonts";
 
 const ANIMATION_DELAYS = {
   INITIAL_SLIDE: 300,

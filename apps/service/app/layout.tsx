@@ -1,6 +1,11 @@
 import type { Metadata } from "next/types";
 import type { ReactNode } from "react";
-import { pretendard } from "@/styles/fonts";
+import {
+  interTight,
+  jetBrainsMono,
+  martianMonoCondensed,
+  pretendard,
+} from "@/styles/fonts";
 import { Header } from "@/ui/header";
 import "@heiglabs/design-system/styles";
 import "@/styles/globals.css";
@@ -10,8 +15,7 @@ import { Footer } from "@/ui/footer";
 export const metadata: Metadata = {
   metadataBase: new URL("https://nullk.us"),
   title: "손지민 - nullk.us",
-  description:
-    "손지민의 작업, 생각, 개발 기록을 모아둔 개인 콘텐츠 홈입니다.",
+  description: "손지민의 작업, 생각, 개발 기록을 모아둔 개인 콘텐츠 홈입니다.",
 
   keywords: [
     "프론트엔드 엔지니어",
@@ -75,7 +79,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`relative w-full ${pretendard.variable} mx-auto antialiased`}
+        className={`relative mx-auto w-full ${pretendard.variable} ${jetBrainsMono.variable} ${interTight.variable} ${martianMonoCondensed.variable} antialiased`}
       >
         <Header />
         {children}

@@ -48,7 +48,7 @@ test("home presents all 24 photos as one personal collage", async () => {
   assert.equal(portraitCount, 24);
   assert.ok(photoSection.props.className.includes("grid-cols-6"));
   assert.ok(photoSection.props.className.includes("sm:grid-cols-8"));
-  assert.ok(photoSection.props.className.includes("max-w-[23rem]"));
+  assert.ok(photoSection.props.className.includes("max-w-[20rem]"));
   assert.ok(photoSection.props.className.includes("sm:max-w-[34rem]"));
   assert.ok(introSection.props.className.includes("px-4"));
   assert.ok(introSection.props.className.includes("py-10"));

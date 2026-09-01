@@ -46,7 +46,7 @@ export default function Home() {
 
           <section
             aria-label="인물 사진 모음"
-            className="grid w-[calc(100%+1rem)] max-w-[23rem] select-none grid-cols-6 sm:w-full sm:max-w-[34rem] sm:grid-cols-8"
+            className="grid w-full max-w-[20rem] select-none grid-cols-6 sm:max-w-[34rem] sm:grid-cols-8"
           >
             {PERSON_IMAGES.map((src) => (
               <div className="relative aspect-[257/366]" key={src}>

@@ -22,7 +22,11 @@ test("home header centers the logo above a small text menu", () => {
   const headerElements = collectElements(HomeHeader());
   const logoElements = collectElements(SamsonLogo());
   const logoImages = logoElements.filter((element) => element.type === Image);
-  const centerContainer = headerElements.find(
+  const horizontalContainer = headerElements.find(
+    (element) =>
+      element.type === "div" && element.props.className.includes("px-4")
+  );
+  const headerContainer = headerElements.find(
     (element) =>
       element.type === "div" &&
       element.props.className.includes("flex-col") &&
@@ -46,11 +50,13 @@ test("home header centers the logo above a small text menu", () => {
   const menuLinks = headerElements.filter((element) => element.type === Link);
 
   assert.equal(logoImages.length, 2);
-  assert.ok(centerContainer);
-  assert.ok(centerContainer.props.className.includes("px-4"));
-  assert.ok(centerContainer.props.className.includes("sm:px-8"));
-  assert.ok(centerContainer.props.className.includes("h-20"));
-  assert.ok(centerContainer.props.className.includes("justify-end"));
+  assert.ok(horizontalContainer);
+  assert.ok(horizontalContainer.props.className.includes("sm:px-8"));
+  assert.ok(!horizontalContainer.props.className.includes("py-"));
+  assert.ok(headerContainer);
+  assert.ok(headerContainer.props.className.includes("py-4"));
+  assert.ok(!headerContainer.props.className.includes("px-"));
+  assert.ok(!headerContainer.props.className.includes("h-20"));
   assert.ok(logoContainer);
   assert.ok(!logoContainer.props.className.includes("mt-"));
   assert.ok(logoSlot);

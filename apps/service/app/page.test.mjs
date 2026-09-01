@@ -89,11 +89,22 @@ test("home opts out of the shared footer", async () => {
   assert.equal(page.props["data-page-footer"], "hidden");
 });
 
-test("home removes the scroll cue when there is no second section", async () => {
+test("home presents a centered arrow-only scroll cue", async () => {
   const page = await Home();
-  const text = collectText(page);
+  const elements = collectElements(page);
+  const scrollCue = elements.find(
+    (element) =>
+      element.type === "p" && element.props.className.includes("left-1/2")
+  );
+  const accessibleLabel = elements.find(
+    (element) =>
+      element.type === "span" && element.props.className === "sr-only"
+  );
 
-  assert.ok(!text.includes("scroll down"));
+  assert.ok(collectText(scrollCue).includes("↓"));
+  assert.equal(collectText(accessibleLabel), "아래로 스크롤");
+  assert.ok(scrollCue.props.className.includes("left-1/2"));
+  assert.ok(scrollCue.props.className.includes("-translate-x-1/2"));
 });
 
 test("home keeps the service question floating at the bottom right", async () => {

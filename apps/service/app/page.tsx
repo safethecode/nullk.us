@@ -55,6 +55,13 @@ export default function Home() {
             </p>
           </div>
         </section>
+
+        <p className="absolute bottom-4 left-1/2 -translate-x-1/2 font-jetbrains-mono text-[12px] text-neutral-400 sm:bottom-6">
+          <span className="sr-only">아래로 스크롤</span>
+          <span aria-hidden="true" className="home-scroll-cue-arrow">
+            ↓
+          </span>
+        </p>
       </section>
 
       <details

@@ -36,7 +36,7 @@ export function SamsonLogo() {
 export function HomeHeader() {
   return (
     <header className="sticky top-0 z-50 bg-white/85 backdrop-blur-md">
-      <div className="mx-auto flex h-20 flex-col items-center justify-center gap-2.5 px-4 pt-3 sm:px-8">
+      <div className="mx-auto flex flex-col items-center gap-2.5 pt-5 pr-4 pb-4 pl-4 sm:pr-8 sm:pl-8">
         <SamsonLogo />
         <nav
           aria-label="홈 메뉴"

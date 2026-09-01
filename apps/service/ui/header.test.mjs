@@ -30,7 +30,7 @@ test("home header centers the logo above a small text menu", () => {
   );
   const logoContainer = headerElements.find(
     (element) =>
-      element.type === "div" && element.props.className.includes("mt-5")
+      element.type === "div" && element.props.className.includes("mb-2.5")
   );
   const logoSlot = headerElements.find(
     (element) => element.type === SamsonLogo
@@ -49,16 +49,15 @@ test("home header centers the logo above a small text menu", () => {
   assert.ok(centerContainer);
   assert.ok(centerContainer.props.className.includes("px-4"));
   assert.ok(centerContainer.props.className.includes("sm:px-8"));
-  assert.ok(!centerContainer.props.className.includes("pt-"));
-  assert.ok(!centerContainer.props.className.includes("pb-"));
-  assert.ok(!centerContainer.props.className.includes("justify-center"));
-  assert.ok(!centerContainer.props.className.includes("h-20"));
+  assert.ok(centerContainer.props.className.includes("h-20"));
+  assert.ok(centerContainer.props.className.includes("justify-end"));
   assert.ok(logoContainer);
+  assert.ok(!logoContainer.props.className.includes("mt-"));
   assert.ok(logoSlot);
   assert.ok(homeLink);
   assert.ok(homeMenu);
-  assert.ok(homeMenu.props.className.includes("mt-2.5"));
   assert.ok(homeMenu.props.className.includes("mb-4"));
+  assert.ok(!homeMenu.props.className.includes("mt-"));
   assert.ok(homeMenu.props.className.includes("text-[10px]"));
   assert.equal(menuLinks.length, 4);
   assert.equal(

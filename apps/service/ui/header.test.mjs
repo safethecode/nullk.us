@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import Image from "next/image";
+import Link from "next/link";
 import React, { Children, isValidElement } from "react";
 import { getHeaderVariant, HomeHeader, SamsonLogo } from "./header.tsx";
 
@@ -17,7 +18,7 @@ function collectElements(node) {
   ];
 }
 
-test("header keeps only the centered home logo", () => {
+test("home header centers the logo above a small text menu", () => {
   const headerElements = collectElements(HomeHeader());
   const logoElements = collectElements(SamsonLogo());
   const logoImages = logoElements.filter((element) => element.type === Image);
@@ -33,15 +34,19 @@ test("header keeps only the centered home logo", () => {
     (element) =>
       element.props.href === "/" && element.props["aria-label"] === "홈으로"
   );
+  const homeMenu = headerElements.find(
+    (element) =>
+      element.type === "nav" && element.props["aria-label"] === "홈 메뉴"
+  );
+  const menuLinks = headerElements.filter((element) => element.type === Link);
 
   assert.equal(logoImages.length, 2);
   assert.ok(centerContainer);
   assert.ok(logoSlot);
   assert.ok(homeLink);
-  assert.equal(
-    headerElements.filter((element) => element.type === "nav").length,
-    0
-  );
+  assert.ok(homeMenu);
+  assert.ok(homeMenu.props.className.includes("text-[10px]"));
+  assert.equal(menuLinks.length, 4);
   assert.equal(
     headerElements.filter((element) => element.type === "button").length,
     0

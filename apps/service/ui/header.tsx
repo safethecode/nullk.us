@@ -36,8 +36,28 @@ export function SamsonLogo() {
 export function HomeHeader() {
   return (
     <header className="sticky top-0 z-50 bg-white/85 backdrop-blur-md">
-      <div className="mx-auto flex h-16 items-center justify-center px-4 sm:px-8">
+      <div className="mx-auto flex h-16 flex-col items-center justify-center gap-2.5 px-4 sm:px-8">
         <SamsonLogo />
+        <nav
+          aria-label="홈 메뉴"
+          className="flex items-center gap-4 whitespace-nowrap text-[10px] text-neutral-400"
+        >
+          {landingNavigationItems.map((item) => (
+            <Link
+              className="transition-colors duration-150 hover:text-neutral-900"
+              href={item.href}
+              key={item.href}
+            >
+              {item.label}
+            </Link>
+          ))}
+          <Link
+            className="transition-colors duration-150 hover:text-neutral-900"
+            href="/coffee-chat"
+          >
+            커피챗
+          </Link>
+        </nav>
       </div>
     </header>
   );

@@ -61,6 +61,10 @@ test("home uses editorial labels to express personality", async () => {
   const italicIndexes = collectElements(editorialSection).filter(
     (element) => element.type === "em"
   );
+  const boldProductLabel = collectElements(editorialSection).find(
+    (element) =>
+      element.type === "strong" && collectText(element) === "완성도 높은 제품"
+  );
 
   assert.ok(text.includes("커피(#1)"));
   assert.ok(text.includes("프론트엔드(#12)"));
@@ -76,6 +80,7 @@ test("home uses editorial labels to express personality", async () => {
   assert.ok(editorialSection.props.className.includes("sm:leading-[1.16]"));
   assert.ok(editorialSection.props.className.includes("text-center"));
   assert.equal(italicIndexes.length, 4);
+  assert.ok(boldProductLabel.props.className.includes("font-medium"));
 });
 
 test("home opts out of the shared footer", async () => {

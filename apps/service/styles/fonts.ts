@@ -13,7 +13,7 @@ export const interTight = Inter_Tight({
   style: ["normal", "italic"],
   subsets: ["latin"],
   variable: "--font-inter-tight",
-  weight: "300",
+  weight: ["300", "500"],
 });
 
 export const jetBrainsMono = JetBrains_Mono({

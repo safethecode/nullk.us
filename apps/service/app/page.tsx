@@ -23,7 +23,8 @@ export default function Home() {
               <em className="italic">(#12)</em>
             </p>
             <p className="whitespace-nowrap">
-              완성도 높은 제품<em className="italic">(#24)</em> / 호기심
+              <strong className="font-medium">완성도 높은 제품</strong>
+              <em className="italic">(#24)</em> / 호기심
               <em className="italic">(#∞)</em>
             </p>
           </section>

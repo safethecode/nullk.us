@@ -47,13 +47,28 @@ export default function Home() {
             ))}
           </section>
 
-          <div className="mt-7 text-center sm:mt-10">
+          <section
+            aria-label="개인 설명"
+            className="mt-7 flex flex-col items-center gap-3 text-center sm:mt-10"
+          >
+            <Image
+              alt=""
+              height={4}
+              src="/assets/decorations/inline-square.svg"
+              width={4}
+            />
             <p className="font-jetbrains-mono text-[10px] text-neutral-400 leading-relaxed tracking-[0.06em] sm:text-[11px]">
               always curious, usually caffeinated.
               <br />
               building small things that feel alive.
             </p>
-          </div>
+            <Image
+              alt=""
+              height={4}
+              src="/assets/decorations/inline-square.svg"
+              width={4}
+            />
+          </section>
         </section>
 
         <p className="absolute bottom-4 left-1/2 -translate-x-1/2 font-jetbrains-mono text-[12px] text-neutral-400 sm:bottom-6">

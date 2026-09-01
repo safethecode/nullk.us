@@ -33,7 +33,8 @@ test("home presents all 24 photos as one personal collage", async () => {
   const page = await Home();
   const elements = collectElements(page);
   const portraitCount = elements.filter(
-    (element) => element.type === Image
+    (element) =>
+      element.type === Image && element.props.src.startsWith("/assets/people/")
   ).length;
   const photoSection = elements.find(
     (element) => element.props["aria-label"] === "인물 사진 모음"
@@ -50,6 +51,26 @@ test("home presents all 24 photos as one personal collage", async () => {
   assert.ok(introSection.props.className.includes("px-4"));
   assert.ok(introSection.props.className.includes("py-10"));
   assert.ok(introSection.props.className.includes("min-h-[calc(100svh-5rem)]"));
+});
+
+test("home frames the personal note with local square marks", async () => {
+  const page = await Home();
+  const note = collectElements(page).find(
+    (element) => element.props["aria-label"] === "개인 설명"
+  );
+  const noteChildren = Children.toArray(note?.props.children);
+
+  assert.equal(noteChildren.length, 3);
+  assert.equal(noteChildren[0].type, Image);
+  assert.equal(
+    noteChildren[0].props.src,
+    "/assets/decorations/inline-square.svg"
+  );
+  assert.equal(noteChildren[2].type, Image);
+  assert.equal(
+    noteChildren[2].props.src,
+    "/assets/decorations/inline-square.svg"
+  );
 });
 
 test("home uses editorial labels to express personality", async () => {

@@ -1,0 +1,15 @@
+<svg
+  fill="none"
+  height="4"
+  viewBox="0 0 4 4"
+  width="4"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title>Decorative square</title>
+  <path
+    clip-rule="evenodd"
+    d="M3.5 0.5H0.5V3.5H3.5V0.5ZM0 0V4H4V0H0Z"
+    fill="black"
+    fill-rule="evenodd"
+  />
+</svg>
